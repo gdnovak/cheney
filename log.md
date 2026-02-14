@@ -55,3 +55,9 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
 - Status: Switched `rb1` `vmbr0` bridge port from `nic0` to `enx90203a1be8d6` (Razer Core Ethernet path) while preserving IP `192.168.5.98/22`.
 - Evidence: `/etc/network/interfaces` now uses `bridge-ports enx90203a1be8d6`; post-cutover checks show ping/SSH OK, `pveproxy/pvedaemon/pve-cluster` active, VMs `100/101` running, and `tsDeb` watchdog timer still `active/enabled`.
 - Next action: Continue cable rearrangement one hop at a time with reachability checks after each change.
+
+## 2026-02-14 04:21 EST (Codex)
+- Area: rb2 management interface cutover + reusable runbook
+- Status: Added dedicated cutover runbook and switched `rb2` `vmbr0` bridge port from `nic0` to `enx00051bde7e6e` while preserving IP `192.168.5.108/22`.
+- Evidence: New file `runbooks/interface-cutover-safe.md`; `/etc/network/interfaces` on `rb2` now contains `bridge-ports enx00051bde7e6e`; post-checks show ping/SSH OK and `pveproxy/pvedaemon/pve-cluster` active; `tsDeb` watcher remained `active/enabled`.
+- Next action: Continue recabling with one-change-at-a-time policy and run post-change reachability checks after each cable move.

@@ -61,6 +61,7 @@ Complete phase 1 readiness (all host baselines, including MBA), then perform mig
 - `AGENTS.md`: project-local operating rules for agent work in this repo.
 - `inventory/`: system-of-record hardware, VM, and remote-access inventory.
 - `runbooks/`: step-by-step execution procedures.
+- `runbooks/interface-cutover-safe.md`: repeatable guarded process for moving Proxmox management bridge between NICs while preserving IP.
 - `scripts/`: future automation helpers.
 - `configs/`: future host/service config snapshots and templates.
 - `notes/`: ad hoc research and decision notes.
