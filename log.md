@@ -61,3 +61,9 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
 - Status: Added dedicated cutover runbook and switched `rb2` `vmbr0` bridge port from `nic0` to `enx00051bde7e6e` while preserving IP `192.168.5.108/22`.
 - Evidence: New file `runbooks/interface-cutover-safe.md`; `/etc/network/interfaces` on `rb2` now contains `bridge-ports enx00051bde7e6e`; post-checks show ping/SSH OK and `pveproxy/pvedaemon/pve-cluster` active; `tsDeb` watcher remained `active/enabled`.
 - Next action: Continue recabling with one-change-at-a-time policy and run post-change reachability checks after each cable move.
+
+## 2026-02-14 04:41 EST (Codex)
+- Area: proxmox repo normalization + upgrade baseline
+- Status: Normalized APT source configuration on `rb1`, `rb2`, and `mba` to no-subscription Proxmox/CEPH channels with enterprise channels explicitly disabled, then refreshed package indexes on all hosts.
+- Evidence: `proxmox.sources` set to `pve-no-subscription`; `pve-enterprise.sources` has `Enabled: false`; `ceph.sources` enterprise stanza disabled and no-subscription stanza enabled on all three nodes. `apt-get update` succeeded on each host. Upgradable package counts: `rb1=40`, `rb2=83`, `mba=82`.
+- Next action: Defer full package upgrade/reboots to a controlled maintenance window tomorrow after final recable state is stable.
