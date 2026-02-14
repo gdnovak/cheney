@@ -11,23 +11,31 @@
 | system | ip | role | source |
 |---|---|---|---|
 | rb1-pve host (`rb14-2017` mapping assumed) | 192.168.5.98/22 | active Proxmox host | live check |
+| rb2-pve host (`rb14-2015`) | 192.168.5.108/22 | target Proxmox host | live ping + ssh port check |
 | truenas VM (100) | 192.168.5.100/22 | storage service VM | guest agent check |
 | tsDeb VM (101) | 192.168.5.102/22 | utility/remote-access VM | guest agent check |
 | mba-2011 | 192.168.5.66 | fallback node (ping reachable) | user + live ping |
 | gateway | 192.168.4.1 | default route | host route table |
 
-## Draft Topology Direction
+## Phase-Oriented Network Direction
 
-1. Keep the smart Netgear switch as the control-plane anchor (management and stability-critical paths).
-2. Use the faster unmanaged switch for high-throughput data-plane paths where management features are not required.
-3. Keep at least one host with direct/known-good Ethernet path not dependent on dock/eGPU chain during migration windows.
+Phase 2 (pre-migration optimization):
 
-## Open Decisions (To Resolve Before Cutover)
+1. Keep the smart Netgear switch as the control-plane anchor (Proxmox management and critical remote access).
+2. Use the faster unmanaged switch for bulk/data paths where management features are not required.
+3. Normalize cable runs and document any temporary IP changes.
+4. Keep at least one host with direct/known-good Ethernet path not dependent on dock/eGPU chain during migration windows.
 
-- Decide which nodes must stay on the smart switch at all times.
-- Define whether VM migration traffic should stay isolated from general LAN traffic.
-- Verify whether USB-Ethernet path on active Razer introduces stability/performance limits.
-- Decide long-term placement of Razer Core Ethernet in the topology (primary vs fallback).
+Phase 5 (final network rework):
+
+1. Finalize long-term internet in/out path and switch uplink structure.
+2. Lock Mac mini steady-state mode (wired primary + Wi-Fi secondary/fallback).
+3. Finalize long-term placement of dock/Razer Core Ethernet paths (primary vs fallback).
+
+## Performance Constraint (Current Default)
+
+- Migration is allowed on stable 1GbE.
+- Any >1GbE inter-Razer path is a later optimization and does not block migration execution.
 
 ## Validation Checklist
 

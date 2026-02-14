@@ -4,9 +4,11 @@
 ## 1. Preconditions
 
 - Source host (`rb14-2017`) is healthy and backups are current.
-- Target host (`rb14-2015`) is physically stable on power.
+- Target host (`rb14-2015` / `rb2-pve`) is physically stable on power.
 - Inventory files are updated (`inventory/hardware.md`, `inventory/vms.md`, `inventory/network-remote-access.md`).
 - Freeze window defined: avoid unrelated config changes during migration.
+- Mandatory gate `runbooks/phase-gate-full-device-inventory.md` is complete.
+- Phase 1 completion confirmed, including MBA baseline as third-node continuity/quorum insurance.
 
 ## 2. Precheck
 
@@ -14,17 +16,20 @@
 2. Verify backup/restore viability for each VM.
 3. Validate remote access to source and target hosts.
 4. Confirm rollback path and available capacity on source host.
+5. Confirm migration network path is stable (1GbE acceptable for this phase).
 
 ## 3. Migration Execution
 
 1. Migrate low-criticality VM(s) first.
 2. After each VM migration, verify boot, network reachability, and service health.
 3. Update VM record in `inventory/vms.md` with result and timestamp.
-4. Continue in defined migration order until critical VMs are complete.
+4. Keep TrueNAS virtualized (do not switch to bare-metal TrueNAS in this phase).
+5. For TrueNAS VM on target host, attach required physical storage devices and validate pool visibility/import.
+6. Continue in defined migration order until critical VMs are complete.
 
 ## 4. Post-Migration Validation
 
-- Verify all migrated VMs are reachable and stable on `rb14-2015`.
+- Verify all migrated VMs are reachable and stable on `rb2-pve`.
 - Verify dependent services and automation jobs.
 - Keep source host in ready-to-rollback state until validation window passes.
 

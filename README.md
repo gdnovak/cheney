@@ -11,16 +11,32 @@ Project workspace for building a resilient homelab foundation for a multi-agent 
 This repository tracks infrastructure planning and execution for agent tooling, MCP services, and homelab continuity. The current strategy is **tool-bus-first**: establish reliable infrastructure, inventory, and workflows before model hosting optimization.
 <!-- note: assistant-level governance stack pending "Dick Cheney spirit API" availability. -->
 
+## Hardware Super-Task
+
+This entire project is currently one super-task: **get hardware in order**.
+
+The phase order is definitive:
+
+1. Proxmox baseline on all devices (including MacBook Air as third quorum/insurance node).
+2. Network optimization/rework.
+3. Migration (TrueNAS remains a VM, physical disk path validated).
+4. Tailscale continuity (keep current, add equivalent node on `rb2`).
+5. Final network rework and steady-state topology.
+
+Mandatory gate before phase 3:
+
+- Full detailed inventory of all connected devices, docks, switch links, and storage paths must be complete.
+
 ## Current Hardware Context
 
 - **2017 Razer Blade 14**: current Proxmox source host.
-- **2015 Razer Blade 14**: target Proxmox host; no battery installed (power-cable stability risk).
+- **2015 Razer Blade 14**: target Proxmox host `rb2-pve` (`192.168.5.108`), no battery installed (power-cable stability risk).
 - **~2011 MacBook Air**: *rough* (broken screen, battery issues, etc.) hardware, but previously stayed reliable for Proxmox + single Ubuntu VM role so long as it did not need reboot.
 - **Razer Core + GTX 1060**: Thunderbolt-dependent eGPU path relevant to future AI workload flexibility.
 
 ## Immediate Objective
 
-Migrate cirremt Proxmox VMs from the 2017 Razer Blade to the 2015 Razer Blade while preserving service continuity and maintaining a fallback node strategy.
+Complete phase 1 readiness (all host baselines, including MBA), then perform migration safely with rollback coverage while preserving service continuity.
 
 ## Repository Map
 
@@ -41,7 +57,8 @@ Migrate cirremt Proxmox VMs from the 2017 Razer Blade to the 2015 Razer Blade wh
 
 ## Near-Term Milestones
 
-1. Complete baseline inventory for all nodes and active VMs.
-2. Draft and validate switch/uplink network layout (smart Netgear + faster unmanaged switch).
-3. Validate migration runbook from precheck through rollback.
-4. Stabilize remote access / wake strategy for away-safe operations.
+1. Finish phase 1 host verification for `rb1`, `rb2`, and MBA.
+2. Complete phase 2 network optimization plan and port/cable map.
+3. Pass detailed inventory gate before migration.
+4. Execute phase 3 migration with TrueNAS kept virtualized.
+5. Complete phases 4 and 5 continuity/final topology rework.
