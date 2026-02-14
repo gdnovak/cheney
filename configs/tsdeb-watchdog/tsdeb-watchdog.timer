@@ -1,0 +1,11 @@
+[Unit]
+Description=Run tsDeb node watchdog periodically
+
+[Timer]
+OnBootSec=90s
+OnUnitActiveSec=2min
+AccuracySec=10s
+Unit=tsdeb-watchdog.service
+
+[Install]
+WantedBy=timers.target

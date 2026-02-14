@@ -1,0 +1,8 @@
+[Unit]
+Description=tsDeb node watchdog (ping + WoL)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/tsdeb-watchdog.sh
