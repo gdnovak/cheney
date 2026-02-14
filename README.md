@@ -1,24 +1,26 @@
 # Cheney
 
+Homelab project has been very off-and-on, literally, with changes hardware and layout constantly as I learn from my many, many mistakes. The ultimate goal remains the same: AI assistant tailored to *ME*. 
+
 Project workspace for building a resilient homelab foundation for a multi-agent virtual secretary / PA / valet assistant.
-<!-- Running joke: Project CHENEY is definitely not an occult cyborg cabinet. -->
-<!-- Running joke: No souls are being channeled into silicon (officially). -->
+<!-- note: Project CHENEY is definitely not an occult cyborg cabinet. -->
+<!-- note: No souls are being channeled into silicon (officially). -->
 
 ## Purpose
 
 This repository tracks infrastructure planning and execution for agent tooling, MCP services, and homelab continuity. The current strategy is **tool-bus-first**: establish reliable infrastructure, inventory, and workflows before model hosting optimization.
-<!-- Running joke: assistant-level governance stack pending "Dick Cheney spirit API" availability. -->
+<!-- note: assistant-level governance stack pending "Dick Cheney spirit API" availability. -->
 
 ## Current Hardware Context
 
 - **2017 Razer Blade 14**: current Proxmox source host.
 - **2015 Razer Blade 14**: target Proxmox host; no battery installed (power-cable stability risk).
-- **~2011 MacBook Air**: degraded hardware, but previously reliable for Proxmox + single Ubuntu VM role.
+- **~2011 MacBook Air**: *rough* (broken screen, battery issues, etc.) hardware, but previously stayed reliable for Proxmox + single Ubuntu VM role so long as it did not need reboot.
 - **Razer Core + GTX 1060**: Thunderbolt-dependent eGPU path relevant to future AI workload flexibility.
 
 ## Immediate Objective
 
-Migrate current Proxmox VMs from the 2017 Razer Blade to the 2015 Razer Blade while preserving service continuity and maintaining a fallback node strategy.
+Migrate cirremt Proxmox VMs from the 2017 Razer Blade to the 2015 Razer Blade while preserving service continuity and maintaining a fallback node strategy.
 
 ## Repository Map
 
