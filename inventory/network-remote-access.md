@@ -14,7 +14,7 @@ Ensure at least one reliable remote-control path remains available while away, e
 
 | node_id | primary_remote_method | secondary_remote_method | wake_capability | known_issues | last_tested |
 |---|---|---|---|---|---|
-| rb14-2017 | SSH alias `rb1-pve` + Proxmox host LAN (`192.168.5.98`) | Proxmox UI `https://192.168.5.98:8006` | Capability present (`Wake-on: g` on `nic0`) | USB-Ethernet dependency on current setup | 2026-02-14 03:29 EST |
+| rb14-2017 | SSH alias `rb1-pve` + Proxmox host LAN (`192.168.5.98`) | Proxmox UI `https://192.168.5.98:8006` | Capability present (`Wake-on: g` on `nic0`) | Management bridge moved to Razer Core NIC (`enx90203a1be8d6`) during recable; verify stability overnight | 2026-02-14 04:03 EST |
 | rb14-2015 (`rb2-pve`) | SSH alias `rb2` + LAN (`192.168.5.108`) | Proxmox UI `https://192.168.5.108:8006` | Capability present (`Wake-on: g` on `nic0`) | No battery; physical power stability risk | 2026-02-14 03:29 EST |
 | mba-2011 | SSH alias `mba` + LAN (`192.168.5.66`) | Proxmox UI `https://192.168.5.66:8006` | Capability present (`Wake-on: g` on `nic0`) | Reboots are slower than Razers (~58s ping return observed) | 2026-02-14 03:29 EST |
 
