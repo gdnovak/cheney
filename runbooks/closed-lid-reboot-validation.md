@@ -36,3 +36,4 @@ Use this before recabling or migration work to confirm each node can reboot and 
 1. Record exact symptom (no ping, ping/no SSH, SSH/no Proxmox services).
 2. Test with current dummy-plug path vs alternate path (for MBA, hub vs direct TB->HDMI) one change at a time.
 3. Keep that host out of recabling/migration critical path until stability is proven.
+4. For hard no-power behavior on batteryless `rb2`, follow the blocker checklist in `README.md` section `TOMORROW BLOCKER (Do Not Skip)`.

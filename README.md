@@ -27,6 +27,24 @@ Mandatory gate before phase 3:
 
 - Full detailed inventory of all connected devices, docks, switch links, and storage paths must be complete.
 
+## TOMORROW BLOCKER (Do Not Skip)
+
+1. Build fallback management path for `rb2`:
+- Keep an emergency direct management path ready (`rb1 <-> rb2` or equivalent) with static fallback addressing.
+- Validate SSH access over fallback path before deeper migration work.
+
+2. Fix IP/interface fragility after recabling:
+- Verify Proxmox bridge binds to the intended NIC path after dongle/USB-port changes.
+- After each cable move, verify `ip a`, `ip route`, and bridge mapping before continuing.
+
+3. Validate hard power-loss recovery for batteryless `rb2`:
+- Confirm AC-restore auto-boot behavior.
+- Treat WoL as supplemental for soft-off states, not guaranteed for true no-power events.
+
+4. Reconfirm post-recovery acceptance:
+- `ping` + SSH + `pveproxy/pvedaemon/pve-cluster` active.
+- `tsDeb` watchdog timer still enabled and active.
+
 ## Current Hardware Context
 
 - **2017 Razer Blade 14**: current Proxmox source host.
