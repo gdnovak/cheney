@@ -27,7 +27,7 @@ Mandatory gate before phase 3:
 
 - Full detailed inventory of all connected devices, docks, switch links, and storage paths must be complete.
 
-## TOMORROW BLOCKER (Do Not Skip)
+## TOMORROW BLOCKER (Do Not Skip) - SAT FEB 14TH
 
 1. Build fallback management path for `rb2`:
 - Keep an emergency direct management path ready (`rb1 <-> rb2` or equivalent) with static fallback addressing.
