@@ -18,6 +18,16 @@
 4. Confirm rollback path and available capacity on source host.
 5. Confirm migration network path is stable (1GbE acceptable for this phase).
 
+## 2a. TrueNAS No-Cutover Prep (Completed Once Per Window)
+
+1. Produce fresh backup of VM `100` (`truenas`) on source host:
+   - `vzdump 100 --mode snapshot --compress zstd --storage local`
+2. Copy backup artifact to target host `rb2`:
+   - `scp rb1-pve:/var/lib/vz/dump/<backup>.vma.zst rb2:/var/lib/vz/dump/`
+3. Verify artifact integrity:
+   - `sha256sum` must match on source and target.
+4. Do not start restored VM or cut over service until physical storage devices are moved and validated.
+
 ## 3. Migration Execution
 
 1. Migrate low-criticality VM(s) first.

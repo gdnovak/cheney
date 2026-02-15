@@ -37,6 +37,18 @@ Ensure at least one reliable remote-control path remains available while away, e
 - Add equivalent Tailscale endpoint on `rb2` before final cutover.
 - Do not remove existing route advertisement path until `rb2` path is verified.
 
+## Tailscale Staging Status (2026-02-14)
+
+| node | install_state | tailscaled | tailnet_state | notes |
+|---|---|---|---|---|
+| tsDeb (`101`) | installed | active/enabled | logged in | existing continuity path |
+| rb2 | installed | active/enabled | `NeedsLogin` | staged only; account binding intentionally deferred |
+| mba | installed | active/enabled | `NeedsLogin` | staged only; low-overhead flags planned |
+
+Runbook:
+
+- `runbooks/tailscale-node-staging-rb2-mba.md`
+
 ## Watcher Status
 
 - Watcher node: `tsDeb` VM (`192.168.5.102`) on `rb1-pve`.

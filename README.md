@@ -72,10 +72,13 @@ Complete phase 1 readiness (all host baselines, including MBA), then perform mig
 - `runbooks/network-throughput-benchmark.md`: repeatable `iperf3` matrix and interpretation guide.
 - `runbooks/rb2-fallback-management-path.md`: direct emergency management path between `rb1` and `rb2`.
 - `runbooks/rb2-hard-power-recovery-validation.md`: true no-power recovery checklist for batteryless `rb2`.
+- `runbooks/tailscale-node-staging-rb2-mba.md`: staged tailscale setup for `rb2` and `mba` without forced account binding.
 - `scripts/`: future automation helpers.
 - `configs/`: future host/service config snapshots and templates.
 - `notes/`: ad hoc research and decision notes.
 - `notes/perf-baseline-template.md`: template for before/after throughput baselines.
+- `notes/monitoring-software-eval-20260214.md`: third-party monitoring recommendation and rationale.
+- `notes/mcp-homelab-status-rb2.md`: basic MCP install example and wiring for `rb2`.
 - `log.md`: detailed project-local execution history.
 
 ## Operating Principles
