@@ -169,3 +169,9 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
 - Status: Updated docs to make fallback persistence a required redundancy condition on both `rb1` and `rb2`, added VLAN99 management-only security controls, and codified that agent work should explicitly challenge risky requests with safer alternatives.
 - Evidence: Updated `AGENTS.md`, `runbooks/rb2-fallback-management-path.md`, `inventory/network-layout.md`, and `README.md` to replace optional language and add security constraints (`no gateway`, `no forwarding/NAT/routing`, host-only path).
 - Next action: Implement persistent `rb1` `vmbr0.99` config and verify reboot survival so dual-node fallback requirement is fully satisfied.
+
+## 2026-02-14 23:31 EST (Codex)
+- Area: `rb1` fallback persistence implementation
+- Status: Applied persistent `vmbr0.99` configuration on `rb1`, brought interface up, and validated fallback reachability to `rb2`.
+- Evidence: Added `vmbr0.99` stanza to `/etc/network/interfaces` on `rb1` (`172.31.99.1/30`, `vlan-raw-device vmbr0`); `ip -4 addr show vmbr0.99` confirms interface up; `ping 172.31.99.2` succeeded; fallback SSH via control-host jump remains functional (`ssh -J rb1-pve -i ~/.ssh/id_ed25519_rb2-pve root@172.31.99.2 ...`).
+- Next action: Reboot `rb1` during a maintenance window and verify `vmbr0.99` auto-returns to fully close dual-node reboot-survival criteria.

@@ -43,7 +43,13 @@
   - `address 172.31.99.2/30`
   - `vlan-raw-device vmbr0`
 - Verified by reboot test: `vmbr0.99` returned automatically on `rb2`.
-- `rb1`: persistence is required for redundancy target; implement and verify reboot survival to close this item.
+- `rb1`: persistent config added in `/etc/network/interfaces`:
+  - `auto vmbr0.99`
+  - `iface vmbr0.99 inet static`
+  - `address 172.31.99.1/30`
+  - `vlan-raw-device vmbr0`
+- `rb1` runtime validation passed: interface up and `ping 172.31.99.2` successful.
+- `rb1` reboot-survival validation is still pending.
 
 ## Security Controls (VLAN99)
 

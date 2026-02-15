@@ -43,7 +43,7 @@ Mandatory gate before phase 3:
   - `rb2` fallback `172.31.99.2/30`
 - Fallback persistence must exist on both hosts for redundancy (`rb1` and `rb2`).
 - `rb2` fallback interface (`vmbr0.99`) is persisted and verified to survive reboot.
-- `rb1` fallback interface persistence remains an explicit required follow-up until verified by reboot.
+- `rb1` fallback interface (`vmbr0.99`) is now persisted and active; reboot-survival verification remains pending.
 - Fallback reachability validated post-reboot (`rb1` ping to `172.31.99.2` and SSH via jump host).
 
 2. `DONE (current state)` Verify bridge/NIC binding after recabling.
