@@ -38,12 +38,17 @@ Out of scope:
 ## Phase B: Move `truenas` to `rb2`
 
 1. Restore/import `truenas` VM on `rb2`.
-2. Keep original `rb1` VM powered off (not deleted) during burn-in window.
-3. Validate on `rb2`:
+2. Cut over physical storage only during a defined window:
+   - Stop `truenas` on `rb1`: `ssh rb1-pve 'qm stop 100'`
+   - Confirm `rb2` clone is still stopped: `ssh rb2-pve 'qm status 100'`
+   - Disconnect TrueNAS data drives from `rb1` and reconnect them to `rb2`.
+   - Start `truenas` on `rb2`: `ssh rb2-pve 'qm start 100'`
+3. Keep original `rb1` VM powered off (not deleted) during burn-in window.
+4. Validate on `rb2`:
    - guest boots reliably
    - pool health is clean
    - shares/services reachable
-4. Run at least one full backup/restore dry check from new location.
+5. Run at least one full backup/restore dry check from new location.
 
 Rollback:
 
@@ -77,3 +82,15 @@ Rollback:
 
 1. Proxmox + eGPU passthrough on `rb1` currently binds VFIO but repeatedly loses guest SSH/QGA when GPU is attached.
 2. This pivot is motivated by reducing virtualization-layer GPU fragility for the primary agent host.
+
+## Current Checkpoint (2026-02-14 HST)
+
+1. Fresh backup completed on `rb1`:
+   - `/var/lib/vz/dump/vzdump-qemu-100-2026_02_14-21_51_28.vma.zst`
+2. Backup copied to `rb2` and hash-verified:
+   - SHA256: `d2f1b02dbd7352f2b0c02d1ccf812dbcdc20b800355e13468102a99b789f987c`
+3. Restore completed on `rb2` as VM `100` (kept `stopped`).
+4. `rb2` clone includes original USB passthrough IDs:
+   - `usb0: host=1058:2647`
+   - `usb1: host=174c:55aa`
+5. Next manual action: perform Phase B step 2 (physical drive cutover), then validate services.

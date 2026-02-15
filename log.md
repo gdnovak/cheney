@@ -217,3 +217,9 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
 - Status: Completed controlled `dummy_hdmi=absent` eGPU passthrough test (`0f:00.0` only). Result remained fail (guest SSH/QGA loss) with clean automatic rollback; host/fallback continuity remained intact. Updated planning docs to pivot toward `truenas -> rb2` and `rb1` Fedora baremetal conversion.
 - Evidence: Test loop showed `ssh=0 qga=0` through full window; rollback restored VM `220` SSH at `192.168.5.111`. `rb2` fallback ping to `172.31.99.1` remained healthy post-test. Added `runbooks/rb1-baremetal-fedora-pivot.md`; updated `README.md`, `inventory/vms.md`, `inventory/network-layout.md`, and marked legacy scope in `runbooks/proxmox-migration-2017-to-2015.md`.
 - Next action: Execute pivot Phase A/B (`truenas` safety prep + migration to `rb2`) before any `rb1` baremetal reinstall.
+
+## 2026-02-15 02:59 EST (Codex)
+- Area: `truenas` copy/paste migration checkpoint (`rb1` -> `rb2`)
+- Status: Completed the closest safe copy/paste path: fresh backup on `rb1`, verified transfer to `rb2`, and full restore on `rb2` as VM `100` kept powered off for physical cutover.
+- Evidence: SHA256 matched on both hosts (`d2f1b02dbd7352f2b0c02d1ccf812dbcdc20b800355e13468102a99b789f987c`); `rb2` now has `qm config 100` with boot disk on `local-lvm:vm-100-disk-0` plus original USB passthrough IDs (`1058:2647`, `174c:55aa`); `rb1` `truenas` remains running for zero-downtime staging.
+- Next action: During cutover window, stop `rb1` VM `100`, move physical USB storage drives from `rb1` to `rb2`, then start `rb2` VM `100` and validate pool + shares before any Fedora reinstall work.
