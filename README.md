@@ -20,7 +20,7 @@ The phase order is definitive:
 1. Proxmox baseline on all devices (including MacBook Air as third quorum/insurance node).
 2. Network optimization/rework.
 3. Migration (TrueNAS remains a VM, physical disk path validated).
-4. Tailscale continuity (keep current, add equivalent node on `rb2`).
+4. Tailscale continuity (keep `tsDeb`, add lightweight utility nodes on `rb2` and `mba` as VMs, not Proxmox hosts).
 5. Final network rework and steady-state topology.
 
 Mandatory gate before phase 3:
@@ -74,7 +74,7 @@ Complete phase 1 readiness (all host baselines, including MBA), then perform mig
 - `runbooks/network-throughput-benchmark.md`: repeatable `iperf3` matrix and interpretation guide.
 - `runbooks/rb2-fallback-management-path.md`: direct emergency management path between `rb1` and `rb2`.
 - `runbooks/rb2-hard-power-recovery-validation.md`: true no-power recovery checklist for batteryless `rb2`.
-- `runbooks/tailscale-node-staging-rb2-mba.md`: staged tailscale setup for `rb2` and `mba` without forced account binding.
+- `runbooks/tailscale-node-staging-rb2-mba.md`: utility-VM tailscale setup for `rb2` and `mba` (`tsnode-rb2`, `tsnode-mba`) with approval flow.
 - `scripts/`: future automation helpers.
 - `configs/`: future host/service config snapshots and templates.
 - `notes/`: ad hoc research and decision notes.

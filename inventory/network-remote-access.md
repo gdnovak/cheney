@@ -34,16 +34,18 @@ Ensure at least one reliable remote-control path remains available while away, e
 ## Tailscale Continuity Rule
 
 - Keep current Tailscale path online during hardware rework.
-- Add equivalent Tailscale endpoint on `rb2` before final cutover.
-- Do not remove existing route advertisement path until `rb2` path is verified.
+- Add equivalent Tailscale endpoints as utility VMs on `rb2` and `mba` (avoid host-level agent on Proxmox).
+- Do not remove existing route advertisement path until at least one new utility node is approved and healthy.
 
-## Tailscale Staging Status (2026-02-14)
+## Tailscale Staging Status (2026-02-14 22:14 EST)
 
 | node | install_state | tailscaled | tailnet_state | notes |
 |---|---|---|---|---|
 | tsDeb (`101`) | installed | active/enabled | logged in | existing continuity path |
-| rb2 | installed | active/enabled | `NeedsLogin` | staged only; account binding intentionally deferred |
-| mba | installed | active/enabled | `NeedsLogin` | staged only; low-overhead flags planned |
+| rb2 host | installed then disabled | inactive/disabled | n/a | host-level tailscale intentionally disabled |
+| mba host | installed then disabled | inactive/disabled | n/a | host-level tailscale intentionally disabled |
+| tsnode-rb2 (`201` on `rb2`) | installed | active/enabled | `NeedsLogin` | approval URL generated; static IP `192.168.5.112` |
+| tsnode-mba (`301` on `mba`) | installed | active/enabled | `NeedsLogin` | approval URL generated; static IP `192.168.5.113` |
 
 Runbook:
 
