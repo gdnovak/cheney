@@ -35,6 +35,16 @@
   - `rb1 <-> rb2` ping over `172.31.99.0/30` is successful.
   - SSH to `rb2` over fallback path is validated via jump host (`ssh -J rb1-pve root@172.31.99.2 ...`).
 
+## Fallback Persistence Status (2026-02-14)
+
+- `rb2`: persistent config added in `/etc/network/interfaces`:
+  - `auto vmbr0.99`
+  - `iface vmbr0.99 inet static`
+  - `address 172.31.99.2/30`
+  - `vlan-raw-device vmbr0`
+- Verified by reboot test: `vmbr0.99` returned automatically on `rb2`.
+- `rb1`: fallback interface currently remains runtime-only (`vmbr0.99` on host uptime).
+
 ## Target Topology (Throughput-First, Medium Complexity)
 
 1. Keep smart switch as control-plane anchor and management visibility point.

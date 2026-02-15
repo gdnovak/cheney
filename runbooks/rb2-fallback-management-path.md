@@ -71,6 +71,12 @@ Keep persistent fallback config isolated:
 1. No gateway on fallback interface.
 2. No bridge changes to existing `vmbr0` primary path.
 
+After persisting, validate reboot survival:
+
+1. Reboot node.
+2. Confirm fallback interface/IP returns automatically.
+3. Re-test ping/SSH over fallback subnet.
+
 ## Step 5 - Failure Drill
 
 Simulate primary-path loss (one change at a time):

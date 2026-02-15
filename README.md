@@ -29,23 +29,25 @@ Mandatory gate before phase 3:
 
 ## Next Blocker Tracker (as of 2026-02-14)
 
-1. `IN PROGRESS` Build fallback management path for `rb2`.
+1. `DONE (current state)` Build fallback management path for `rb2`.
 - Run `runbooks/rb2-fallback-management-path.md` during tonight's recabling window.
 - Default fallback addressing is reserved:
   - `rb1` fallback `172.31.99.1/30`
   - `rb2` fallback `172.31.99.2/30`
-- Validate SSH over fallback path before deeper migration work.
+- `rb2` fallback interface (`vmbr0.99`) is now persisted and verified to survive reboot.
+- Fallback reachability validated post-reboot (`rb1` ping to `172.31.99.2` and SSH via jump host).
 
 2. `DONE (current state)` Verify bridge/NIC binding after recabling.
 - `rb1` `vmbr0` -> `enx90203a1be8d6`
 - `rb2` `vmbr0` -> `enx00051bde7e6e`
 - Continue using `runbooks/interface-cutover-safe.md` after every cable/port move.
 
-3. `PENDING MANUAL` Validate hard power-loss recovery for batteryless `rb2`.
-- Run `runbooks/rb2-hard-power-recovery-validation.md`.
-- Confirm AC-restore auto-boot behavior.
-- Treat WoL as supplemental for soft-off states, not guaranteed for true no-power events.
-- Optional path: test smart-plug power-cycle as unattended hard-reset method and record recovery timing.
+3. `DONE (with limitation)` Validate hard power-loss recovery for batteryless `rb2`.
+- Executed true no-power test with live watcher log (`notes/rb2-recovery-watch-20260214-215107.log`).
+- Observed: AC restore did not auto-boot; manual power button was required.
+- Recovery timing: first down at `21:51:22 EST`, healthy return at `21:54:25 EST` (~`183s` downtime).
+- WoL packet was sent from `tsDeb` during outage and did not power on `rb2` from no-power state.
+- Optional next improvement: smart-plug cycle tests for unattended hard-reset repeatability.
 
 4. `DONE (current state)` Reconfirm post-change acceptance.
 - `ping` + SSH + `pveproxy/pvedaemon/pve-cluster` currently healthy on `rb1`, `rb2`, and `mba`.
