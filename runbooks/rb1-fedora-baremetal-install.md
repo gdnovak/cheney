@@ -8,6 +8,7 @@ Purpose: convert `rb1` from Proxmox host to Fedora baremetal after storage servi
 2. `rb1` no longer carries active storage-critical workloads.
 3. You have physical console access for install/reboot handling.
 4. A USB installer for Fedora Server is prepared.
+5. Tailscale subnet-router responsibility is anchored on `rb2` (not `rb1`) before wipe.
 
 ## Preflight Capture (Before Wipe)
 
@@ -53,6 +54,7 @@ ip -4 -br addr
 1. SSH from workstation to new `rb1` host succeeds.
 2. Reboot once and verify host returns on same management interface/IP.
 3. Only after network stability is confirmed, connect eGPU path and proceed with NVIDIA stack work.
+4. Confirm Tailscale subnet routing remains served by `rb2` utility path (example advertised LAN route: `192.168.4.0/22`).
 
 ## Rollback
 

@@ -229,3 +229,9 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
 - Status: Added concrete baremetal install runbook so Fedora conversion can begin immediately after `truenas` drive cutover validation.
 - Evidence: New `runbooks/rb1-fedora-baremetal-install.md` with pre-wipe capture, installer guidance, first-boot baseline, and rollback.
 - Next action: Complete physical drive move (`rb1` -> `rb2`), start/validate `rb2` TrueNAS VM, then execute Fedora preflight capture on `rb1`.
+
+## 2026-02-15 03:07 EST (Codex)
+- Area: Fedora pre-wipe safety execution + tailscale role correction
+- Status: Executed `rb1` pre-wipe capture, copied capture to `rb2`, produced fresh backups for VMs `101` and `220`, and copied both backup artifacts to `rb2` dump storage. Updated Fedora runbook to keep subnet-router Tailscale role on `rb2` during/after `rb1` wipe.
+- Evidence: `/var/lib/vz/dump/rb1-pre-fedora-capture-20260215-0303.tar.gz` exists on `rb2`; `/var/lib/vz/dump/vzdump-qemu-101-2026_02_14-22_03_39.vma.zst` and `/var/lib/vz/dump/vzdump-qemu-220-2026_02_14-22_04_04.vma.zst` exist on `rb2`; `runbooks/rb1-fedora-baremetal-install.md` preconditions now pin subnet routing to `rb2`.
+- Next action: If requested, restore/migrate `101`/`220` onto `rb2` before Fedora wipe; otherwise proceed directly to Fedora installer on `rb1` with rollback artifacts already secured.
