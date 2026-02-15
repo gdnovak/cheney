@@ -92,3 +92,7 @@ Complete phase 1 readiness (all host baselines, including MBA), then perform mig
 3. Pass detailed inventory gate before migration.
 4. Execute phase 3 migration with TrueNAS kept virtualized.
 5. Complete phases 4 and 5 continuity/final topology rework.
+
+## Tonight Objective (Planning Anchor)
+
+After blocker items `1` and `3` are validated during recabling/power tests, target a first-pass agent bootstrap on one or two nodes to begin automation workflows.
