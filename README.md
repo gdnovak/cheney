@@ -60,11 +60,14 @@ Complete phase 1 readiness (all host baselines, including MBA), then perform mig
 
 - `AGENTS.md`: project-local operating rules for agent work in this repo.
 - `inventory/`: system-of-record hardware, VM, and remote-access inventory.
+- `inventory/network-procurement.md`: reuse-first upgrade strategy and high-impact purchase shortlist.
 - `runbooks/`: step-by-step execution procedures.
 - `runbooks/interface-cutover-safe.md`: repeatable guarded process for moving Proxmox management bridge between NICs while preserving IP.
+- `runbooks/network-throughput-benchmark.md`: repeatable `iperf3` matrix and interpretation guide.
 - `scripts/`: future automation helpers.
 - `configs/`: future host/service config snapshots and templates.
 - `notes/`: ad hoc research and decision notes.
+- `notes/perf-baseline-template.md`: template for before/after throughput baselines.
 - `log.md`: detailed project-local execution history.
 
 ## Operating Principles

@@ -1,45 +1,68 @@
-# Network Layout Plan (Draft)
+# Network Layout Plan
 
 ## Current Physical Switching
 
-- `switch-smart-netgear`: Netgear smart switch (management-capable).
-- `switch-fast-unmanaged`: Higher-throughput unmanaged switch.
-- Dock/enclosure Ethernet paths are actively used and must be included in failure analysis.
+- `switch-smart-netgear`: Netgear smart switch (management-capable control-plane anchor).
+- `switch-fast-unmanaged`: higher-throughput unmanaged switch for bulk data paths.
+- Rule: keep exactly one cable between switches unless loop protections are explicitly configured and validated.
 
 ## Current Known IP Anchors
 
 | system | ip | role | source |
 |---|---|---|---|
-| rb1-pve host (`rb14-2017` mapping assumed) | 192.168.5.98/22 | active Proxmox host | live check |
-| rb2-pve host (`rb14-2015`) | 192.168.5.108/22 | target Proxmox host | live ping + ssh port check |
+| rb1-pve host (`rb14-2017`) | 192.168.5.98/22 | active Proxmox host | live check |
+| rb2-pve host (`rb14-2015`) | 192.168.5.108/22 | target Proxmox host | live check |
 | truenas VM (100) | 192.168.5.100/22 | storage service VM | guest agent check |
 | tsDeb VM (101) | 192.168.5.102/22 | utility/remote-access VM | guest agent check |
-| mba-2011 | 192.168.5.66 | fallback node (ping reachable) | user + live ping |
+| mba-2011 (`kabbalah`) | 192.168.5.66/22 | fallback node | live check |
 | gateway | 192.168.4.1 | default route | host route table |
 
-## Phase-Oriented Network Direction
+## Throughput Baseline (2026-02-14)
+
+- Observed negotiated management-link speeds from live checks:
+  - `rb1`: `enx90203a1be8d6` -> `1000/full`
+  - `rb2`: `enx00051bde7e6e` -> `1000/full`
+  - `mba`: `nic0` -> `1000/full`
+- Current data confirms stable 1GbE baseline; CAT8 alone does not raise throughput when NIC/switch ports are 1Gb-limited.
+
+## Target Topology (Throughput-First, Medium Complexity)
+
+1. Keep smart switch as control-plane anchor and management visibility point.
+2. Place high-throughput endpoints (`rb1`, `rb2`, workstation/mac mini) on fast unmanaged switch when 2.5Gb-capable NICs are available.
+3. Keep `mba` on known-stable 1Gb path for continuity/fallback, not bulk transfer.
+4. Maintain a single LAN/subnet during initial optimization to reduce migration risk.
+5. Add optional dual-NIC split later for learning and stronger isolation:
+- NIC A on smart switch for management.
+- NIC B on fast switch for migration/backup/storage traffic.
+
+## Host Path Targets
+
+| host | current primary NIC path | current link | target near-term | target link | fallback path requirement |
+|---|---|---|---|---|---|
+| rb1-pve | `enx90203a1be8d6` (Razer Core path) | 1GbE | move bulk path to 2.5-capable adapter/switch port when added | 2.5GbE | keep at least one known-good management dongle profile documented |
+| rb2-pve | `enx00051bde7e6e` | 1GbE | same as rb1; prioritize stable power and cable strain relief first | 2.5GbE | maintain emergency direct-management method for no-battery node |
+| mba (`kabbalah`) | `nic0` | 1GbE | continuity node only | 1GbE | retain hub + direct TB/miniDP video fallback notes |
+| workstation/mac mini | TBD (inventory detail pending) | TBD | add to fast-switch data path if 2.5-capable NIC path exists | 2.5GbE target | keep Wi-Fi as secondary out-of-band access |
+
+## Phase-Oriented Direction
 
 Phase 2 (pre-migration optimization):
 
-1. Keep the smart Netgear switch as the control-plane anchor (Proxmox management and critical remote access).
-2. Use the faster unmanaged switch for bulk/data paths where management features are not required.
-3. Normalize cable runs and document any temporary IP changes.
-4. Keep at least one host with direct/known-good Ethernet path not dependent on dock/eGPU chain during migration windows.
+1. Document exact switch port map and cable IDs.
+2. Validate one-uplink inter-switch topology and no-loop behavior.
+3. Run `iperf3` matrix baseline before any procurement.
+4. Introduce 2.5Gb adapters to highest-impact nodes first (`rb1`, `rb2`, workstation/mac mini).
 
 Phase 5 (final network rework):
 
-1. Finalize long-term internet in/out path and switch uplink structure.
-2. Lock Mac mini steady-state mode (wired primary + Wi-Fi secondary/fallback).
-3. Finalize long-term placement of dock/Razer Core Ethernet paths (primary vs fallback).
-
-## Performance Constraint (Current Default)
-
-- Migration is allowed on stable 1GbE.
-- Any >1GbE inter-Razer path is a later optimization and does not block migration execution.
+1. Finalize steady-state uplink/internet path.
+2. Optionally implement dual-NIC management/data split.
+3. Finalize dock/eGPU Ethernet roles (`primary`, `fallback`, `do-not-use-for-primary`).
 
 ## Validation Checklist
 
 1. Document exact port map for both switches.
-2. Verify link speed and negotiated duplex on each host path.
-3. Run continuity test: unplug one switch/uplink and verify remote control remains available.
-4. Confirm post-failover path for Proxmox management (`:8006`) and SSH.
+2. Verify link speed and negotiated duplex on each host path after any cable/NIC change.
+3. Run continuity test: unplug one non-critical path and verify SSH + `:8006` remain reachable.
+4. Run throughput test matrix per `runbooks/network-throughput-benchmark.md`.
+5. Confirm NIC error/drop counters do not show sustained growth under load.

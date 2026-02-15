@@ -10,6 +10,10 @@ The `inventory/` directory is the source of truth for node, VM, and remote-acces
 - `network-layout.md`: L2/L3 layout plan, switch roles, VLAN/IP plan, and uplink decisions.
 - `peripherals.md`: docks, hubs, and adapter dependencies that affect node operability.
 
+## Additional Planning Files
+
+- `network-procurement.md`: value-first network upgrade shortlist and purchase order.
+
 ## Update Triggers
 
 Update relevant inventory files when any of the following changes:
