@@ -1,6 +1,12 @@
 # Runbook: Proxmox VM Migration (RB14 2017 -> RB14 2015)
 <!-- Running joke: this migration is phase one of the Cheney containment vessel. -->
 
+## Scope Lock (Current Phase)
+
+- In scope: compute/utility VM migration only.
+- Out of scope: `truenas` VM (`100`) migration to `rb2`.
+- `truenas` remains on `rb1-pve` for this phase.
+
 ## 1. Preconditions
 
 - Source host (`rb14-2017`) is healthy and backups are current.
@@ -22,24 +28,24 @@
 
 1. Produce fresh backup of VM `100` (`truenas`) on source host:
    - `vzdump 100 --mode snapshot --compress zstd --storage local`
-2. Copy backup artifact to target host `rb2`:
-   - `scp rb1-pve:/var/lib/vz/dump/<backup>.vma.zst rb2:/var/lib/vz/dump/`
-3. Verify artifact integrity:
-   - `sha256sum` must match on source and target.
-4. Do not start restored VM or cut over service until physical storage devices are moved and validated.
+2. Verify backup artifact integrity on source host:
+   - `sha256sum /var/lib/vz/dump/<backup>.vma.zst`
+3. Optional cold standby copy:
+   - Copy artifact to an offline/archive location, but do not plan restore on `rb2` in this phase.
+4. Keep `truenas` service active on `rb1`; no storage cutover in this runbook.
 
 ## 3. Migration Execution
 
 1. Migrate low-criticality VM(s) first.
 2. After each VM migration, verify boot, network reachability, and service health.
 3. Update VM record in `inventory/vms.md` with result and timestamp.
-4. Keep TrueNAS virtualized (do not switch to bare-metal TrueNAS in this phase).
-5. For TrueNAS VM on target host, attach required physical storage devices and validate pool visibility/import.
-6. Continue in defined migration order until critical VMs are complete.
+4. Keep TrueNAS virtualized on `rb1` (do not switch to bare-metal TrueNAS in this phase).
+5. Continue in defined migration order until in-scope compute/utility VMs are complete.
 
 ## 4. Post-Migration Validation
 
-- Verify all migrated VMs are reachable and stable on `rb2-pve`.
+- Verify all migrated in-scope VMs are reachable and stable on `rb2-pve`.
+- Verify `truenas` remains healthy and reachable on `rb1-pve`.
 - Verify dependent services and automation jobs.
 - Keep source host in ready-to-rollback state until validation window passes.
 

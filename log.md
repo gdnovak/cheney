@@ -151,3 +151,15 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
 - Status: Completed full reboot validation: utility VMs (`201`, `301`) plus hosts (`rb2`, `rb1`, `mba`) with post-boot Tailscale reconnect checks. All targeted systems recovered and utility nodes remained `BackendState=Running`.
 - Evidence: VM reboot checks passed for `lchl-tsnode-rb2` and `lchl-tsnode-mba` (`tailscaled=active`, `BackendState=Running`). Host reboot checks confirmed boot ID changes on `rb2`, `rb1`, and `mba`; Proxmox core services returned `active` on all three; utility VMs came back with `onboot: 1` and Tailscale online (`100.97.121.113`, `100.115.224.15`). `tsDeb` watchdog validated after `rb1` reboot (`timer=active`, service transiently `activating` then `inactive` as expected).
 - Next action: Proceed with cable management as cable-only swaps (no interface rebinding), performing ping+SSH checks after each physical move.
+
+## 2026-02-14 23:16 EST (Codex)
+- Area: storage strategy pivot (`truenas` pinned to `rb1`)
+- Status: Updated planning/docs to keep `truenas` on `rb1` for current phase and limit migration scope to compute/utility VMs.
+- Evidence: Updated `README.md`, `inventory/vms.md`, `runbooks/proxmox-migration-2017-to-2015.md`, and `inventory/network-layout.md` to remove `truenas -> rb2` migration assumption and explicitly mark storage-primary on `rb1`.
+- Next action: Continue compute/agent-focused work on `rb1/rb2` while deferring storage relocation until stability/performance conditions materially improve.
+
+## 2026-02-14 23:16 EST (Codex)
+- Area: `truenas` RAM right-sizing
+- Status: Reduced VM `100` memory from `8192` to fixed `4096` (`balloon: 0`), rebooted, and verified service health.
+- Evidence: Post-change Proxmox status reports `maxmem=4.00 GiB`, VM running; guest checks show `Mem total ~3921 MiB`, `zpool status -x` => `all pools are healthy`, and `midclt call system.state` => `READY`. Boot ID changed across reboot (`b343dfa9...` -> `d312e1f0...`).
+- Next action: Monitor during normal workload windows; if storage instability appears, roll back VM `100` memory to `8192`.

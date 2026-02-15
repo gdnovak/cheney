@@ -26,7 +26,7 @@ The phase order is definitive:
 
 1. Proxmox baseline on all devices (including MacBook Air as third quorum/insurance node).
 2. Network optimization/rework.
-3. Migration (TrueNAS remains a VM, physical disk path validated).
+3. Compute/utility migration (TrueNAS remains a VM on `rb1` for now).
 4. Tailscale continuity (keep `tsDeb`, add lightweight utility nodes on `rb2` and `mba` as VMs, not Proxmox hosts).
 5. Final network rework and steady-state topology.
 
@@ -71,6 +71,12 @@ Mandatory gate before phase 3:
 
 Complete phase 1 readiness (all host baselines, including MBA), then perform migration safely with rollback coverage while preserving service continuity.
 
+## Storage Placement Decision (Current)
+
+- `truenas` stays on `rb1-pve` in the current phase.
+- `rb2` is treated as compute/agent capacity, not storage-primary.
+- Do not move TrueNAS to `rb2` until power stability and storage-path performance materially improve or a dedicated storage host is introduced.
+
 ## Repository Map
 
 - `AGENTS.md`: project-local operating rules for agent work in this repo.
@@ -103,7 +109,7 @@ Complete phase 1 readiness (all host baselines, including MBA), then perform mig
 1. Finish phase 1 host verification for `rb1`, `rb2`, and MBA.
 2. Complete phase 2 network optimization plan and port/cable map.
 3. Pass detailed inventory gate before migration.
-4. Execute phase 3 migration with TrueNAS kept virtualized.
+4. Execute phase 3 compute/utility migration while TrueNAS stays virtualized on `rb1`.
 5. Complete phases 4 and 5 continuity/final topology rework.
 
 ## Tonight Objective (Planning Anchor)

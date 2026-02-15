@@ -12,7 +12,7 @@
 |---|---|---|---|
 | rb1-pve host (`rb14-2017`) | 192.168.5.98/22 | active Proxmox host | live check |
 | rb2-pve host (`rb14-2015`) | 192.168.5.108/22 | target Proxmox host | live check |
-| truenas VM (100) | 192.168.5.100/22 | storage service VM | guest agent check |
+| truenas VM (100) | 192.168.5.100/22 | storage service VM (anchored on `rb1`) | guest agent check |
 | tsDeb VM (101) | 192.168.5.102/22 | utility/remote-access VM | guest agent check |
 | mba-2011 (`kabbalah`) | 192.168.5.66/22 | fallback node | live check |
 | gateway | 192.168.4.1 | default route | host route table |
@@ -54,6 +54,7 @@
 5. Add optional dual-NIC split later for learning and stronger isolation:
 - NIC A on smart switch for management.
 - NIC B on fast switch for migration/backup/storage traffic.
+6. Keep storage-primary placement on `rb1` until a dedicated storage host or materially better `rb2` stability/performance exists.
 
 ## Host Path Targets
 
