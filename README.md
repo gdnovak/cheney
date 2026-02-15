@@ -27,23 +27,29 @@ Mandatory gate before phase 3:
 
 - Full detailed inventory of all connected devices, docks, switch links, and storage paths must be complete.
 
-## TOMORROW BLOCKER (Do Not Skip) - SAT FEB 14TH
+## Next Blocker Tracker (as of 2026-02-14)
 
-1. Build fallback management path for `rb2`:
-- Keep an emergency direct management path ready (`rb1 <-> rb2` or equivalent) with static fallback addressing.
-- Validate SSH access over fallback path before deeper migration work.
+1. `IN PROGRESS` Build fallback management path for `rb2`.
+- Run `runbooks/rb2-fallback-management-path.md` during tonight's recabling window.
+- Default fallback addressing is reserved:
+  - `rb1` fallback `172.31.99.1/30`
+  - `rb2` fallback `172.31.99.2/30`
+- Validate SSH over fallback path before deeper migration work.
 
-2. Fix IP/interface fragility after recabling:
-- Verify Proxmox bridge binds to the intended NIC path after dongle/USB-port changes.
-- After each cable move, verify `ip a`, `ip route`, and bridge mapping before continuing.
+2. `DONE (current state)` Verify bridge/NIC binding after recabling.
+- `rb1` `vmbr0` -> `enx90203a1be8d6`
+- `rb2` `vmbr0` -> `enx00051bde7e6e`
+- Continue using `runbooks/interface-cutover-safe.md` after every cable/port move.
 
-3. Validate hard power-loss recovery for batteryless `rb2`:
+3. `PENDING MANUAL` Validate hard power-loss recovery for batteryless `rb2`.
+- Run `runbooks/rb2-hard-power-recovery-validation.md`.
 - Confirm AC-restore auto-boot behavior.
 - Treat WoL as supplemental for soft-off states, not guaranteed for true no-power events.
+- Optional path: test smart-plug power-cycle as unattended hard-reset method and record recovery timing.
 
-4. Reconfirm post-recovery acceptance:
-- `ping` + SSH + `pveproxy/pvedaemon/pve-cluster` active.
-- `tsDeb` watchdog timer still enabled and active.
+4. `DONE (current state)` Reconfirm post-change acceptance.
+- `ping` + SSH + `pveproxy/pvedaemon/pve-cluster` currently healthy on `rb1`, `rb2`, and `mba`.
+- `tsDeb` watchdog timer remains required acceptance criterion after any future power-recovery test.
 
 ## Current Hardware Context
 
@@ -64,6 +70,8 @@ Complete phase 1 readiness (all host baselines, including MBA), then perform mig
 - `runbooks/`: step-by-step execution procedures.
 - `runbooks/interface-cutover-safe.md`: repeatable guarded process for moving Proxmox management bridge between NICs while preserving IP.
 - `runbooks/network-throughput-benchmark.md`: repeatable `iperf3` matrix and interpretation guide.
+- `runbooks/rb2-fallback-management-path.md`: direct emergency management path between `rb1` and `rb2`.
+- `runbooks/rb2-hard-power-recovery-validation.md`: true no-power recovery checklist for batteryless `rb2`.
 - `scripts/`: future automation helpers.
 - `configs/`: future host/service config snapshots and templates.
 - `notes/`: ad hoc research and decision notes.
