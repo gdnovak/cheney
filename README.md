@@ -41,7 +41,9 @@ Mandatory gate before phase 3:
 - Default fallback addressing is reserved:
   - `rb1` fallback `172.31.99.1/30`
   - `rb2` fallback `172.31.99.2/30`
-- `rb2` fallback interface (`vmbr0.99`) is now persisted and verified to survive reboot.
+- Fallback persistence must exist on both hosts for redundancy (`rb1` and `rb2`).
+- `rb2` fallback interface (`vmbr0.99`) is persisted and verified to survive reboot.
+- `rb1` fallback interface persistence remains an explicit required follow-up until verified by reboot.
 - Fallback reachability validated post-reboot (`rb1` ping to `172.31.99.2` and SSH via jump host).
 
 2. `DONE (current state)` Verify bridge/NIC binding after recabling.
@@ -76,6 +78,12 @@ Complete phase 1 readiness (all host baselines, including MBA), then perform mig
 - `truenas` stays on `rb1-pve` in the current phase.
 - `rb2` is treated as compute/agent capacity, not storage-primary.
 - Do not move TrueNAS to `rb2` until power stability and storage-path performance materially improve or a dedicated storage host is introduced.
+
+## Fallback Security Guardrails
+
+- VLAN99 fallback is host-management only (`rb1` <-> `rb2`) and must not be used for guest transit.
+- Keep fallback interfaces ungated by default route (no gateway on `vmbr0.99`).
+- Do not use fallback subnet for forwarding/NAT/routing policy.
 
 ## Repository Map
 

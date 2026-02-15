@@ -25,10 +25,10 @@
   - `mba`: `nic0` -> `1000/full`
 - Current data confirms stable 1GbE baseline; CAT8 alone does not raise throughput when NIC/switch ports are 1Gb-limited.
 
-## Temporary Fallback VLAN (Live Runtime)
+## Fallback VLAN (Management-Only)
 
 - `VLAN 99` is staged on smart-switch ports for `rb1` and `rb2` as a logical fallback management path.
-- Runtime host subinterfaces (non-persistent until explicitly written to host network config):
+- Host subinterfaces:
   - `rb1`: `vmbr0.99` -> `172.31.99.1/30`
   - `rb2`: `vmbr0.99` -> `172.31.99.2/30`
 - Validation status:
@@ -43,7 +43,15 @@
   - `address 172.31.99.2/30`
   - `vlan-raw-device vmbr0`
 - Verified by reboot test: `vmbr0.99` returned automatically on `rb2`.
-- `rb1`: fallback interface currently remains runtime-only (`vmbr0.99` on host uptime).
+- `rb1`: persistence is required for redundancy target; implement and verify reboot survival to close this item.
+
+## Security Controls (VLAN99)
+
+1. `vmbr0.99` is host-management only; no VM transit on this path.
+2. Do not configure a gateway on fallback interfaces.
+3. Do not use fallback subnet for forwarding/NAT/routing policies.
+4. Keep scope constrained to `172.31.99.0/30` between `rb1` and `rb2` only.
+5. Revalidate controls after any network/interface changes.
 
 ## Target Topology (Throughput-First, Medium Complexity)
 

@@ -62,7 +62,7 @@ From control host (through rb1 jump, optional):
 ssh rb1-pve 'ssh -o ConnectTimeout=5 root@172.31.99.2 hostname'
 ```
 
-## Step 4 - Optional Persistent Config (Only After Successful Runtime Test)
+## Step 4 - Required Persistent Config (Both Hosts)
 
 Persist fallback interface in `/etc/network/interfaces` on each host only after Step 3 passes repeatedly.
 
@@ -70,12 +70,14 @@ Keep persistent fallback config isolated:
 
 1. No gateway on fallback interface.
 2. No bridge changes to existing `vmbr0` primary path.
+3. No forwarding/NAT/routing use for fallback subnet; this path is host-management only.
 
 After persisting, validate reboot survival:
 
-1. Reboot node.
-2. Confirm fallback interface/IP returns automatically.
-3. Re-test ping/SSH over fallback subnet.
+1. Reboot `rb1` and confirm fallback interface/IP returns automatically.
+2. Reboot `rb2` and confirm fallback interface/IP returns automatically.
+3. Re-test ping/SSH over fallback subnet in both directions.
+4. Treat runbook as incomplete if persistence is missing on either host.
 
 ## Step 5 - Failure Drill
 
@@ -104,3 +106,4 @@ ip addr del 172.31.99.2/30 dev <RB2_FALLBACK_IFACE>
 1. `rb2` reachable over direct fallback IP even with primary path interrupted.
 2. Primary management path remains unchanged and recoverable.
 3. Procedure repeatable after recabling.
+4. Persistent fallback interface exists and survives reboot on both `rb1` and `rb2`.

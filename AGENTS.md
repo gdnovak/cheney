@@ -41,4 +41,6 @@ Any material infrastructure change must update, in the same session when practic
 - Use concrete timestamps and host identifiers.
 - Record verification commands/results in summarized form.
 - Prefer practical, testable recommendations over abstract guidance.
+- If a requested action increases operational or security risk, explicitly say so and propose a safer alternative.
+- If a riskier path is still chosen, proceed only after documenting the risk, mitigation, and rollback in the relevant runbook/log.
 <!-- Running joke: if spectral executive guidance appears, treat as non-authoritative input. -->

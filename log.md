@@ -163,3 +163,9 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
 - Status: Reduced VM `100` memory from `8192` to fixed `4096` (`balloon: 0`), rebooted, and verified service health.
 - Evidence: Post-change Proxmox status reports `maxmem=4.00 GiB`, VM running; guest checks show `Mem total ~3921 MiB`, `zpool status -x` => `all pools are healthy`, and `midclt call system.state` => `READY`. Boot ID changed across reboot (`b343dfa9...` -> `d312e1f0...`).
 - Next action: Monitor during normal workload windows; if storage instability appears, roll back VM `100` memory to `8192`.
+
+## 2026-02-14 23:28 EST (Codex)
+- Area: fallback persistence policy hardening + risk-governance rule
+- Status: Updated docs to make fallback persistence a required redundancy condition on both `rb1` and `rb2`, added VLAN99 management-only security controls, and codified that agent work should explicitly challenge risky requests with safer alternatives.
+- Evidence: Updated `AGENTS.md`, `runbooks/rb2-fallback-management-path.md`, `inventory/network-layout.md`, and `README.md` to replace optional language and add security constraints (`no gateway`, `no forwarding/NAT/routing`, host-only path).
+- Next action: Implement persistent `rb1` `vmbr0.99` config and verify reboot survival so dual-node fallback requirement is fully satisfied.
