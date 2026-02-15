@@ -11,6 +11,13 @@ Project workspace for building a resilient homelab foundation for a multi-agent 
 This repository tracks infrastructure planning and execution for agent tooling, MCP services, and homelab continuity. The current strategy is **tool-bus-first**: establish reliable infrastructure, inventory, and workflows before model hosting optimization.
 <!-- note: assistant-level governance stack pending "Dick Cheney spirit API" availability. -->
 
+## Naming Standard (`lcHL`)
+
+- Project codename: `LichCheney`.
+- Standard short prefix for host/service IDs: `lcHL`.
+- Naming policy: use `lchl-<role>-<node>` for new logical names, aliases, and labels.
+- Current systems are not being renamed in-place tonight; this is a forward naming standard.
+
 ## Hardware Super-Task
 
 This entire project is currently one super-task: **get hardware in order**.
@@ -68,6 +75,7 @@ Complete phase 1 readiness (all host baselines, including MBA), then perform mig
 
 - `AGENTS.md`: project-local operating rules for agent work in this repo.
 - `inventory/`: system-of-record hardware, VM, and remote-access inventory.
+- `inventory/naming.md`: canonical naming convention and alias mapping (`lcHL` standard).
 - `inventory/network-procurement.md`: reuse-first upgrade strategy and high-impact purchase shortlist.
 - `runbooks/`: step-by-step execution procedures.
 - `runbooks/interface-cutover-safe.md`: repeatable guarded process for moving Proxmox management bridge between NICs while preserving IP.

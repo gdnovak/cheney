@@ -133,3 +133,9 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
 - Status: Disabled host-level `tailscaled` on `rb2` and `mba`, finalized utility VMs `tsnode-rb2` (`201`) and `tsnode-mba` (`301`), installed tailscale in both, and generated admin approval URLs.
 - Evidence: Host checks show `tailscaled=disabled/inactive` on `rb2` and `mba`; VM checks show both nodes reachable (`192.168.5.112`, `192.168.5.113`) with `tailscale status` in `NeedsLogin` and auth URLs (`c7cba0f016792`, `c8bf33201fbaa`).
 - Next action: Approve both nodes in Tailscale admin, then apply tailnet tags/routes policy and verify `tailscale ping` from existing `tsDeb` path.
+
+## 2026-02-14 22:27 EST (Codex)
+- Area: naming standard adoption (`LichCheney` / `lcHL`)
+- Status: Added a lightweight naming standard to documentation so future nodes/services use the `lcHL` convention without renaming active infrastructure tonight.
+- Evidence: Updated `README.md` with naming policy section and added `inventory/naming.md` with canonical `lchl-<role>-<node>` pattern plus current-to-canonical mapping.
+- Next action: Apply `lchl-*` names consistently in future docs/tags; schedule live hostname/VM renames only in a maintenance window if desired.
