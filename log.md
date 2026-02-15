@@ -235,3 +235,9 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
 - Status: Executed `rb1` pre-wipe capture, copied capture to `rb2`, produced fresh backups for VMs `101` and `220`, and copied both backup artifacts to `rb2` dump storage. Updated Fedora runbook to keep subnet-router Tailscale role on `rb2` during/after `rb1` wipe.
 - Evidence: `/var/lib/vz/dump/rb1-pre-fedora-capture-20260215-0303.tar.gz` exists on `rb2`; `/var/lib/vz/dump/vzdump-qemu-101-2026_02_14-22_03_39.vma.zst` and `/var/lib/vz/dump/vzdump-qemu-220-2026_02_14-22_04_04.vma.zst` exist on `rb2`; `runbooks/rb1-fedora-baremetal-install.md` preconditions now pin subnet routing to `rb2`.
 - Next action: If requested, restore/migrate `101`/`220` onto `rb2` before Fedora wipe; otherwise proceed directly to Fedora installer on `rb1` with rollback artifacts already secured.
+
+## 2026-02-15 03:10 EST (Codex)
+- Area: `rb1` workload evacuation for Fedora wipe
+- Status: Restored VM backups `101` and `220` onto `rb2`, then cut over live execution by stopping both on `rb1` and starting them on `rb2`.
+- Evidence: `rb2` `qm list` now shows running `100`, `101`, `201`, `220`; `rb1` `qm list` shows `100`, `101`, `220` all stopped; network checks from workstation show `192.168.5.102` and `192.168.5.111` reachable with SSH port open.
+- Next action: Proceed with Fedora installation on `rb1` when ready; keep `rb2` as temporary host for migrated VMs during burn-in.
