@@ -15,3 +15,4 @@
 - Current active Razer host is running via USB Ethernet path.
 - MBA currently uses dummy HDMI via hub; direct TB->HDMI path is retained as fallback test option.
 - 2-port DP/USB3 KVM is in inventory and reliable for USB/control switching, but not preferred for display due to DP->USB-C monitor conversion issues.
+- During eGPU passthrough validation on `rb1`, record HDMI dummy-plug state explicitly (`present`/`absent`) because display emulation can influence GPU init/reset behavior.

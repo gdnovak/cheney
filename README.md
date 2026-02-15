@@ -26,7 +26,7 @@ The phase order is definitive:
 
 1. Proxmox baseline on all devices (including MacBook Air as third quorum/insurance node).
 2. Network optimization/rework.
-3. Compute/utility migration (TrueNAS remains a VM on `rb1` for now).
+3. Storage/platform pivot migration (`truenas` to `rb2`, then `rb1` repurpose path).
 4. Tailscale continuity (keep `tsDeb`, add lightweight utility nodes on `rb2` and `mba` as VMs, not Proxmox hosts).
 5. Final network rework and steady-state topology.
 
@@ -47,7 +47,7 @@ Mandatory gate before phase 3:
 - Fallback reachability validated post-reboot (`rb1` ping to `172.31.99.2` and SSH via jump host).
 
 2. `DONE (current state)` Verify bridge/NIC binding after recabling.
-- `rb1` `vmbr0` -> `enx90203a1be8d6`
+- `rb1` `vmbr0` -> `enxa0cec804fed7` (USB NIC; management no longer coupled to Razer Core Ethernet)
 - `rb2` `vmbr0` -> `enx00051bde7e6e`
 - Continue using `runbooks/interface-cutover-safe.md` after every cable/port move.
 
@@ -75,9 +75,26 @@ Complete phase 1 readiness (all host baselines, including MBA), then perform mig
 
 ## Storage Placement Decision (Current)
 
-- `truenas` stays on `rb1-pve` in the current phase.
-- `rb2` is treated as compute/agent capacity, not storage-primary.
-- Do not move TrueNAS to `rb2` until power stability and storage-path performance materially improve or a dedicated storage host is introduced.
+Superseded by current pivot plan:
+
+- Move `truenas` from `rb1-pve` to `rb2-pve`.
+- Rebuild `rb1` as Fedora baremetal for direct GPU/NVIDIA stack control.
+- Keep VLAN99 fallback path intact during transition windows.
+
+Execution sequencing is tracked in `runbooks/rb1-baremetal-fedora-pivot.md`.
+
+## Architecture Pivot (Planned)
+
+Reason:
+
+1. Repeated eGPU passthrough tests on Proxmox (`rb1`) bind VFIO successfully but consistently drop Fedora guest availability (SSH/QGA), even after guest-side `nouveau` blacklist preparation.
+2. This indicates a virtualization-boundary reliability issue for current eGPU/TB path, not simply guest distro selection.
+
+Planned direction:
+
+1. Keep `rb2` on Proxmox and migrate storage role (`truenas`) there.
+2. Repurpose `rb1` to Fedora baremetal for direct NVIDIA/eGPU use.
+3. Continue utility/control workloads on remaining Proxmox nodes (`rb2`, `mba`) during and after cutover.
 
 ## Fallback Security Guardrails
 
@@ -96,6 +113,7 @@ Complete phase 1 readiness (all host baselines, including MBA), then perform mig
 - `runbooks/network-throughput-benchmark.md`: repeatable `iperf3` matrix and interpretation guide.
 - `runbooks/continuity-validation-suite.md`: reproducible validation checklist for reboots, fallback, tailscale, and continuity signals.
 - `runbooks/assistant-sandbox-bootstrap-rb1.md`: safe bootstrap path for VM Codex + Ollama starter on `rb1`.
+- `runbooks/rb1-baremetal-fedora-pivot.md`: staged transition plan for `truenas` move to `rb2` and `rb1` Fedora baremetal cutover.
 - `runbooks/rb2-fallback-management-path.md`: direct emergency management path between `rb1` and `rb2`.
 - `runbooks/rb2-hard-power-recovery-validation.md`: true no-power recovery checklist for batteryless `rb2`.
 - `runbooks/tailscale-node-staging-rb2-mba.md`: utility-VM tailscale setup for `rb2` and `mba` (`lchl-tsnode-rb2`, `lchl-tsnode-mba`) with approval flow.
@@ -126,7 +144,7 @@ Complete phase 1 readiness (all host baselines, including MBA), then perform mig
 1. Finish phase 1 host verification for `rb1`, `rb2`, and MBA.
 2. Complete phase 2 network optimization plan and port/cable map.
 3. Pass detailed inventory gate before migration.
-4. Execute phase 3 compute/utility migration while TrueNAS stays virtualized on `rb1`.
+4. Execute phase 3 pivot migration (`truenas -> rb2`, then `rb1` Fedora baremetal).
 5. Complete phases 4 and 5 continuity/final topology rework.
 
 ## Tonight Objective (Planning Anchor)

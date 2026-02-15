@@ -68,7 +68,7 @@
 5. Add optional dual-NIC split later for learning and stronger isolation:
 - NIC A on smart switch for management.
 - NIC B on fast switch for migration/backup/storage traffic.
-6. Keep storage-primary placement on `rb1` until a dedicated storage host or materially better `rb2` stability/performance exists.
+6. Pivot plan (current): move storage-primary workload (`truenas`) to `rb2`, then repurpose `rb1` to Fedora baremetal GPU/agent host.
 
 ## Host Path Targets
 

@@ -205,3 +205,15 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
 - Status: Added VM-specific subagent instruction scope so cloned-repo Codex instance can identify itself deterministically without imposing global governance on future autonomous assistant design.
 - Evidence: Added `subagents/cheney-vessel-alpha/AGENTS.md` and `subagents/README.md`; updated `runbooks/assistant-sandbox-bootstrap-rb1.md` to enter `~/cheney/subagents/cheney-vessel-alpha` and set `AGENT_ID=cheney-vessel-alpha`; updated `README.md` repo map and deferred sanitized memory/log profile as backlog item in `notes/homelab-assistant-native-prep-plan.md`.
 - Next action: Clone repo into sandbox VM, run Codex from `subagents/cheney-vessel-alpha`, and execute first attended task/report loop.
+
+## 2026-02-15 02:38 EST (Codex)
+- Area: Fedora VM rebuild + eGPU passthrough isolation on `rb1`
+- Status: Rebuilt `cheney-vessel-alpha` as Fedora 42 cloud VM, stabilized `rb1` management on USB NIC (`enxa0cec804fed7`), and validated baseline VM SSH (`192.168.5.111`) with repo clone and pre-GPU snapshot (`fedora-base`). eGPU passthrough (`0f:00.*`) binds to VFIO and VM starts, but guest loses SSH/QGA until `hostpci*` is removed.
+- Evidence: `qm` config/status checks show `hostpci` attach succeeds with reset warning (`Inappropriate ioctl for device`); host and fallback VLAN remain reachable; guest access returns immediately after passthrough rollback. Added test note with sources and next matrix in `notes/egpu-passthrough-fedora-proxmox-20260215.md`.
+- Next action: Run controlled matrix with explicit `dummy_hdmi` state (`present`/`absent`) and passthrough parameter variants (`audio`, `rombar=0`, firmware mode), rolling back immediately on guest-loss events.
+
+## 2026-02-15 02:48 EST (Codex)
+- Area: eGPU test matrix update + architecture pivot plan lock
+- Status: Completed controlled `dummy_hdmi=absent` eGPU passthrough test (`0f:00.0` only). Result remained fail (guest SSH/QGA loss) with clean automatic rollback; host/fallback continuity remained intact. Updated planning docs to pivot toward `truenas -> rb2` and `rb1` Fedora baremetal conversion.
+- Evidence: Test loop showed `ssh=0 qga=0` through full window; rollback restored VM `220` SSH at `192.168.5.111`. `rb2` fallback ping to `172.31.99.1` remained healthy post-test. Added `runbooks/rb1-baremetal-fedora-pivot.md`; updated `README.md`, `inventory/vms.md`, `inventory/network-layout.md`, and marked legacy scope in `runbooks/proxmox-migration-2017-to-2015.md`.
+- Next action: Execute pivot Phase A/B (`truenas` safety prep + migration to `rb2`) before any `rb1` baremetal reinstall.

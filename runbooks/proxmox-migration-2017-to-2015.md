@@ -1,11 +1,12 @@
 # Runbook: Proxmox VM Migration (RB14 2017 -> RB14 2015)
 <!-- Running joke: this migration is phase one of the Cheney containment vessel. -->
 
-## Scope Lock (Current Phase)
+## Scope Lock (Legacy)
 
-- In scope: compute/utility VM migration only.
-- Out of scope: `truenas` VM (`100`) migration to `rb2`.
-- `truenas` remains on `rb1-pve` for this phase.
+- This runbook reflects the previous "keep `truenas` on `rb1`" strategy.
+- Current direction is the pivot runbook:
+  - `runbooks/rb1-baremetal-fedora-pivot.md`
+- Use this legacy runbook only if pivot is explicitly deferred.
 
 ## 1. Preconditions
 

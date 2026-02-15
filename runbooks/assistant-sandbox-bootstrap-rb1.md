@@ -26,13 +26,21 @@ If this fails, only attended/manual runs are allowed.
 ## VM Baseline
 
 1. Host: `rb1-pve`.
-2. Guest OS: Ubuntu Server (LTS recommended).
+2. Guest OS: Fedora Server/Cloud (current) or Ubuntu Server LTS.
 3. Suggested starter size:
    - vCPU: 4
    - RAM: 8G (adjust later)
    - disk: 64G
 4. Enable guest agent and snapshot capability.
 5. Create baseline snapshot: `clean-base`.
+
+## eGPU Test Variable Control
+
+1. Treat HDMI dummy-plug state as a first-class variable during passthrough testing.
+2. Run tests in two explicit states and log which state was active:
+   - `dummy_hdmi=present`
+   - `dummy_hdmi=absent`
+3. Do not compare passthrough outcomes unless the dummy-plug state is recorded.
 
 ## In-Guest Setup Steps
 
