@@ -49,7 +49,7 @@
   - `address 172.31.99.1/30`
   - `vlan-raw-device vmbr0`
 - `rb1` runtime validation passed: interface up and `ping 172.31.99.2` successful.
-- `rb1` reboot-survival validation is still pending.
+- Verified by reboot test: `vmbr0.99` present on `rb1` after reboot (`uptime_start=2026-02-14 18:40:56`).
 
 ## Security Controls (VLAN99)
 
