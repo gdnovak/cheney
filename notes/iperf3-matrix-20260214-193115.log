@@ -1,0 +1,198 @@
+### TEST rb1_to_rb2 mode=p1 client=rb1-pve server=rb2(192.168.5.108)
+Connecting to host 192.168.5.108, port 5201
+[  5] local 192.168.5.98 port 41834 connected to 192.168.5.108 port 5201
+[ ID] Interval           Transfer     Bitrate         Retr  Cwnd
+[  5]   0.00-1.00   sec   106 MBytes   886 Mbits/sec    0    281 KBytes       
+[  5]   1.00-2.00   sec   105 MBytes   880 Mbits/sec    0    281 KBytes       
+[  5]   2.00-3.00   sec   104 MBytes   871 Mbits/sec    0    281 KBytes       
+[  5]   3.00-4.00   sec   105 MBytes   878 Mbits/sec    0    281 KBytes       
+[  5]   4.00-5.00   sec   104 MBytes   876 Mbits/sec    0    281 KBytes       
+[  5]   5.00-6.00   sec   105 MBytes   882 Mbits/sec    0    297 KBytes       
+[  5]   6.00-7.00   sec   105 MBytes   878 Mbits/sec    0    297 KBytes       
+[  5]   7.00-8.00   sec   104 MBytes   874 Mbits/sec    0    297 KBytes       
+[  5]   8.00-9.00   sec   105 MBytes   879 Mbits/sec    0    297 KBytes       
+[  5]   9.00-10.00  sec   105 MBytes   878 Mbits/sec    0    297 KBytes       
+[  5]  10.00-11.00  sec   105 MBytes   879 Mbits/sec    0    297 KBytes       
+[  5]  11.00-12.00  sec   105 MBytes   878 Mbits/sec    0    297 KBytes       
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Retr
+[  5]   0.00-12.00  sec  1.23 GBytes   878 Mbits/sec    0            sender
+[  5]   0.00-12.00  sec  1.23 GBytes   877 Mbits/sec                  receiver
+
+iperf Done.
+### TEST rb1_to_rb2 mode=p4 client=rb1-pve server=rb2(192.168.5.108)
+Connecting to host 192.168.5.108, port 5201
+[  5] local 192.168.5.98 port 38972 connected to 192.168.5.108 port 5201
+[ ID] Interval           Transfer     Bitrate         Retr  Cwnd
+[  5]   0.00-1.00   sec   104 MBytes   876 Mbits/sec    0    277 KBytes       
+[  5]   1.00-2.00   sec   104 MBytes   868 Mbits/sec    0    277 KBytes       
+[  5]   2.00-3.00   sec   103 MBytes   862 Mbits/sec    0    277 KBytes       
+[  5]   3.00-4.00   sec   103 MBytes   866 Mbits/sec    0    277 KBytes       
+[  5]   4.00-5.00   sec   104 MBytes   872 Mbits/sec    0    277 KBytes       
+[  5]   5.00-6.00   sec   103 MBytes   867 Mbits/sec    0    291 KBytes       
+[  5]   6.00-7.00   sec   104 MBytes   868 Mbits/sec    0    291 KBytes       
+[  5]   7.00-8.00   sec   104 MBytes   873 Mbits/sec    0    291 KBytes       
+[  5]   8.00-9.00   sec   103 MBytes   865 Mbits/sec    0    291 KBytes       
+[  5]   9.00-10.00  sec   104 MBytes   875 Mbits/sec    0    291 KBytes       
+[  5]  10.00-11.00  sec   104 MBytes   870 Mbits/sec    0    291 KBytes       
+[  5]  11.00-12.00  sec   105 MBytes   878 Mbits/sec    0    440 KBytes       
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Retr
+[  5]   0.00-12.00  sec  1.22 GBytes   870 Mbits/sec    0            sender
+[  5]   0.00-12.00  sec  1.21 GBytes   868 Mbits/sec                  receiver
+
+iperf Done.
+### TEST rb1_to_rb2 mode=rev client=rb1-pve server=rb2(192.168.5.108)
+Connecting to host 192.168.5.108, port 5201
+[  5] local 192.168.5.98 port 36386 connected to 192.168.5.108 port 5201
+[ ID] Interval           Transfer     Bitrate         Retr  Cwnd
+[  5]   0.00-1.00   sec   106 MBytes   889 Mbits/sec    0    279 KBytes       
+[  5]   1.00-2.00   sec   106 MBytes   887 Mbits/sec    0    294 KBytes       
+[  5]   2.00-3.00   sec   107 MBytes   897 Mbits/sec    0    294 KBytes       
+[  5]   3.00-4.00   sec   104 MBytes   873 Mbits/sec    0    294 KBytes       
+[  5]   4.00-5.00   sec   104 MBytes   868 Mbits/sec    0    294 KBytes       
+[  5]   5.00-6.00   sec   104 MBytes   868 Mbits/sec    0    294 KBytes       
+[  5]   6.00-7.00   sec   104 MBytes   875 Mbits/sec    0    294 KBytes       
+[  5]   7.00-8.00   sec   104 MBytes   871 Mbits/sec    0    294 KBytes       
+[  5]   8.00-9.00   sec   104 MBytes   871 Mbits/sec    0    294 KBytes       
+[  5]   9.00-10.00  sec   103 MBytes   867 Mbits/sec    0    294 KBytes       
+[  5]  10.00-11.00  sec   104 MBytes   869 Mbits/sec    0    294 KBytes       
+[  5]  11.00-12.00  sec   104 MBytes   870 Mbits/sec    0    294 KBytes       
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Retr
+[  5]   0.00-12.00  sec  1.22 GBytes   877 Mbits/sec    0            sender
+[  5]   0.00-12.00  sec  1.22 GBytes   876 Mbits/sec                  receiver
+
+iperf Done.
+### TEST rb1_to_mba mode=p1 client=rb1-pve server=mba(192.168.5.66)
+Connecting to host 192.168.5.66, port 5201
+[  5] local 192.168.5.98 port 38322 connected to 192.168.5.66 port 5201
+[ ID] Interval           Transfer     Bitrate         Retr  Cwnd
+[  5]   0.00-1.00   sec  33.1 MBytes   278 Mbits/sec  376   33.9 KBytes       
+[  5]   1.00-2.00   sec  32.9 MBytes   276 Mbits/sec  448   46.7 KBytes       
+[  5]   2.00-3.00   sec  35.8 MBytes   300 Mbits/sec  534   43.8 KBytes       
+[  5]   3.00-4.00   sec  33.0 MBytes   277 Mbits/sec  367   41.0 KBytes       
+[  5]   4.00-5.00   sec  32.6 MBytes   274 Mbits/sec  415   45.2 KBytes       
+[  5]   5.00-6.00   sec  33.5 MBytes   281 Mbits/sec  444   43.8 KBytes       
+[  5]   6.00-7.00   sec  34.4 MBytes   289 Mbits/sec  515   33.9 KBytes       
+[  5]   7.00-8.00   sec  32.4 MBytes   271 Mbits/sec  380   41.0 KBytes       
+[  5]   8.00-9.00   sec  33.2 MBytes   279 Mbits/sec  366   36.8 KBytes       
+[  5]   9.00-10.00  sec  32.5 MBytes   272 Mbits/sec  379   42.4 KBytes       
+[  5]  10.00-11.00  sec  31.8 MBytes   266 Mbits/sec  371   53.7 KBytes       
+[  5]  11.00-12.00  sec  32.6 MBytes   274 Mbits/sec  399   39.6 KBytes       
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Retr
+[  5]   0.00-12.00  sec   398 MBytes   278 Mbits/sec  4994            sender
+[  5]   0.00-12.00  sec   398 MBytes   278 Mbits/sec                  receiver
+
+iperf Done.
+### TEST rb1_to_mba mode=p4 client=rb1-pve server=mba(192.168.5.66)
+Connecting to host 192.168.5.66, port 5201
+[  5] local 192.168.5.98 port 43582 connected to 192.168.5.66 port 5201
+[ ID] Interval           Transfer     Bitrate         Retr  Cwnd
+[  5]   0.00-1.00   sec  33.5 MBytes   281 Mbits/sec  434   43.8 KBytes       
+[  5]   1.00-2.00   sec  37.8 MBytes   317 Mbits/sec  585   46.7 KBytes       
+[  5]   2.00-3.00   sec  38.1 MBytes   320 Mbits/sec  620   46.7 KBytes       
+[  5]   3.00-4.00   sec  37.9 MBytes   318 Mbits/sec  589   45.2 KBytes       
+[  5]   4.00-5.00   sec  37.6 MBytes   315 Mbits/sec  598   48.1 KBytes       
+[  5]   5.00-6.00   sec  37.5 MBytes   315 Mbits/sec  599   67.9 KBytes       
+[  5]   6.00-7.00   sec  34.5 MBytes   289 Mbits/sec  482   43.8 KBytes       
+[  5]   7.00-8.00   sec  32.5 MBytes   273 Mbits/sec  414   46.7 KBytes       
+[  5]   8.00-9.00   sec  32.0 MBytes   269 Mbits/sec  387   33.9 KBytes       
+[  5]   9.00-10.00  sec  32.5 MBytes   272 Mbits/sec  376   42.4 KBytes       
+[  5]  10.00-11.00  sec  33.1 MBytes   278 Mbits/sec  417   45.2 KBytes       
+[  5]  11.00-12.00  sec  34.2 MBytes   287 Mbits/sec  448   55.1 KBytes       
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Retr
+[  5]   0.00-12.00  sec   421 MBytes   294 Mbits/sec  5949            sender
+[  5]   0.00-12.00  sec   421 MBytes   294 Mbits/sec                  receiver
+
+iperf Done.
+### TEST rb1_to_mba mode=rev client=rb1-pve server=mba(192.168.5.66)
+Connecting to host 192.168.5.66, port 5201
+[  5] local 192.168.5.98 port 33916 connected to 192.168.5.66 port 5201
+[ ID] Interval           Transfer     Bitrate         Retr  Cwnd
+[  5]   0.00-1.00   sec  34.5 MBytes   289 Mbits/sec  487   46.7 KBytes       
+[  5]   1.00-2.00   sec  38.0 MBytes   319 Mbits/sec  615   46.7 KBytes       
+[  5]   2.00-3.00   sec  37.5 MBytes   315 Mbits/sec  665   41.0 KBytes       
+[  5]   3.00-4.00   sec  33.2 MBytes   279 Mbits/sec  435   35.4 KBytes       
+[  5]   4.00-5.00   sec  33.5 MBytes   281 Mbits/sec  464   33.9 KBytes       
+[  5]   5.00-6.00   sec  33.1 MBytes   278 Mbits/sec  386   43.8 KBytes       
+[  5]   6.00-7.00   sec  31.9 MBytes   267 Mbits/sec  415   35.4 KBytes       
+[  5]   7.00-8.00   sec  32.2 MBytes   271 Mbits/sec  357   46.7 KBytes       
+[  5]   8.00-9.00   sec  37.6 MBytes   316 Mbits/sec  628   46.7 KBytes       
+[  5]   9.00-10.00  sec  37.6 MBytes   316 Mbits/sec  645   46.7 KBytes       
+[  5]  10.00-11.00  sec  37.8 MBytes   317 Mbits/sec  570   46.7 KBytes       
+[  5]  11.00-12.00  sec  37.9 MBytes   318 Mbits/sec  634   50.9 KBytes       
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Retr
+[  5]   0.00-12.00  sec   425 MBytes   297 Mbits/sec  6301            sender
+[  5]   0.00-12.00  sec   424 MBytes   297 Mbits/sec                  receiver
+
+iperf Done.
+### TEST rb2_to_mba mode=p1 client=rb2 server=mba(192.168.5.66)
+Connecting to host 192.168.5.66, port 5201
+[  5] local 192.168.5.108 port 48696 connected to 192.168.5.66 port 5201
+[ ID] Interval           Transfer     Bitrate         Retr  Cwnd
+[  5]   0.00-1.00   sec  38.1 MBytes   320 Mbits/sec  666   69.3 KBytes       
+[  5]   1.00-2.00   sec  37.5 MBytes   315 Mbits/sec  706   42.4 KBytes       
+[  5]   2.00-3.00   sec  37.9 MBytes   318 Mbits/sec  699   35.4 KBytes       
+[  5]   3.00-4.00   sec  38.0 MBytes   319 Mbits/sec  705   36.8 KBytes       
+[  5]   4.00-5.00   sec  37.6 MBytes   316 Mbits/sec  696   48.1 KBytes       
+[  5]   5.00-6.00   sec  37.4 MBytes   314 Mbits/sec  686   45.2 KBytes       
+[  5]   6.00-7.00   sec  37.6 MBytes   316 Mbits/sec  666   43.8 KBytes       
+[  5]   7.00-8.00   sec  37.4 MBytes   314 Mbits/sec  741   46.7 KBytes       
+[  5]   8.00-9.00   sec  37.5 MBytes   315 Mbits/sec  713   48.1 KBytes       
+[  5]   9.00-10.00  sec  37.5 MBytes   315 Mbits/sec  742   46.7 KBytes       
+[  5]  10.00-11.00  sec  37.5 MBytes   315 Mbits/sec  676   42.4 KBytes       
+[  5]  11.00-12.00  sec  37.9 MBytes   318 Mbits/sec  678   42.4 KBytes       
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Retr
+[  5]   0.00-12.00  sec   452 MBytes   316 Mbits/sec  8374            sender
+[  5]   0.00-12.00  sec   452 MBytes   316 Mbits/sec                  receiver
+
+iperf Done.
+### TEST rb2_to_mba mode=p4 client=rb2 server=mba(192.168.5.66)
+Connecting to host 192.168.5.66, port 5201
+[  5] local 192.168.5.108 port 38544 connected to 192.168.5.66 port 5201
+[ ID] Interval           Transfer     Bitrate         Retr  Cwnd
+[  5]   0.00-1.00   sec  38.0 MBytes   318 Mbits/sec  662   46.7 KBytes       
+[  5]   1.00-2.00   sec  37.5 MBytes   315 Mbits/sec  695   45.2 KBytes       
+[  5]   2.00-3.00   sec  37.4 MBytes   314 Mbits/sec  687   35.4 KBytes       
+[  5]   3.00-4.00   sec  37.6 MBytes   316 Mbits/sec  702   49.5 KBytes       
+[  5]   4.00-5.00   sec  37.4 MBytes   314 Mbits/sec  703   45.2 KBytes       
+[  5]   5.00-6.00   sec  37.9 MBytes   318 Mbits/sec  746   36.8 KBytes       
+[  5]   6.00-7.00   sec  37.6 MBytes   316 Mbits/sec  679   46.7 KBytes       
+[  5]   7.00-8.00   sec  38.0 MBytes   319 Mbits/sec  622   45.2 KBytes       
+[  5]   8.00-9.00   sec  37.6 MBytes   316 Mbits/sec  709   35.4 KBytes       
+[  5]   9.00-10.00  sec  37.8 MBytes   317 Mbits/sec  680   36.8 KBytes       
+[  5]  10.00-11.00  sec  37.5 MBytes   315 Mbits/sec  654   45.2 KBytes       
+[  5]  11.00-12.00  sec  37.2 MBytes   312 Mbits/sec  708   45.2 KBytes       
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Retr
+[  5]   0.00-12.00  sec   452 MBytes   316 Mbits/sec  8247            sender
+[  5]   0.00-12.00  sec   451 MBytes   315 Mbits/sec                  receiver
+
+iperf Done.
+### TEST rb2_to_mba mode=rev client=rb2 server=mba(192.168.5.66)
+Connecting to host 192.168.5.66, port 5201
+[  5] local 192.168.5.108 port 42154 connected to 192.168.5.66 port 5201
+[ ID] Interval           Transfer     Bitrate         Retr  Cwnd
+[  5]   0.00-1.00   sec  38.1 MBytes   319 Mbits/sec  729   43.8 KBytes       
+[  5]   1.00-2.00   sec  37.8 MBytes   317 Mbits/sec  668   46.7 KBytes       
+[  5]   2.00-3.00   sec  37.8 MBytes   317 Mbits/sec  665   46.7 KBytes       
+[  5]   3.00-4.00   sec  37.9 MBytes   318 Mbits/sec  665   43.8 KBytes       
+[  5]   4.00-5.00   sec  37.6 MBytes   316 Mbits/sec  674   55.1 KBytes       
+[  5]   5.00-6.00   sec  37.6 MBytes   316 Mbits/sec  674   45.2 KBytes       
+[  5]   6.00-7.00   sec  37.9 MBytes   318 Mbits/sec  726   45.2 KBytes       
+[  5]   7.00-8.00   sec  37.5 MBytes   315 Mbits/sec  712   35.4 KBytes       
+[  5]   8.00-9.00   sec  37.8 MBytes   317 Mbits/sec  669   46.7 KBytes       
+[  5]   9.00-10.00  sec  37.5 MBytes   315 Mbits/sec  758   28.3 KBytes       
+[  5]  10.00-11.00  sec  37.6 MBytes   316 Mbits/sec  681   35.4 KBytes       
+[  5]  11.00-12.00  sec  37.9 MBytes   318 Mbits/sec  672   42.4 KBytes       
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Retr
+[  5]   0.00-12.00  sec   453 MBytes   317 Mbits/sec  8293            sender
+[  5]   0.00-12.00  sec   452 MBytes   316 Mbits/sec                  receiver
+
+iperf Done.
