@@ -181,3 +181,15 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
 - Status: Confirmed `rb1` reboot completed and `vmbr0.99` returned automatically; dual-node fallback persistence target is now satisfied.
 - Evidence: `rb1` uptime start shows fresh boot (`2026-02-14 18:40:56` local host time), `ip -4 -br addr show dev vmbr0.99` on `rb1` shows `172.31.99.1/30` post-boot, and fallback path checks succeed (`rb1` ping `172.31.99.2`, SSH jump to `rb2` fallback IP using `~/.ssh/id_ed25519_rb2-pve`).
 - Next action: Continue cable-only recabling with one-change-at-a-time validation while keeping VLAN99 management-only controls intact.
+
+## 2026-02-14 23:52 EST (Codex)
+- Area: reproducible continuity test documentation
+- Status: Added a dedicated no-execution validation suite runbook so future agents/sessions can reproduce continuity checks deterministically.
+- Evidence: New file `runbooks/continuity-validation-suite.md` includes baseline capture, VM/host reboot validation flow, fallback VLAN checks, security checks, pass/fail criteria, and failure handling guidance.
+- Next action: Use this runbook as the single source of truth after recabling and before major infrastructure changes.
+
+## 2026-02-14 23:52 EST (Codex)
+- Area: homelab-native assistant prep planning (`lcHL`)
+- Status: Added a phased architecture plan for local assistant foundations covering MCP, skills, memory/context, processing/runtime, security, and observability requirements.
+- Evidence: New file `notes/homelab-assistant-native-prep-plan.md` defines required MCP classes/hardening, initial skill set, node role split, context/memory model, and immediate backlog items.
+- Next action: Implement Phase A foundations (observability baseline + MCP read-only catalog + assistant bootstrap runbook on `rb1`).
