@@ -25,6 +25,16 @@
   - `mba`: `nic0` -> `1000/full`
 - Current data confirms stable 1GbE baseline; CAT8 alone does not raise throughput when NIC/switch ports are 1Gb-limited.
 
+## Temporary Fallback VLAN (Live Runtime)
+
+- `VLAN 99` is staged on smart-switch ports for `rb1` and `rb2` as a logical fallback management path.
+- Runtime host subinterfaces (non-persistent until explicitly written to host network config):
+  - `rb1`: `vmbr0.99` -> `172.31.99.1/30`
+  - `rb2`: `vmbr0.99` -> `172.31.99.2/30`
+- Validation status:
+  - `rb1 <-> rb2` ping over `172.31.99.0/30` is successful.
+  - SSH to `rb2` over fallback path is validated via jump host (`ssh -J rb1-pve root@172.31.99.2 ...`).
+
 ## Target Topology (Throughput-First, Medium Complexity)
 
 1. Keep smart switch as control-plane anchor and management visibility point.
