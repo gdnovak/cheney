@@ -1,0 +1,26 @@
+policy_version: 1
+mode: enforced
+requires_egpu_ready_before_autonomous_run: true
+egpu_check:
+  host: rb1-pve
+  command: "lspci -nn | grep -q '10de:1c03'"
+  pass_hint: "external GTX 1060 endpoint present"
+autonomous_run:
+  default_enabled: false
+  enable_conditions:
+    - continuity_suite_passed_recently
+    - tailscale_nodes_running
+    - egpu_check_pass
+  hard_blocks:
+    - destructive_disk_ops
+    - network_topology_rewrite
+    - unbounded_loop
+    - unattended_high_risk_without_approval
+  runtime_limits:
+    max_task_minutes: 45
+    max_concurrent_tasks: 1
+    max_retries: 2
+  watchdog_actions:
+    - emit_event
+    - stop_runner
+    - require_manual_ack

@@ -1,0 +1,17 @@
+policy_version: 1
+token_limits:
+  daily_max_tokens: 250000
+  hourly_max_tokens: 35000
+  per_task_max_tokens: 12000
+inference_policy:
+  default_model_class: small
+  escalated_model_class: medium
+  escalate_requires:
+    - explicit_reason
+    - task_risk_not_high
+cost_watchdog:
+  on_threshold_hit:
+    - emit_event
+    - downgrade_to_small_model
+    - pause_new_tasks
+    - require_manual_ack

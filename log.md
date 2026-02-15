@@ -182,6 +182,12 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
 - Evidence: `rb1` uptime start shows fresh boot (`2026-02-14 18:40:56` local host time), `ip -4 -br addr show dev vmbr0.99` on `rb1` shows `172.31.99.1/30` post-boot, and fallback path checks succeed (`rb1` ping `172.31.99.2`, SSH jump to `rb2` fallback IP using `~/.ssh/id_ed25519_rb2-pve`).
 - Next action: Continue cable-only recabling with one-change-at-a-time validation while keeping VLAN99 management-only controls intact.
 
+## 2026-02-15 00:56 EST (Codex)
+- Area: assistant starter foundation artifacts (`ollama + codex`, OpenClaw deferred)
+- Status: Implemented phase-A coordination and governance scaffolding for cross-device orchestrator <-> VM subagent workflow, including task bus contracts, policy files, helper scripts, bootstrap runbook, and starter MCP/skills/watchdog docs.
+- Evidence: Added `coordination/` structure with templates/schemas/policies (`safety`, `budget`, `approvals`), added executable helper scripts under `scripts/assistant/`, added `runbooks/assistant-sandbox-bootstrap-rb1.md`, and added `notes/mcp-catalog.md`, `notes/skill-registry.md`, `notes/assistant-watchdog-policy.md`, `notes/assistant-runbook-smoke-test.md`. `bash -n` syntax check passed on all new shell scripts.
+- Next action: Provision temporary sandbox VM on `rb1`, install Codex + Ollama there, then run attended smoke test; keep unattended mode blocked until eGPU gate passes.
+
 ## 2026-02-14 23:52 EST (Codex)
 - Area: reproducible continuity test documentation
 - Status: Added a dedicated no-execution validation suite runbook so future agents/sessions can reproduce continuity checks deterministically.

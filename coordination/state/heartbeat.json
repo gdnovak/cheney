@@ -1,0 +1,10 @@
+{
+  "agent_id": "vm-codex-rb1",
+  "host": "lchl-assist-sandbox-01",
+  "status": "idle",
+  "active_task_id": "",
+  "last_update_utc": "",
+  "egpu_ready": false,
+  "safety_mode": "enforced",
+  "notes": "initialized"
+}

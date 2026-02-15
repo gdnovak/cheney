@@ -1,0 +1,12 @@
+policy_version: 1
+approval_required_for_risk_class:
+  low: false
+  medium: true
+  high: true
+approval_token_format: "approve:<task-id>:<operator>"
+mutation_classes_requiring_approval:
+  - package_upgrade_kernel_or_driver
+  - vm_destructive_action
+  - network_route_or_bridge_change
+  - filesystem_or_partition_change
+  - firewall_policy_change

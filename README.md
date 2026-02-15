@@ -95,6 +95,7 @@ Complete phase 1 readiness (all host baselines, including MBA), then perform mig
 - `runbooks/interface-cutover-safe.md`: repeatable guarded process for moving Proxmox management bridge between NICs while preserving IP.
 - `runbooks/network-throughput-benchmark.md`: repeatable `iperf3` matrix and interpretation guide.
 - `runbooks/continuity-validation-suite.md`: reproducible validation checklist for reboots, fallback, tailscale, and continuity signals.
+- `runbooks/assistant-sandbox-bootstrap-rb1.md`: safe bootstrap path for VM Codex + Ollama starter on `rb1`.
 - `runbooks/rb2-fallback-management-path.md`: direct emergency management path between `rb1` and `rb2`.
 - `runbooks/rb2-hard-power-recovery-validation.md`: true no-power recovery checklist for batteryless `rb2`.
 - `runbooks/tailscale-node-staging-rb2-mba.md`: utility-VM tailscale setup for `rb2` and `mba` (`lchl-tsnode-rb2`, `lchl-tsnode-mba`) with approval flow.
@@ -105,6 +106,11 @@ Complete phase 1 readiness (all host baselines, including MBA), then perform mig
 - `notes/monitoring-software-eval-20260214.md`: third-party monitoring recommendation and rationale.
 - `notes/mcp-homelab-status-rb2.md`: basic MCP install example and wiring for `rb2`.
 - `notes/homelab-assistant-native-prep-plan.md`: architecture and phased prep plan for a homelab-native assistant (MCP + skills + memory/context).
+- `notes/mcp-catalog.md`: starter MCP inventory with risk/approval policy fields.
+- `notes/skill-registry.md`: starter skill inventory with validation/rollback hooks.
+- `notes/assistant-watchdog-policy.md`: guardrails for cost, safety, and runaway prevention.
+- `notes/assistant-runbook-smoke-test.md`: attended smoke-test flow before unattended mode.
+- `coordination/`: cross-device task/state/event bus for orchestrator <-> VM subagent workflow.
 - `log.md`: detailed project-local execution history.
 
 ## Operating Principles

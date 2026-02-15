@@ -1,0 +1,21 @@
+id: t-YYYYMMDD-HHMM-slug
+title: short-action-title
+owner: vm-codex-rb1
+created_at: YYYY-MM-DDTHH:MM:SSZ
+status: queued
+risk_class: low
+requires_approval: false
+requires_egpu_ready: true
+prechecks:
+  - continuity_ok
+  - tailscale_ok
+  - egpu_ready
+success_criteria:
+  - explicit-pass-condition-1
+  - explicit-pass-condition-2
+rollback:
+  - explicit-rollback-step-1
+  - explicit-rollback-step-2
+commands:
+  - "echo replace-with-real-command"
+report_path: coordination/reports/REPORT-<task-id>.md
