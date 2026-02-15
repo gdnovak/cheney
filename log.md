@@ -145,3 +145,9 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
 - Status: Renamed utility VMs and Tailscale hostnames to `lchl-tsnode-rb2` and `lchl-tsnode-mba` without reapproval; both remained online with unchanged tailnet IPs.
 - Evidence: Proxmox VM names updated via `qm set --name`; node checks show `BackendState=Running` and DNS names `lchl-tsnode-rb2.tailde8dbc.ts.net` and `lchl-tsnode-mba.tailde8dbc.ts.net`; Tailscale IPs remain `100.97.121.113` and `100.115.224.15`.
 - Next action: Optionally align `tsDeb-rb1` name to `lchl-tsdeb-rb1` in a later low-risk pass.
+
+## 2026-02-14 23:02 EST (Codex)
+- Area: tailscale reboot validation before recabling
+- Status: Completed full reboot validation: utility VMs (`201`, `301`) plus hosts (`rb2`, `rb1`, `mba`) with post-boot Tailscale reconnect checks. All targeted systems recovered and utility nodes remained `BackendState=Running`.
+- Evidence: VM reboot checks passed for `lchl-tsnode-rb2` and `lchl-tsnode-mba` (`tailscaled=active`, `BackendState=Running`). Host reboot checks confirmed boot ID changes on `rb2`, `rb1`, and `mba`; Proxmox core services returned `active` on all three; utility VMs came back with `onboot: 1` and Tailscale online (`100.97.121.113`, `100.115.224.15`). `tsDeb` watchdog validated after `rb1` reboot (`timer=active`, service transiently `activating` then `inactive` as expected).
+- Next action: Proceed with cable management as cable-only swaps (no interface rebinding), performing ping+SSH checks after each physical move.

@@ -32,6 +32,24 @@ Expected:
 2. Utility VM status shows active peers and a Tailscale IPv4.
 3. Utility VMs show `BackendState=Running`.
 
+## Reboot Validation (Recommended Before Recabling)
+
+1. Reboot utility VMs first and verify reconnect:
+   - `ssh rb2-pve 'qm reboot 201 || true'`
+   - `ssh mba-pve 'qm reboot 301 || true'`
+2. Reboot hypervisors one at a time (`rb2` then `rb1`; MBA as desired) and verify:
+   - Proxmox services: `pveproxy`, `pvedaemon`, `pve-cluster` are `active`.
+   - VM `onboot: 1` entries remain set for `201` and `301`.
+   - `tailscaled` is `active` and utility nodes return to `BackendState=Running`.
+3. `tsDeb` watchdog check after `rb1` reboot:
+   - `qm guest exec 101 -- systemctl is-active tsdeb-watchdog.timer tsdeb-watchdog.service`
+
+Observed behavior from live test on 2026-02-14:
+
+- Immediately after host reboot, `qm status` may briefly show `stopped` for onboot VMs.
+- In practice, `tsDeb` and `lchl-tsnode-mba` auto-started within a short delay.
+- Treat this as expected warm-up behavior; allow ~1-3 minutes before declaring failure.
+
 ## Approval Flow (When Ready)
 
 ```bash
