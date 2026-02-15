@@ -37,15 +37,15 @@ Ensure at least one reliable remote-control path remains available while away, e
 - Add equivalent Tailscale endpoints as utility VMs on `rb2` and `mba` (avoid host-level agent on Proxmox).
 - Do not remove existing route advertisement path until at least one new utility node is approved and healthy.
 
-## Tailscale Staging Status (2026-02-14 22:14 EST)
+## Tailscale Staging Status (2026-02-14 22:30 EST)
 
 | node | install_state | tailscaled | tailnet_state | notes |
 |---|---|---|---|---|
 | tsDeb (`101`) | installed | active/enabled | logged in | existing continuity path |
 | rb2 host | installed then disabled | inactive/disabled | n/a | host-level tailscale intentionally disabled |
 | mba host | installed then disabled | inactive/disabled | n/a | host-level tailscale intentionally disabled |
-| tsnode-rb2 (`201` on `rb2`) | installed | active/enabled | `NeedsLogin` | approval URL generated; static IP `192.168.5.112` |
-| tsnode-mba (`301` on `mba`) | installed | active/enabled | `NeedsLogin` | approval URL generated; static IP `192.168.5.113` |
+| lchl-tsnode-rb2 (`201` on `rb2`) | installed | active/enabled | running | tailnet IP `100.97.121.113`; no reapproval needed after hostname rename |
+| lchl-tsnode-mba (`301` on `mba`) | installed | active/enabled | running | tailnet IP `100.115.224.15`; no reapproval needed after hostname rename |
 
 Runbook:
 
