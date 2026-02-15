@@ -223,3 +223,9 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
 - Status: Completed the closest safe copy/paste path: fresh backup on `rb1`, verified transfer to `rb2`, and full restore on `rb2` as VM `100` kept powered off for physical cutover.
 - Evidence: SHA256 matched on both hosts (`d2f1b02dbd7352f2b0c02d1ccf812dbcdc20b800355e13468102a99b789f987c`); `rb2` now has `qm config 100` with boot disk on `local-lvm:vm-100-disk-0` plus original USB passthrough IDs (`1058:2647`, `174c:55aa`); `rb1` `truenas` remains running for zero-downtime staging.
 - Next action: During cutover window, stop `rb1` VM `100`, move physical USB storage drives from `rb1` to `rb2`, then start `rb2` VM `100` and validate pool + shares before any Fedora reinstall work.
+
+## 2026-02-15 03:03 EST (Codex)
+- Area: Fedora baremetal phase readiness (`rb1`)
+- Status: Added concrete baremetal install runbook so Fedora conversion can begin immediately after `truenas` drive cutover validation.
+- Evidence: New `runbooks/rb1-fedora-baremetal-install.md` with pre-wipe capture, installer guidance, first-boot baseline, and rollback.
+- Next action: Complete physical drive move (`rb1` -> `rb2`), start/validate `rb2` TrueNAS VM, then execute Fedora preflight capture on `rb1`.
