@@ -241,3 +241,9 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
 - Status: Restored VM backups `101` and `220` onto `rb2`, then cut over live execution by stopping both on `rb1` and starting them on `rb2`.
 - Evidence: `rb2` `qm list` now shows running `100`, `101`, `201`, `220`; `rb1` `qm list` shows `100`, `101`, `220` all stopped; network checks from workstation show `192.168.5.102` and `192.168.5.111` reachable with SSH port open.
 - Next action: Proceed with Fedora installation on `rb1` when ready; keep `rb2` as temporary host for migrated VMs during burn-in.
+
+## 2026-02-15 04:40 EST (Codex)
+- Area: `rb1` Fedora install completion + SSH key bootstrap
+- Status: Fedora Server install completed on `rb1`; host is now reachable as `rb1-fedora` at `192.168.5.107` over management USB NIC. Added dedicated SSH key auth without modifying existing node keys.
+- Evidence: Keypair created at `~/.ssh/id_ed25519_rb1-fedora*`; login verified with `ssh -o BatchMode=yes rb1 'hostnamectl --static; whoami'` => `rb1-fedora` / `root`; interface check shows `enp0s20f0u6` on `192.168.5.107/22`.
+- Next action: Execute tomorrow runbook `runbooks/tomorrow-ai-bootstrap-rb1-fedora.md` for attended Ollama + Codex bring-up.

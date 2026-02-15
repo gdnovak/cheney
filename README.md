@@ -115,6 +115,7 @@ Planned direction:
 - `runbooks/assistant-sandbox-bootstrap-rb1.md`: safe bootstrap path for VM Codex + Ollama starter on `rb1`.
 - `runbooks/rb1-baremetal-fedora-pivot.md`: staged transition plan for `truenas` move to `rb2` and `rb1` Fedora baremetal cutover.
 - `runbooks/rb1-fedora-baremetal-install.md`: concrete preflight + install checklist once `truenas` cutover to `rb2` is complete.
+- `runbooks/tomorrow-ai-bootstrap-rb1-fedora.md`: attended plan for first Ollama + Codex bootstrap on new Fedora baremetal `rb1`.
 - `runbooks/rb2-fallback-management-path.md`: direct emergency management path between `rb1` and `rb2`.
 - `runbooks/rb2-hard-power-recovery-validation.md`: true no-power recovery checklist for batteryless `rb2`.
 - `runbooks/tailscale-node-staging-rb2-mba.md`: utility-VM tailscale setup for `rb2` and `mba` (`lchl-tsnode-rb2`, `lchl-tsnode-mba`) with approval flow.
