@@ -100,6 +100,7 @@ Complete phase 1 readiness (all host baselines, including MBA), then perform mig
 - `runbooks/rb2-hard-power-recovery-validation.md`: true no-power recovery checklist for batteryless `rb2`.
 - `runbooks/tailscale-node-staging-rb2-mba.md`: utility-VM tailscale setup for `rb2` and `mba` (`lchl-tsnode-rb2`, `lchl-tsnode-mba`) with approval flow.
 - `scripts/`: future automation helpers.
+- `subagents/`: environment-specific Codex instruction scopes (includes `cheney-vessel-alpha` for VM contractor install).
 - `configs/`: future host/service config snapshots and templates.
 - `notes/`: ad hoc research and decision notes.
 - `notes/perf-baseline-template.md`: template for before/after throughput baselines.

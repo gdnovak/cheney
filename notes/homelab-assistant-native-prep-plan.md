@@ -156,3 +156,4 @@ Goal: prepare a local-first assistant platform that can coordinate multiple agen
 2. Add a minimal MCP catalog document (`tool`, `risk_level`, `approval_required`).
 3. Add a skill registry file with owner + validation command per skill.
 4. Add an acceptance checklist for "assistant can operate unattended for 24h".
+5. Design a sanitized memory/log export profile for less-trusted autonomous stacks (defer implementation).

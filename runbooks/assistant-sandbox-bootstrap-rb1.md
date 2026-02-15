@@ -2,6 +2,12 @@
 
 Purpose: bootstrap a temporary safe VM on `rb1` for Codex subagent + Ollama experiments without mutating core host workflows.
 
+## Roles (This Install Only)
+
+1. Architect (`codex-host`): this session.
+2. Contractor (`cheney-vessel-alpha`): Codex inside sandbox VM.
+3. Owner (`human-operator`): approval authority for risky actions/cutovers.
+
 ## Scope
 
 - In scope: disposable sandbox VM + coordination bus + guardrails.
@@ -34,9 +40,12 @@ If this fails, only attended/manual runs are allowed.
    - `git`, `curl`, `jq`, `python3`, `tmux`, `ca-certificates`.
 2. Clone repo:
    - `git clone <repo-url> ~/cheney`
-3. Install Ollama runtime.
-4. Install Codex in VM (operator-managed step).
-5. Pull one small and one medium local model in Ollama.
+3. Enter VM subagent scope:
+   - `cd ~/cheney/subagents/cheney-vessel-alpha`
+   - This ensures nearest-scope instructions come from `subagents/cheney-vessel-alpha/AGENTS.md`.
+4. Install Ollama runtime.
+5. Install Codex in VM (operator-managed step).
+6. Pull one small and one medium local model in Ollama.
 
 ## Coordination Bus Setup
 
@@ -49,15 +58,29 @@ If this fails, only attended/manual runs are allowed.
    - `coordination/policies/budget.yaml`
    - `coordination/policies/approvals.yaml`
 
+## Architect -> Contractor Loop (This Install Only)
+
+1. Architect writes task file under `coordination/tasks/` from `TASK_TEMPLATE.yaml`.
+2. Contractor claims task with `scripts/assistant/claim_task.sh`.
+3. Contractor emits progress/events with `scripts/assistant/emit_event.sh`.
+4. Contractor writes final report using `coordination/reports/REPORT_TEMPLATE.md`.
+5. Architect validates acceptance criteria and either:
+   - marks complete and promotes outputs, or
+   - returns with explicit revision requests.
+
+No direct production mutations happen without owner approval when risk level is medium/high.
+
 ## Subagent Runtime Setup
 
 1. Ensure assistant scripts are executable:
    - `scripts/assistant/*.sh`
 2. Configure environment variables:
-   - `AGENT_ID=vm-codex-rb1`
+   - `AGENT_ID=cheney-vessel-alpha`
    - `SAFETY_MODE=enforced`
-3. Start periodic heartbeat job (timer/cron).
-4. Configure event emission path.
+3. Keep working directory pinned to:
+   - `~/cheney/subagents/cheney-vessel-alpha`
+4. Start periodic heartbeat job (timer/cron).
+5. Configure event emission path.
 
 ## Push Notifications
 
@@ -76,6 +99,7 @@ Use hybrid notification:
 4. Heartbeat updates and events append correctly.
 5. eGPU gate check integrated and enforced for unattended mode.
 6. Watchdog blocks unattended tasks if eGPU not ready.
+7. Architect -> contractor loop is demonstrated with one completed task/report pair.
 
 ## Rollback
 
