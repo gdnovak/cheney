@@ -7,45 +7,51 @@ Ensure at least one reliable remote-control path remains available while away, e
 ## Layer-2 Environment Snapshot
 
 - Core switching includes a Netgear smart switch and a second faster unmanaged switch.
-- Current node Ethernet may traverse docks/eGPU enclosures, which must be treated as potential failure points.
-- User reports all docks and the Razer Core can function as Ethernet paths; current active Razer host is using USB Ethernet.
+- Current node Ethernet may traverse docks/eGPU enclosures and should be treated as potential failure points.
+- `rb1` management is intentionally on a dedicated USB Ethernet NIC, not on the Razer Core network path.
 
-## Current Methods (To Verify)
+## Current Methods (Verified 2026-02-16)
 
 | node_id | primary_remote_method | secondary_remote_method | wake_capability | known_issues | last_tested |
 |---|---|---|---|---|---|
-| rb14-2017 | SSH alias `rb1-pve` + Proxmox host LAN (`192.168.5.98`) | Proxmox UI `https://192.168.5.98:8006` | Capability present (`Wake-on: g` on `nic0`) | Management bridge moved to Razer Core NIC (`enx90203a1be8d6`) during recable; verify stability overnight | 2026-02-14 04:03 EST |
-| rb14-2015 (`rb2-pve`) | SSH alias `rb2` + LAN (`192.168.5.108`) | Proxmox UI `https://192.168.5.108:8006` | Capability present (`Wake-on: g` on `nic0`) | Management bridge moved to USB NIC `enx00051bde7e6e`; verify stability after recabling changes | 2026-02-14 04:21 EST |
-| mba-2011 | SSH alias `mba` + LAN (`192.168.5.66`) | Proxmox UI `https://192.168.5.66:8006` | Capability present (`Wake-on: g` on `nic0`) | Reboots are slower than Razers (~58s ping return observed) | 2026-02-14 03:29 EST |
+| rb14-2017 (`rb1-fedora`) | SSH alias `rb1` (`192.168.5.107`) | none (no Proxmox UI on baremetal Fedora) | `Wake-on: g` on `enp0s20f0u6` | VLAN99 fallback path is not currently configured on Fedora side | 2026-02-16 18:05 EST |
+| rb14-2015 (`rb2-pve`) | SSH alias `rb2` + Proxmox UI `https://192.168.5.108:8006` | VLAN99 fallback endpoint `172.31.99.2` | `Wake-on: g` on `enx00051bde7e6e` | No-battery power risk; no-power AC restore still requires manual button press | 2026-02-16 18:05 EST |
+| mba-2011 (`kabbalah`) | SSH alias `mba` + Proxmox UI `https://192.168.5.66:8006` | utility VM path via `301` | `Wake-on: g` on `nic0` | Aging hardware and slower reboot profile | 2026-02-16 18:05 EST |
+| truenas VM (`100` on `rb2`) | LAN service endpoint `192.168.5.100` | Proxmox console from `rb2` | n/a (VM) | VM guest agent unavailable; manage via LAN and host-level controls | 2026-02-16 18:05 EST |
 
 ## WoL / Wake Feasibility Matrix
 
 | node_id | supports_wol | tested_result | blockers | fallback |
 |---|---|---|---|---|
-| rb14-2017 | Yes (interface capability reported) | Wake capability confirmed via `ethtool`; watchdog path active (no packet needed during recent reboot tests) | Must validate path through USB-Ethernet/dock chain | Smart plug + BIOS power-on + scheduled watchdog |
-| rb14-2015 (`rb2-pve`) | Yes | Wake capability confirmed via `ethtool`; watchdog path active (no packet needed during recent reboot tests) | Must validate after planned dongle swap | Smart plug + BIOS auto power-on policy (if available) |
-| mba-2011 | Yes | Wake capability confirmed via `ethtool`; watchdog sent WoL packet during reboot windows (`03:23` and `03:28` EST) | Must validate true wake-from-off behavior after recabling | Scheduled power window or manual recovery plan |
+| rb14-2017 (`rb1-fedora`) | Yes | `ethtool` reports `Wake-on: g` | Still need unattended validation through full dock/adapter chain | Smart plug + BIOS power-on + watchdog path |
+| rb14-2015 (`rb2-pve`) | Yes (limited by no-power behavior) | `ethtool` reports `Wake-on: g`; prior no-power recovery test showed manual power-on required | WoL does not recover node from fully unpowered state | Smart plug cycle + manual power contingency |
+| mba-2011 (`kabbalah`) | Yes | `ethtool` reports `Wake-on: g` | True wake-from-off behavior should be periodically revalidated | Scheduled power window/manual recovery |
 
-## Cluster State Notes
+## Fallback Management Path Status
 
-- Active host `rb1-pve` currently appears standalone (`/etc/pve/corosync.conf` absent).
-- MacBook Air is reported to hold older Proxmox cluster assumptions and may block normal operation until cluster config is reconciled.
+- Reserved subnet remains:
+  - `rb1` target fallback: `172.31.99.1/30`
+  - `rb2` active fallback: `172.31.99.2/30`
+- Current state:
+  - `rb2` side is active (`vmbr0.99`).
+  - `rb1` side is currently absent post-Fedora reinstall.
+  - Bidirectional fallback ping currently fails.
 
 ## Tailscale Continuity Rule
 
-- Keep current Tailscale path online during hardware rework.
-- Add equivalent Tailscale endpoints as utility VMs on `rb2` and `mba` (avoid host-level agent on Proxmox).
-- Do not remove existing route advertisement path until at least one new utility node is approved and healthy.
+- Keep existing route-advertisement continuity path (`tsDeb`) available during network rework.
+- Keep utility tailscale nodes on VMs (`201`, `301`) instead of Proxmox hosts.
+- Do not decommission an existing path until at least one replacement path is verified end-to-end.
 
-## Tailscale Staging Status (2026-02-14 22:30 EST)
+## Tailscale Staging Status (Current)
 
 | node | install_state | tailscaled | tailnet_state | notes |
 |---|---|---|---|---|
-| tsDeb (`101`) | installed | active/enabled | logged in | existing continuity path |
-| rb2 host | installed then disabled | inactive/disabled | n/a | host-level tailscale intentionally disabled |
-| mba host | installed then disabled | inactive/disabled | n/a | host-level tailscale intentionally disabled |
-| lchl-tsnode-rb2 (`201` on `rb2`) | installed | active/enabled | running | tailnet IP `100.97.121.113`; no reapproval needed after hostname rename |
-| lchl-tsnode-mba (`301` on `mba`) | installed | active/enabled | running | tailnet IP `100.115.224.15`; no reapproval needed after hostname rename |
+| tsDeb (`101`) | installed | active (verified via `qm guest exec 101 -- tailscale status`) | running | continuity anchor VM on `rb2` |
+| rb2 host | disabled by policy | inactive/disabled | n/a | host-level tailscale intentionally disabled |
+| mba host | disabled by policy | inactive/disabled | n/a | host-level tailscale intentionally disabled |
+| lchl-tsnode-rb2 (`201`) | installed | unknown in this session (`qga` unavailable) | last known running | utility tailscale node |
+| lchl-tsnode-mba (`301`) | installed | unknown in this session (`qga` unavailable) | last known running | utility tailscale node |
 
 Runbook:
 
@@ -53,20 +59,14 @@ Runbook:
 
 ## Watcher Status
 
-- Watcher node: `tsDeb` VM (`192.168.5.102`) on `rb1-pve`.
-- VM boot behavior: `onboot: 1` confirmed in Proxmox config.
-- `tsdeb-watchdog.timer` is enabled and active on `tsDeb`.
-- Watcher currently runs ping checks for `rb1`, `rb2`, `mba` and sends WoL packets on failure.
-
-## Closed-Lid Reboot Validation
-
-- `rb1`: PASS (2/2 sequential reboot cycles recovered with lid closed).
-- `rb2`: PASS (2/2 sequential reboot cycles recovered with lid closed).
-- `mba`: PASS (2/2 sequential reboot cycles recovered with lid closed; slower recovery profile).
+- Watcher node: `tsDeb` VM (`192.168.5.102`) on `rb2-pve`.
+- VM boot behavior: running on `rb2` (`qm list`).
+- `tsdeb-watchdog.timer` check from guest-exec reports `active`; `tsdeb-watchdog.service` idle between timer runs (`inactive`).
+- Watcher policy still expects ping checks for `rb1`, `rb2`, and `mba` with WoL attempt on failure.
 
 ## Away-Safe Validation Checklist
 
-1. Confirm primary remote path works for every node with current credentials/keys.
-2. Confirm at least one node can be remotely reached after simulated single-node outage.
-3. Confirm wake or recovery strategy for each node is documented and tested.
-4. Record test timestamps and failures before any migration cutover.
+1. Confirm SSH path works for `rb1`, `rb2`, `mba` using current keys.
+2. Confirm Proxmox UI access remains available on `rb2` and `mba`.
+3. Re-establish dual-sided VLAN99 fallback before unattended windows.
+4. Record test timestamps and failures before any migration/cutover work.

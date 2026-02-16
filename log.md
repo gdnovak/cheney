@@ -259,3 +259,9 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
 - Status: Promoted immediate priorities so resume sessions land on two explicit tracks: (1) eGPU configuration on `rb1-fedora`, (2) memory structure optimization using markdown graph patterns.
 - Evidence: Added high-visibility section `Today Priority (2026-02-15)` in `README.md` and created `runbooks/today-egpu-and-memory-plan.md` with actionable checklist and acceptance criteria.
 - Next action: Execute Track A (eGPU bring-up) after reboot, then start Track B memory scaffold in-repo.
+
+## 2026-02-16 18:05 EST (Codex)
+- Area: inventory reconciliation against live post-pivot network state
+- Status: Revalidated current host/VM/network state over SSH and updated stale inventory/readme records to match the live layout (`rb1` Fedora baremetal, `rb2` Proxmox anchor, `truenas` on `rb2`). Captured an active continuity gap: VLAN99 fallback is currently single-sided on `rb2` and not active on `rb1` post-reinstall.
+- Evidence: Live checks from `rb1`, `rb2`, `mba`, and `truenas` (`hostnamectl`, `ip -4 -br addr`, `lscpu`, `free -h`, `lsblk`, `ethtool`, `qm list`, `zpool status -x`) plus fallback validation (`rb1 -> 172.31.99.2` and `rb2 -> 172.31.99.1` both failed). Updated `README.md`, `inventory/hardware.md`, `inventory/network-layout.md`, `inventory/network-remote-access.md`, and `inventory/vms.md`.
+- Next action: Reintroduce Fedora-side VLAN99 fallback interface on `rb1` and rerun continuity validation before unattended bootstrap work.

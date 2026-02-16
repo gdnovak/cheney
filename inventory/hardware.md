@@ -2,13 +2,12 @@
 
 | node_id | device_name | model_year | role | cpu | ram_gb | storage_summary | gpu_or_egpu | tb_version | power_risk | current_os_or_hypervisor | target_role | status | last_verified_at |
 |---|---|---|---|---|---:|---|---|---|---|---|---|---|---|
-| rb14-2017 | Razer Blade 14 (2017) | 2017 | Current Proxmox source host | Intel Core i7-7700HQ (4c/8t) | 16 | 476.9G NVMe (`pve-root` 96G, `local-lvm` ~347.9G, swap 8G) | Internal GTX 1060 (mobile) | TB3+ | Medium | Proxmox VE 9.1 node `rb1-pve` (`vmbr0` 192.168.5.98/22) | Transitional / backup node after migration | Active; closed-lid reboot validation passed (2/2) | 2026-02-14 03:29 EST |
-| rb14-2015 | Razer Blade 14 (2015) | 2015 | Target Proxmox host | Unverified (detailed host audit pending) | 0 | Unverified (detailed host audit pending) | eGPU-capable via TB path as applicable | TB3 path required for Core + GTX 1060 setup | High (no battery, cable sensitivity) | Proxmox install complete as `rb2-pve.home.arpa` (`192.168.5.108`), SSH key auth working | Primary Proxmox host for current VM set | Active and reachable; closed-lid reboot validation passed (2/2) | 2026-02-14 03:29 EST |
-| mba-2011 | MacBook Air (~2011) | 2011 | Fallback continuity node | Unverified (detailed host audit pending) | 0 | Unverified (detailed host audit pending) | None | Mini DisplayPort-era adapter path | Medium (aging hardware, reboot reliability) | Proxmox reachable at `kabbalah` (`192.168.5.66`), SSH key auth working, decoupled from old cluster | Emergency fallback host | Active and reachable; closed-lid reboot validation passed (2/2, slower return) | 2026-02-14 03:29 EST |
+| rb14-2017 | Razer Blade 14 (2017) | 2017 | Primary baremetal agent host (`rb1-fedora`) | Intel Core i7-7700HQ (4c/8t) | 16 | 476.9G NVMe (`SAMSUNG MZVLW512HMJP-00000`) | Internal Intel HD 630 + NVIDIA GTX 1060 Mobile (`10de:1c20`) | TB3+ | Medium | Fedora Linux 43 Server (`192.168.5.107/22`, `enp0s20f0u6`) | Stable eGPU-ready AI/agent runtime host | Active and reachable; key SSH auth verified; Wake-on-LAN capability reports `Wake-on: g` | 2026-02-16 18:05 EST |
+| rb14-2015 | Razer Blade 14 (2015) | 2015 | Primary Proxmox host (`rb2-pve`) | Intel Core i7-4720HQ (4c/8t) | 16 | 238.5G SSD (`LITEON IT L8T-256L9G`) | eGPU-capable TB path (not primary management path) | TB3 path available | High (no battery, cable sensitivity) | Proxmox VE 9.1.1 (`192.168.5.108/22`, `vmbr0`) + fallback VLAN (`172.31.99.2/30`, `vmbr0.99`) | Primary VM/storage host during `rb1` Fedora phase | Active and reachable; VMs `100/101/201/220` running | 2026-02-16 18:05 EST |
+| mba-2011 | MacBook Air (~2011) | 2011 | Fallback continuity Proxmox node (`kabbalah`) | Intel Core i5-2467M (2c/4t) | 2 | 56.5G SSD (`APPLE SSD TS064C`) | None | Mini DisplayPort-era adapter path | Medium (aging hardware, reboot reliability) | Proxmox VE 9.1.1 (`192.168.5.66/22`, `vmbr0`) | Emergency utility/fallback host | Active and reachable; VM `301` running | 2026-02-16 18:05 EST |
 
 ## Notes
 
-- `ram_gb=0` currently means unknown/unverified, not literal zero memory.
-- `rb1-pve` currently reports no local corosync config, indicating standalone node mode on the active host.
-- Legacy MBA quorum issue was mitigated by forcing expected votes, then removing stale corosync config so node is standalone.
-- Phase 1 is not complete until MBA is brought to a working, reachable Proxmox state for third-node quorum/insurance.
+- Legacy `rb1-pve` management address (`192.168.5.98`) is no longer active after Fedora baremetal conversion; `rb1` now resolves to `192.168.5.107`.
+- `truenas` VM (`100`) is running on `rb2` and reachable at `192.168.5.100`; `zpool status -x` reports healthy.
+- VLAN99 fallback is currently only active on `rb2`; `rb1` Fedora side fallback interface is not yet re-established.

@@ -11,7 +11,7 @@ Project workspace for building a resilient homelab foundation for a multi-agent 
 This repository tracks infrastructure planning and execution for agent tooling, MCP services, and homelab continuity. The current strategy is **tool-bus-first**: establish reliable infrastructure, inventory, and workflows before model hosting optimization.
 <!-- note: assistant-level governance stack pending "Dick Cheney spirit API" availability. -->
 
-## Today Priority (2026-02-15)
+## Today Priority (2026-02-16)
 
 If you are resuming work, start here:
 
@@ -43,63 +43,60 @@ Mandatory gate before phase 3:
 
 - Full detailed inventory of all connected devices, docks, switch links, and storage paths must be complete.
 
-## Next Blocker Tracker (as of 2026-02-14)
+## Blocker Tracker (as of 2026-02-16)
 
-1. `DONE (current state)` Build fallback management path for `rb2`.
-- Run `runbooks/rb2-fallback-management-path.md` during tonight's recabling window.
-- Default fallback addressing is reserved:
-  - `rb1` fallback `172.31.99.1/30`
-  - `rb2` fallback `172.31.99.2/30`
-- Fallback persistence must exist on both hosts for redundancy (`rb1` and `rb2`).
-- `rb2` fallback interface (`vmbr0.99`) is persisted and verified to survive reboot.
-- `rb1` fallback interface (`vmbr0.99`) is persisted and reboot-survival verified.
-- Fallback reachability validated post-reboot (`rb1` ping to `172.31.99.2` and SSH via jump host).
+1. `OPEN` Re-establish dual-sided fallback management path.
+- Reserved fallback addressing remains:
+  - `rb1` target fallback `172.31.99.1/30`
+  - `rb2` active fallback `172.31.99.2/30`
+- `rb2` fallback interface (`vmbr0.99`) is present and routable.
+- `rb1` fallback interface was lost during Fedora reinstall and needs Fedora-side reimplementation.
+- Current validation: fallback ping fails in both directions.
 
-2. `DONE (current state)` Verify bridge/NIC binding after recabling.
-- `rb1` `vmbr0` -> `enxa0cec804fed7` (USB NIC; management no longer coupled to Razer Core Ethernet)
-- `rb2` `vmbr0` -> `enx00051bde7e6e`
-- Continue using `runbooks/interface-cutover-safe.md` after every cable/port move.
+2. `DONE` Platform pivot execution.
+- `rb1` is now Fedora baremetal (`rb1-fedora`, `192.168.5.107`).
+- `rb2` is current Proxmox VM/storage anchor (`192.168.5.108`).
+- `truenas` is running on `rb2` and reachable at `192.168.5.100`.
 
-3. `DONE (with limitation)` Validate hard power-loss recovery for batteryless `rb2`.
-- Executed true no-power test with live watcher log (`notes/rb2-recovery-watch-20260214-215107.log`).
-- Observed: AC restore did not auto-boot; manual power button was required.
-- Recovery timing: first down at `21:51:22 EST`, healthy return at `21:54:25 EST` (~`183s` downtime).
-- WoL packet was sent from `tsDeb` during outage and did not power on `rb2` from no-power state.
-- Optional next improvement: smart-plug cycle tests for unattended hard-reset repeatability.
+3. `PARTIAL` eGPU readiness on baremetal.
+- Proxmox passthrough path was retired due repeated guest-loss behavior.
+- Baremetal Fedora host is online with internal NVIDIA GPU visible.
+- External eGPU acceptance checks remain pending.
 
-4. `DONE (current state)` Reconfirm post-change acceptance.
-- `ping` + SSH + `pveproxy/pvedaemon/pve-cluster` currently healthy on `rb1`, `rb2`, and `mba`.
-- `tsDeb` watchdog timer remains required acceptance criterion after any future power-recovery test.
+4. `IN PROGRESS` Assistant bootstrap readiness on new host layout.
+- `tsDeb` watchdog timer reports active from guest-exec check.
+- Utility VMs (`201`, `301`) are running.
+- Attended Ollama + Codex bootstrap on `rb1-fedora` remains pending.
 
 ## Current Hardware Context
 
-- **2017 Razer Blade 14**: current Proxmox source host.
-- **2015 Razer Blade 14**: target Proxmox host `rb2-pve` (`192.168.5.108`), no battery installed (power-cable stability risk).
-- **~2011 MacBook Air**: *rough* (broken screen, battery issues, etc.) hardware, but previously stayed reliable for Proxmox + single Ubuntu VM role so long as it did not need reboot.
+- **2017 Razer Blade 14**: now `rb1-fedora` baremetal host (`192.168.5.107`) for direct GPU/agent workloads.
+- **2015 Razer Blade 14**: primary Proxmox host `rb2-pve` (`192.168.5.108`), no battery installed (power-cable stability risk).
+- **~2011 MacBook Air**: fallback Proxmox node `kabbalah` (`192.168.5.66`) with utility VM role.
 - **Razer Core + GTX 1060**: Thunderbolt-dependent eGPU path relevant to future AI workload flexibility.
 
 ## Immediate Objective
 
-Complete phase 1 readiness (all host baselines, including MBA), then perform migration safely with rollback coverage while preserving service continuity.
+Stabilize post-pivot operations: complete `rb1` eGPU bring-up, restore dual-sided VLAN99 fallback, and finish attended AI bootstrap on `rb1-fedora` while keeping `rb2` continuity controls intact.
 
 ## Storage Placement Decision (Current)
 
-Superseded by current pivot plan:
+Current state:
 
-- Move `truenas` from `rb1-pve` to `rb2-pve`.
-- Rebuild `rb1` as Fedora baremetal for direct GPU/NVIDIA stack control.
-- Keep VLAN99 fallback path intact during transition windows.
+- `truenas` is running on `rb2-pve`.
+- `rb1` has been rebuilt as Fedora baremetal for direct GPU/NVIDIA stack control.
+- Fallback VLAN99 path is currently single-sided (`rb2` only) and must be restored on `rb1`.
 
 Execution sequencing is tracked in `runbooks/rb1-baremetal-fedora-pivot.md`.
 
-## Architecture Pivot (Planned)
+## Architecture Pivot (Executed, Post-Validation Pending)
 
 Reason:
 
 1. Repeated eGPU passthrough tests on Proxmox (`rb1`) bind VFIO successfully but consistently drop Fedora guest availability (SSH/QGA), even after guest-side `nouveau` blacklist preparation.
 2. This indicates a virtualization-boundary reliability issue for current eGPU/TB path, not simply guest distro selection.
 
-Planned direction:
+Direction now in effect:
 
 1. Keep `rb2` on Proxmox and migrate storage role (`truenas`) there.
 2. Repurpose `rb1` to Fedora baremetal for direct NVIDIA/eGPU use.
@@ -108,8 +105,9 @@ Planned direction:
 ## Fallback Security Guardrails
 
 - VLAN99 fallback is host-management only (`rb1` <-> `rb2`) and must not be used for guest transit.
-- Keep fallback interfaces ungated by default route (no gateway on `vmbr0.99`).
+- Keep fallback interfaces ungated by default route (no fallback gateway).
 - Do not use fallback subnet for forwarding/NAT/routing policy.
+- Current compliance gap: only `rb2` has active fallback interface; `rb1` restoration is required.
 
 ## Repository Map
 
@@ -154,12 +152,12 @@ Planned direction:
 
 ## Near-Term Milestones
 
-1. Finish phase 1 host verification for `rb1`, `rb2`, and MBA.
-2. Complete phase 2 network optimization plan and port/cable map.
-3. Pass detailed inventory gate before migration.
-4. Execute phase 3 pivot migration (`truenas -> rb2`, then `rb1` Fedora baremetal).
-5. Complete phases 4 and 5 continuity/final topology rework.
+1. Restore dual-sided fallback VLAN99 and validate bidirectional management reachability.
+2. Complete `rb1-fedora` eGPU/NVIDIA acceptance with reboot-stability evidence.
+3. Run attended Ollama + Codex bootstrap on `rb1-fedora` and record smoke-test evidence.
+4. Refresh continuity validation suite for the current host-role layout.
+5. Continue phase-2 network optimization (port map + 2.5Gb path planning).
 
-## Tonight Objective (Planning Anchor)
+## Current Session Objective
 
-After blocker items `1` and `3` are validated during recabling/power tests, target a first-pass agent bootstrap on one or two nodes to begin automation workflows.
+Close documentation drift to match live host/VM/network state, then execute Track A/Track B from `runbooks/today-egpu-and-memory-plan.md`.
