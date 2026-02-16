@@ -123,6 +123,7 @@ Planned direction:
 - `subagents/`: environment-specific Codex instruction scopes (includes `cheney-vessel-alpha` for VM contractor install).
 - `configs/`: future host/service config snapshots and templates.
 - `notes/`: ad hoc research and decision notes.
+- `notes/archive/`: dated incident/diagnostic artifacts (network watch, recovery logs, etc.).
 - `notes/perf-baseline-template.md`: template for before/after throughput baselines.
 - `notes/monitoring-software-eval-20260214.md`: third-party monitoring recommendation and rationale.
 - `notes/mcp-homelab-status-rb2.md`: basic MCP install example and wiring for `rb2`.

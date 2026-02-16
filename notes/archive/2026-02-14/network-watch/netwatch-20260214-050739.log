@@ -1,0 +1,6 @@
+START interval_sec=60 outfile=/home/tdj/cheney/notes/netwatch-20260214-050739.log
+TS 2026-02-14 05:07:39 EST
+PING label=gateway ip=192.168.4.1 summary="4 packets transmitted, 4 received, 0% packet loss, time 3109ms rtt min/avg/max/mdev = 0.493/0.559/0.611/0.044 ms "
+PING label=rb1 ip=192.168.5.98 summary="4 packets transmitted, 4 received, 0% packet loss, time 3022ms rtt min/avg/max/mdev = 0.394/0.810/0.989/0.243 ms "
+PING label=rb2 ip=192.168.5.108 summary="4 packets transmitted, 4 received, 0% packet loss, time 3050ms rtt min/avg/max/mdev = 0.240/0.260/0.288/0.017 ms "
+PING label=mba ip=192.168.5.66 summary="4 packets transmitted, 4 received, 0% packet loss, time 3069ms rtt min/avg/max/mdev = 0.772/0.820/0.878/0.038 ms "

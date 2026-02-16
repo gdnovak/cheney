@@ -247,3 +247,9 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
 - Status: Fedora Server install completed on `rb1`; host is now reachable as `rb1-fedora` at `192.168.5.107` over management USB NIC. Added dedicated SSH key auth without modifying existing node keys.
 - Evidence: Keypair created at `~/.ssh/id_ed25519_rb1-fedora*`; login verified with `ssh -o BatchMode=yes rb1 'hostnamectl --static; whoami'` => `rb1-fedora` / `root`; interface check shows `enp0s20f0u6` on `192.168.5.107/22`.
 - Next action: Execute tomorrow runbook `runbooks/tomorrow-ai-bootstrap-rb1-fedora.md` for attended Ollama + Codex bring-up.
+
+## 2026-02-15 04:43 EST (Codex)
+- Area: diagnostics artifact organization pre-reboot
+- Status: Organized previously untracked network/power watch logs into dated archive folders under `notes/archive/` and added an index file.
+- Evidence: Moved `netwatch-20260214-*.log` to `notes/archive/2026-02-14/network-watch/`, moved `rb2-recovery-watch-20260214-202059.log` to `notes/archive/2026-02-14/power-recovery/`, created `notes/archive/2026-02-14/README.md`.
+- Next action: Continue capturing future incidents into new dated archive folders for trend comparison.

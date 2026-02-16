@@ -1,0 +1,10 @@
+START interval_sec=60 outfile=/home/tdj/cheney/notes/netwatch-20260214-050430.log
+TS 2026-02-14 05:04:30 EST
+PING label=gateway ip=192.168.4.1 summary="4 packets transmitted, 4 received, 0% packet loss, time 3057ms rtt min/avg/max/mdev = 0.511/0.559/0.583/0.028 ms "
+PING label=rb1 ip=192.168.5.98 summary="4 packets transmitted, 4 received, 0% packet loss, time 3068ms rtt min/avg/max/mdev = 0.385/0.773/1.007/0.233 ms "
+PING label=rb2 ip=192.168.5.108 summary="4 packets transmitted, 4 received, 0% packet loss, time 3068ms rtt min/avg/max/mdev = 0.273/0.293/0.312/0.014 ms "
+PING label=mba ip=192.168.5.66 summary="4 packets transmitted, 4 received, 0% packet loss, time 3069ms rtt min/avg/max/mdev = 0.812/0.847/0.912/0.038 ms "
+PING label=tsdeb ip=192.168.5.102 summary="4 packets transmitted, 4 received, 0% packet loss, time 3004ms rtt min/avg/max/mdev = 0.598/0.911/1.166/0.234 ms "
+IFACE host=rb1-pve iface=enx90203a1be8d6 oper=up speed=1000 duplex=full rx_err=0 tx_err=0 rx_drop=36 tx_drop=0 rx_pkt=40920 tx_pkt=12627 rx_b=11507945 tx_b=8689520
+IFACE host=rb2 iface=enx00051bde7e6e oper=up speed=1000 duplex=full rx_err=0 tx_err=0 rx_drop=39 tx_drop=0 rx_pkt=26678 tx_pkt=5950 rx_b=7512558 tx_b=3042390
+IFACE host=mba iface=nic0 oper=up speed=1000 duplex=full rx_err=0 tx_err=0 rx_drop=0 tx_drop=2 rx_pkt=62664 tx_pkt=13908 rx_b=15618558 tx_b=6028060
