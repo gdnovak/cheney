@@ -253,3 +253,9 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
 - Status: Organized previously untracked network/power watch logs into dated archive folders under `notes/archive/` and added an index file.
 - Evidence: Moved `netwatch-20260214-*.log` to `notes/archive/2026-02-14/network-watch/`, moved `rb2-recovery-watch-20260214-202059.log` to `notes/archive/2026-02-14/power-recovery/`, created `notes/archive/2026-02-14/README.md`.
 - Next action: Continue capturing future incidents into new dated archive folders for trend comparison.
+
+## 2026-02-15 04:47 EST (Codex)
+- Area: next-session priority pinning
+- Status: Promoted immediate priorities so resume sessions land on two explicit tracks: (1) eGPU configuration on `rb1-fedora`, (2) memory structure optimization using markdown graph patterns.
+- Evidence: Added high-visibility section `Today Priority (2026-02-15)` in `README.md` and created `runbooks/today-egpu-and-memory-plan.md` with actionable checklist and acceptance criteria.
+- Next action: Execute Track A (eGPU bring-up) after reboot, then start Track B memory scaffold in-repo.

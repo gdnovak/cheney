@@ -11,6 +11,15 @@ Project workspace for building a resilient homelab foundation for a multi-agent 
 This repository tracks infrastructure planning and execution for agent tooling, MCP services, and homelab continuity. The current strategy is **tool-bus-first**: establish reliable infrastructure, inventory, and workflows before model hosting optimization.
 <!-- note: assistant-level governance stack pending "Dick Cheney spirit API" availability. -->
 
+## Today Priority (2026-02-15)
+
+If you are resuming work, start here:
+
+1. Configure and validate eGPU on `rb1-fedora` (baremetal).
+2. Design and scaffold memory optimization based on markdown graph structures (Obsidian-style data model, without Obsidian dependency).
+
+Execution checklist: `runbooks/today-egpu-and-memory-plan.md`
+
 ## Naming Standard (`lcHL`)
 
 - Project codename: `LichCheney`.
@@ -116,6 +125,7 @@ Planned direction:
 - `runbooks/rb1-baremetal-fedora-pivot.md`: staged transition plan for `truenas` move to `rb2` and `rb1` Fedora baremetal cutover.
 - `runbooks/rb1-fedora-baremetal-install.md`: concrete preflight + install checklist once `truenas` cutover to `rb2` is complete.
 - `runbooks/tomorrow-ai-bootstrap-rb1-fedora.md`: attended plan for first Ollama + Codex bootstrap on new Fedora baremetal `rb1`.
+- `runbooks/today-egpu-and-memory-plan.md`: current priority plan (eGPU on Fedora + memory structure optimization).
 - `runbooks/rb2-fallback-management-path.md`: direct emergency management path between `rb1` and `rb2`.
 - `runbooks/rb2-hard-power-recovery-validation.md`: true no-power recovery checklist for batteryless `rb2`.
 - `runbooks/tailscale-node-staging-rb2-mba.md`: utility-VM tailscale setup for `rb2` and `mba` (`lchl-tsnode-rb2`, `lchl-tsnode-mba`) with approval flow.
