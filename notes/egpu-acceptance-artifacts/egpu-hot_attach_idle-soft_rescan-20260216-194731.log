@@ -1,0 +1,14 @@
+2026-02-16 19:47:31 EST Scenario=hot_attach_idle_soft_rescan host=rb1-admin
+2026-02-16 19:47:32 EST PRE_STATE
+0f:00.0 VGA compatible controller [0300]: NVIDIA Corporation GP106 [GeForce GTX 1060 6GB] [10de:1c03] (rev a1)
+0f:00.1 Audio device [0403]: NVIDIA Corporation GP106 High Definition Audio Controller [10de:10f1] (rev a1)
+index, pci.bus_id, name, pstate, pcie.link.gen.current, pcie.link.width.current
+0, 00000000:01:00.0, NVIDIA GeForce GTX 1060, P8, 1, 16
+1, 00000000:0F:00.0, NVIDIA GeForce GTX 1060 6GB, P8, 1, 4
+2026-02-16 19:47:34 EST AFTER_REMOVE
+2026-02-16 19:47:36 EST AFTER_RESCAN
+0f:00.0 VGA compatible controller [0300]: NVIDIA Corporation GP106 [GeForce GTX 1060 6GB] [10de:1c03] (rev a1)
+0f:00.1 Audio device [0403]: NVIDIA Corporation GP106 High Definition Audio Controller [10de:10f1] (rev a1)
+index, pci.bus_id, name, pstate, pcie.link.gen.current, pcie.link.width.current
+0, 00000000:01:00.0, NVIDIA GeForce GTX 1060, P8, 1, 16
+1, 00000000:0F:00.0, NVIDIA GeForce GTX 1060 6GB, P5, 2, 4

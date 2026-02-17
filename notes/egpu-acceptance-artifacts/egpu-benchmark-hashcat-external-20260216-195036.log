@@ -1,0 +1,110 @@
+2026-02-16 19:50:36 EST Scenario=egpu_workload_hashcat host=rb1-admin device=2 mode=1400
+PRE_NVIDIA_SMI
+index, pci.bus_id, name, display_active, utilization.gpu [%], pstate, pcie.link.gen.current, pcie.link.width.current
+0, 00000000:01:00.0, NVIDIA GeForce GTX 1060, Enabled, 0 %, P8, 1, 16
+1, 00000000:0F:00.0, NVIDIA GeForce GTX 1060 6GB, Disabled, 0 %, P8, 1, 4
+HASHCAT_DEVICE_ENUM_START
+hashcat (v6.2.6) starting in backend information mode
+
+Successfully initialized the NVIDIA main driver CUDA runtime library.
+
+Failed to initialize NVIDIA RTC library.
+
+* Device #1: CUDA SDK Toolkit not installed or incorrectly installed.
+             CUDA SDK Toolkit required for proper device support and utilization.
+             Falling back to OpenCL runtime.
+
+Successfully initialized the NVIDIA main driver CUDA runtime library.
+
+Failed to initialize NVIDIA RTC library.
+
+* Device #2: CUDA SDK Toolkit not installed or incorrectly installed.
+             CUDA SDK Toolkit required for proper device support and utilization.
+             Falling back to OpenCL runtime.
+
+OpenCL Info:
+============
+
+OpenCL Platform ID #1
+  Vendor..: NVIDIA Corporation
+  Name....: NVIDIA CUDA
+  Version.: OpenCL 3.0 CUDA 13.0.97
+
+  Backend Device ID #1
+    Type...........: GPU
+    Vendor.ID......: 32
+    Vendor.........: NVIDIA Corporation
+    Name...........: NVIDIA GeForce GTX 1060
+    Version........: OpenCL 3.0 CUDA
+    Processor(s)...: 10
+    Clock..........: 1670
+    Memory.Total...: 6063 MB (limited to 1515 MB allocatable in one block)
+    Memory.Free....: 5952 MB
+    Local.Memory...: 48 KB
+    OpenCL.Version.: OpenCL C 1.2 
+    Driver.Version.: 580.119.02
+    PCI.Addr.BDF...: 01:00.0
+
+  Backend Device ID #2
+    Type...........: GPU
+    Vendor.ID......: 32
+    Vendor.........: NVIDIA Corporation
+    Name...........: NVIDIA GeForce GTX 1060 6GB
+    Version........: OpenCL 3.0 CUDA
+    Processor(s)...: 10
+    Clock..........: 1771
+    Memory.Total...: 6065 MB (limited to 1516 MB allocatable in one block)
+    Memory.Free....: 5952 MB
+    Local.Memory...: 48 KB
+    OpenCL.Version.: OpenCL C 1.2 
+    Driver.Version.: 580.119.02
+    PCI.Addr.BDF...: 0f:00.0
+
+HASHCAT_DEVICE_ENUM_END
+HASHCAT_BENCHMARK_START 2026-02-16T19:50:38-05:00
+hashcat (v6.2.6) starting in benchmark mode
+
+Benchmarking uses hand-optimized kernel code by default.
+You can use it in your cracking session by setting the -O option.
+Note: Using optimized kernel code limits the maximum supported password length.
+To disable the optimized kernel code in benchmark mode, use the -w option.
+
+Successfully initialized the NVIDIA main driver CUDA runtime library.
+
+Failed to initialize NVIDIA RTC library.
+
+* Device #1: CUDA SDK Toolkit not installed or incorrectly installed.
+             CUDA SDK Toolkit required for proper device support and utilization.
+             Falling back to OpenCL runtime.
+
+Successfully initialized the NVIDIA main driver CUDA runtime library.
+
+Failed to initialize NVIDIA RTC library.
+
+* Device #2: CUDA SDK Toolkit not installed or incorrectly installed.
+             CUDA SDK Toolkit required for proper device support and utilization.
+             Falling back to OpenCL runtime.
+
+OpenCL API (OpenCL 3.0 CUDA 13.0.97) - Platform #1 [NVIDIA Corporation]
+=======================================================================
+* Device #1: NVIDIA GeForce GTX 1060, skipped
+* Device #2: NVIDIA GeForce GTX 1060 6GB, 5952/6065 MB (1516 MB allocatable), 10MCU
+
+Benchmark relevant options:
+===========================
+* --backend-devices=2
+* --optimized-kernel-enable
+
+---------------------------
+* Hash-Mode 1400 (SHA2-256)
+---------------------------
+
+Speed.#2.........:  1608.6 MH/s (51.90ms) @ Accel:32 Loops:1024 Thr:256 Vec:1
+
+Started: Mon Feb 16 19:50:38 2026
+Stopped: Mon Feb 16 19:50:45 2026
+HASHCAT_BENCHMARK_END 2026-02-16T19:50:45-05:00
+POST_NVIDIA_SMI
+index, pci.bus_id, name, display_active, utilization.gpu [%], pstate, pcie.link.gen.current, pcie.link.width.current
+0, 00000000:01:00.0, NVIDIA GeForce GTX 1060, Enabled, 0 %, P3, 3, 16
+1, 00000000:0F:00.0, NVIDIA GeForce GTX 1060 6GB, Disabled, 61 %, P0, 3, 4

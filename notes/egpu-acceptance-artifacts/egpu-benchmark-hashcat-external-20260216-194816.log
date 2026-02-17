@@ -1,0 +1,52 @@
+2026-02-16 19:48:16 EST Scenario=egpu_workload_hashcat_sha256_external_only host=rb1-admin
+PRE_NVIDIA_SMI
+index, pci.bus_id, name, utilization.gpu [%], pstate, pcie.link.gen.current, pcie.link.width.current
+0, 00000000:01:00.0, NVIDIA GeForce GTX 1060, 0 %, P8, 1, 16
+1, 00000000:0F:00.0, NVIDIA GeForce GTX 1060 6GB, 0 %, P0, 3, 4
+HASHCAT_BENCHMARK_START 2026-02-16T19:48:17-05:00
+hashcat (v6.2.6) starting in benchmark mode
+
+Benchmarking uses hand-optimized kernel code by default.
+You can use it in your cracking session by setting the -O option.
+Note: Using optimized kernel code limits the maximum supported password length.
+To disable the optimized kernel code in benchmark mode, use the -w option.
+
+Successfully initialized the NVIDIA main driver CUDA runtime library.
+
+Failed to initialize NVIDIA RTC library.
+
+* Device #1: CUDA SDK Toolkit not installed or incorrectly installed.
+             CUDA SDK Toolkit required for proper device support and utilization.
+             Falling back to OpenCL runtime.
+
+Successfully initialized the NVIDIA main driver CUDA runtime library.
+
+Failed to initialize NVIDIA RTC library.
+
+* Device #2: CUDA SDK Toolkit not installed or incorrectly installed.
+             CUDA SDK Toolkit required for proper device support and utilization.
+             Falling back to OpenCL runtime.
+
+OpenCL API (OpenCL 3.0 CUDA 13.0.97) - Platform #1 [NVIDIA Corporation]
+=======================================================================
+* Device #1: NVIDIA GeForce GTX 1060, skipped
+* Device #2: NVIDIA GeForce GTX 1060 6GB, 5952/6065 MB (1516 MB allocatable), 10MCU
+
+Benchmark relevant options:
+===========================
+* --backend-devices=2
+* --optimized-kernel-enable
+
+---------------------------
+* Hash-Mode 1400 (SHA2-256)
+---------------------------
+
+Speed.#2.........:  1615.5 MH/s (51.67ms) @ Accel:32 Loops:1024 Thr:256 Vec:1
+
+Started: Mon Feb 16 19:48:17 2026
+Stopped: Mon Feb 16 19:48:29 2026
+HASHCAT_BENCHMARK_END 2026-02-16T19:48:29-05:00
+POST_NVIDIA_SMI
+index, pci.bus_id, name, utilization.gpu [%], pstate, pcie.link.gen.current, pcie.link.width.current
+0, 00000000:01:00.0, NVIDIA GeForce GTX 1060, 0 %, P8, 1, 16
+1, 00000000:0F:00.0, NVIDIA GeForce GTX 1060 6GB, 62 %, P0, 3, 4

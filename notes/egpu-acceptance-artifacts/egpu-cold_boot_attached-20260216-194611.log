@@ -1,0 +1,9 @@
+2026-02-16 19:46:11 EST Scenario=cold_boot_attached reboot=1 host=rb1-admin peer=rb2
+2026-02-16 19:46:11 EST Expected external PCI ID=10de:1c03 BDF=00000000:0F:00.0
+2026-02-16 19:46:11 EST Collecting pre snapshot
+2026-02-16 19:46:15 EST Triggering reboot on rb1-admin
+2026-02-16 19:47:00 EST Reboot confirmed after 44s (boot_id=260c7006-8334-4a1c-ad0e-32cf800a41a8)
+2026-02-16 19:47:00 EST Collecting post snapshot
+2026-02-16 19:47:04 EST Result=PASS notes=ok
+2026-02-16 19:47:04 EST Matrix row appended to notes/egpu-acceptance-matrix-20260216.md
+2026-02-16 19:47:04 EST Artifact log saved at notes/egpu-acceptance-artifacts/egpu-cold_boot_attached-20260216-194611.log

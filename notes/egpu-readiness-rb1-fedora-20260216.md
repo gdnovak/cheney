@@ -27,10 +27,12 @@ Purpose: record what is already in place for external eGPU work, what is still m
    - `codex` removed from host
    - host-local `~/cheney` clone removed
    - environment baseline left intact for deferred AI bring-up later
-9. Scripted acceptance harness is now in-repo:
-   - Script: `scripts/egpu_acceptance_matrix.sh`
+9. Scripted acceptance harnesses are in-repo:
+   - Matrix script: `scripts/egpu_acceptance_matrix.sh`
+   - Benchmark script: `scripts/egpu_hashcat_benchmark.sh`
    - Matrix output: `notes/egpu-acceptance-matrix-20260216.md`
-   - Artifact log (first scripted run): `notes/egpu-acceptance-artifacts/egpu-reboot_attached_persistence-20260216-193959.log`
+   - Matrix artifacts: `notes/egpu-acceptance-artifacts/egpu-*.log`
+   - Benchmark artifact: `notes/egpu-acceptance-artifacts/egpu-benchmark-hashcat-external-20260216-195036.log`
 
 ## Why This Helps eGPU Work Later
 
@@ -42,35 +44,50 @@ Purpose: record what is already in place for external eGPU work, what is still m
 ## Known Constraints
 
 1. `sshd -T` reports `PermitRootLogin yes` because installer file `/etc/ssh/sshd_config.d/01-permitrootlogin.conf` overrides hardening intent. Password auth remains disabled, so root is currently key-only.
-2. One reboot-survival pass (with eGPU attached and fallback active) succeeded; full multi-scenario matrix is not yet completed.
-3. Kernel reports external GPU link limitation at `2.5 GT/s PCIe x4` on current path; practical workload impact still needs benchmarking.
-4. External-GPU pinning behavior under real workloads has not yet been validated (AI runtime currently deferred).
+2. Physical hot-attach with manual cable remove/reinsert was not rerun in this pass; current "hot attach" evidence is a software PCI remove/rescan proxy cycle with post-check pass.
+3. External-display-sink scenario is still pending user-attended setup. Current state reports external GPU `display_active=Disabled`.
+4. Kernel reports reduced external link speed (`PCIe Gen2 x4` observed in latest checks). Benchmark impact captured below.
 
-## Latest Scripted Matrix Result
+## Matrix Coverage (Current)
 
-- Scenario: `reboot_attached_persistence`
-- Result: `PASS`
-- Reboot elapsed: `32s`
-- Pre/post external GPU checks:
-  - `lspci` external endpoint: pass
-  - `nvidia-smi` external BDF visibility: pass
-  - fallback ping and fallback interface persistence: pass
+`notes/egpu-acceptance-matrix-20260216.md` now records these passing scenarios:
+
+1. `reboot_attached_persistence` (`PASS`, reboot `32s`)
+2. `attached_no_external_display` (`PASS`)
+3. `cold_boot_attached` (`PASS`, reboot `44s`)
+4. `hot_attach_idle_soft_rescan_postcheck` (`PASS`)
+
+All rows show pre/post success for:
+
+1. External GPU presence (`lspci`, `nvidia-smi`)
+2. Fallback reachability and interface persistence
+3. Core Fedora service health
+
+Supporting hot-attach proxy artifact:
+
+- `notes/egpu-acceptance-artifacts/egpu-hot_attach_idle-soft_rescan-20260216-194731.log`
+
+## Non-AI Workload Benchmark (External GPU)
+
+- Command class: `hashcat -b -m 1400 -d 2` (external GPU only)
+- Artifact: `notes/egpu-acceptance-artifacts/egpu-benchmark-hashcat-external-20260216-195036.log`
+- Observed speed: `1608.6 MH/s` (`SHA2-256`)
+- Post-run `nvidia-smi` for external GPU (`0F:00.0`): `utilization=61%`, `pstate=P0`, link `Gen3 x4` during workload window
 
 ## Deferred Phase-5 eGPU Gates
 
 Run these in order:
 
-1. Attach-test matrix on `rb1-fedora`:
-   - cold boot with Core attached
-   - hot attach on idle host
-   - attach with/without external display sink
-2. Capture for each test:
+1. User-attended physical hot-attach cycle (cable remove/reinsert on idle host), then rerun:
+   - `scripts/egpu_acceptance_matrix.sh --scenario hot_attach_idle_physical_postcheck --host rb1-admin --peer rb2`
+2. User-attended external-display-sink cycle, then rerun:
+   - `scripts/egpu_acceptance_matrix.sh --scenario attached_with_external_display --host rb1-admin --peer rb2`
+3. Capture for each user-attended test:
    - `boltctl list`
    - `lspci -nnk | grep -EA3 'VGA|3D|Display'`
-   - `nvidia-smi`
+   - `nvidia-smi --query-gpu=index,pci.bus_id,name,display_active,pcie.link.gen.current,pcie.link.width.current --format=csv`
    - `journalctl -k --since "<test-start-time>"`
-3. Validate that management SSH, fallback VLAN99, and WoL remain unaffected after each attempt.
-4. Run one short GPU workload benchmark to estimate impact of current link speed limits.
+4. Validate management SSH, fallback VLAN99, and WoL remain unaffected after each attempt.
 
 ## Pass/Fail Definition
 

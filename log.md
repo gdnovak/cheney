@@ -301,3 +301,15 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
 - Status: Added reusable eGPU acceptance script `scripts/egpu_acceptance_matrix.sh` and executed the first scripted scenario (`reboot_attached_persistence`) with a passing result. Script output is now preserved in matrix + artifact logs for repeatable/resumable testing.
 - Evidence: `notes/egpu-acceptance-matrix-20260216.md` now contains a `PASS` row for `reboot_attached_persistence` (`reboot=1`, elapsed `32s`, pre/post `lspci` + `nvidia-smi` external checks pass, fallback ping/interface checks pass). Artifact log saved at `notes/egpu-acceptance-artifacts/egpu-reboot_attached_persistence-20260216-193959.log`. Post-run spot checks confirm AI rollback state is still preserved (`ollama`/`codex` absent) with NVIDIA + fallback intact.
 - Next action: Run next matrix scenarios (hot-attach and display/no-display variants), then add short non-AI workload benchmark evidence for external GPU path characterization.
+
+## 2026-02-16 19:49 EST (Codex)
+- Area: eGPU acceptance continuation + benchmark harness
+- Status: Completed additional non-interactive acceptance coverage on `rb1-fedora` (cold-boot-attached pass, no-display attached pass, hot-attach software-rescan postcheck pass), added reusable benchmark script `scripts/egpu_hashcat_benchmark.sh`, and captured a short non-AI external GPU workload benchmark artifact. Updated runbook/readiness docs with current state and explicit user-attended remaining gates.
+- Evidence: `notes/egpu-acceptance-matrix-20260216.md` now includes `PASS` rows for `cold_boot_attached` (reboot `44s`) and `hot_attach_idle_soft_rescan_postcheck`; artifacts at `notes/egpu-acceptance-artifacts/egpu-cold_boot_attached-20260216-194611.log`, `notes/egpu-acceptance-artifacts/egpu-hot_attach_idle-soft_rescan-20260216-194731.log`, and `notes/egpu-acceptance-artifacts/egpu-hot_attach_idle_soft_rescan_postcheck-20260216-194739.log`. Benchmark artifact `notes/egpu-acceptance-artifacts/egpu-benchmark-hashcat-external-20260216-194816.log` shows external GPU-only hashcat speed `1615.5 MH/s` with post-run utilization observed on bus `0F:00.0`.
+- Next action: Run user-attended physical hot-attach (cable remove/reinsert) and external-display-sink scenarios, then continue Track B (`memory/` scaffold and RAG-decision notes).
+
+## 2026-02-16 19:50 EST (Codex)
+- Area: benchmark script validation
+- Status: Executed the new reusable benchmark script end-to-end and confirmed it correctly enumerates devices, runs external-GPU-only hashcat benchmark, and writes timestamped artifacts for resumable comparisons.
+- Evidence: `scripts/egpu_hashcat_benchmark.sh` executed with `--device-id 2 --hash-mode 1400`; artifact `notes/egpu-acceptance-artifacts/egpu-benchmark-hashcat-external-20260216-195036.log` shows speed `1608.6 MH/s` and post-run external GPU activity (`0F:00.0`, `utilization=61%`, `pstate=P0`).
+- Next action: Complete user-attended physical hot-attach/external-display scenarios, then move to Track B memory scaffolding.

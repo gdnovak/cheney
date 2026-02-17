@@ -4,7 +4,7 @@ Date anchor: 2026-02-16
 
 Purpose: make immediate progress on compute reliability (`rb1-fedora` eGPU) and assistant context quality (memory structure redesign).
 
-## Session Checkpoint (2026-02-16 19:33 EST)
+## Session Checkpoint (2026-02-16 19:49 EST)
 
 Track A progress:
 
@@ -15,9 +15,14 @@ Track A progress:
 5. `DONE` External eGPU hot-attach detection validated (`0f:00.0`, GTX 1060 6GB).
 6. `DONE` Reboot-survival validation passed for fallback+eGPU state (boot ID changed; fallback persisted; both GPUs still visible).
 7. `DONE` Acceptance harness script created: `scripts/egpu_acceptance_matrix.sh`.
-8. `DONE` First scripted matrix scenario executed and logged:
+8. `DONE` Scripted matrix scenarios executed and logged:
    - `notes/egpu-acceptance-matrix-20260216.md`
    - `notes/egpu-acceptance-artifacts/egpu-reboot_attached_persistence-20260216-193959.log`
+   - `notes/egpu-acceptance-artifacts/egpu-cold_boot_attached-20260216-194611.log`
+   - `notes/egpu-acceptance-artifacts/egpu-hot_attach_idle_soft_rescan_postcheck-20260216-194739.log`
+9. `DONE` Non-AI workload benchmark on external GPU captured:
+   - `notes/egpu-acceptance-artifacts/egpu-benchmark-hashcat-external-20260216-195036.log`
+10. `OPEN` User-attended external-display-sink scenario still pending (external GPU currently reports `display_active=Disabled`).
 
 Track B progress:
 
@@ -60,6 +65,21 @@ Outputs:
 
 - Matrix row file: `notes/egpu-acceptance-matrix-YYYYMMDD.md`
 - Per-run artifact log: `notes/egpu-acceptance-artifacts/egpu-<scenario>-<timestamp>.log`
+
+### A1.2 Benchmark Harness (Saved Test Program)
+
+Use the reusable external-GPU benchmark harness:
+
+```bash
+scripts/egpu_hashcat_benchmark.sh \
+  --host rb1-admin \
+  --device-id 2 \
+  --hash-mode 1400
+```
+
+Output:
+
+- `notes/egpu-acceptance-artifacts/egpu-benchmark-hashcat-external-<timestamp>.log`
 
 ### A2. Fedora/NVIDIA Bring-Up
 
