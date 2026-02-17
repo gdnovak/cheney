@@ -1,0 +1,15 @@
+{
+  "cycle": 1,
+  "timestampUtc": "2026-02-17T09:13:12Z",
+  "marker": "PROBE_20260217T091312Z",
+  "wrapperElapsedMs": 37595,
+  "ok": 1,
+  "backstopUsed": 0,
+  "provider": "ollama",
+  "model": "qwen2.5:7b",
+  "tokens": 11044,
+  "durationMs": 32139,
+  "rc": 0,
+  "excerpt": "System runs steady, Through nights and days, no downtime— Silent guardian PROBE_20260217T091312Z",
+  "error": null
+}

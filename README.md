@@ -19,11 +19,13 @@ If you are resuming work, start here:
 2. Continue Fedora operational polish and continuity hardening from `runbooks/next-steps-planning-20260216.md`.
 3. Expand memory workflow usage (`memory/` notes + decisions) for resumable sessions.
 4. Complete OpenClaw routing hardening on `rb1` (local-first stable path is up; fallback/error handling needs follow-up).
+5. Run overnight unmanaged reliability probe on `rb1` and review summary artifacts in the morning.
 
 Execution checklists:
 
 - `runbooks/today-egpu-and-memory-plan.md`
 - `runbooks/next-steps-planning-20260216.md`
+- `runbooks/openclaw-overnight-probe.md`
 
 ## Latest Implementation Checkpoint (2026-02-17 03:48 EST)
 
@@ -34,6 +36,10 @@ Execution checklists:
 - `DONE` Added reusable routing validation harness: `scripts/openclaw_routing_validation.sh`.
 - `DONE` Added operational safe-turn wrapper: `scripts/openclaw_agent_safe_turn.sh`.
 - `DONE` Added benchmark runner: `scripts/openclaw_safe_turn_benchmark.sh`.
+- `DONE` Added unattended overnight reliability probe tooling:
+  - `scripts/openclaw_overnight_probe.sh`
+  - `scripts/openclaw_overnight_probe_summary.sh`
+  - `runbooks/openclaw-overnight-probe.md`
 - `DONE` Captured baseline + validation artifacts:
   - `notes/openclaw-artifacts/openclaw-routing-baseline-20260217-023746.log`
   - `notes/openclaw-routing-validation-20260217.md`
@@ -179,6 +185,7 @@ Direction now in effect:
 - `runbooks/tomorrow-ai-bootstrap-rb1-fedora.md`: attended plan for first Ollama + Codex bootstrap on new Fedora baremetal `rb1`.
 - `runbooks/today-egpu-and-memory-plan.md`: current priority plan (eGPU on Fedora + memory structure optimization).
 - `runbooks/next-steps-planning-20260216.md`: post-eGPU-acceptance planning tracks and execution order.
+- `runbooks/openclaw-overnight-probe.md`: unattended 30-minute safe-turn probe on `rb1` with start/stop/review commands.
 - `runbooks/openclaw-api-key-smoke-rb1-fedora.md`: attended OpenClaw API-key validation flow on `rb1`.
 - `runbooks/rb1-egpu-incident-recovery.md`: primary incident-response workflow for `rb1` eGPU/TB faults.
 - `runbooks/memory-workflow-weekly.md`: weekly memory/decision cadence for fast resume and context continuity.
@@ -188,6 +195,8 @@ Direction now in effect:
 - `scripts/`: future automation helpers.
 - `scripts/openclaw_agent_safe_turn.sh`: operational wrapper for routine OpenClaw turns with controlled Codex backstop.
 - `scripts/openclaw_safe_turn_benchmark.sh`: repeatable benchmark harness for safe-turn wrapper performance/backstop metrics.
+- `scripts/openclaw_overnight_probe.sh`: unattended 30-minute safe-turn probe runner with JSONL logging.
+- `scripts/openclaw_overnight_probe_summary.sh`: summary tool for overnight probe metrics and recent failures.
 - `subagents/`: environment-specific Codex instruction scopes (includes `cheney-vessel-alpha` for VM contractor install).
 - `configs/`: future host/service config snapshots and templates.
 - `notes/`: ad hoc research and decision notes.

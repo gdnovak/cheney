@@ -85,12 +85,23 @@ Use recovery-first policy for eGPU operations:
    - `memory/index.md`
 5. `NEXT` Keep weekly cadence and continue decision-note discipline; defer full semantic layer until existing trigger criteria are met.
 
+### Track 5: Overnight Reliability Probe (Unmanaged, Low-Risk)
+
+1. Run a simple unattended reliability probe from `rb1` every 30 minutes.
+2. Keep prompt complexity low (haiku/marker) to avoid unattended high-risk tasking.
+3. Collect JSONL + log artifacts for morning review and threshold trend checks.
+4. Runbook and scripts:
+   - `runbooks/openclaw-overnight-probe.md`
+   - `scripts/openclaw_overnight_probe.sh`
+   - `scripts/openclaw_overnight_probe_summary.sh`
+
 ## Suggested Immediate Order
 
 1. Track 1 (host polish)
 2. Track 2 (recovery hardening)
 3. Track 4 (memory workflow habits)
-4. Track 3 (AI bootstrap), only when explicitly requested
+4. Track 5 (overnight reliability probe)
+5. Track 3 (AI bootstrap), only when explicitly requested
 
 ## Acceptance for This Planning Stage
 

@@ -1,0 +1,10 @@
+2026-02-17 04:13:12 EST Starting overnight probe
+2026-02-17 04:13:12 EST Artifacts: jsonl=/home/tdj/cheney/notes/openclaw-artifacts/overnight-probe-20260217-041312.jsonl log=/home/tdj/cheney/notes/openclaw-artifacts/overnight-probe-20260217-041312.log pid=/home/tdj/cheney/notes/openclaw-artifacts/overnight-probe-20260217-041312.pid
+2026-02-17 04:13:12 EST Settings: host=rb1-admin mode=gateway agent=main thinking=off interval_sec=1 cycles=1 timeout_sec=240
+2026-02-17 04:13:12 EST Host=rb1-admin mode=gateway agent=main
+2026-02-17 04:13:12 EST Artifacts: /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-20260217-041312.log / /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-20260217-041312.json
+2026-02-17 04:13:14 EST Original model: ollama/qwen2.5:7b
+2026-02-17 04:13:15 EST Attempt 1: primary path
+2026-02-17 04:13:49 EST cycle=1 ok=1 backstop=0 provider=ollama model=qwen2.5:7b rc=0 tokens=11044 duration_ms=32139 wrapper_elapsed_ms=37595
+2026-02-17 04:13:49 EST Completed requested cycles (1)
+2026-02-17 04:13:49 EST Exiting overnight probe (rc=0)

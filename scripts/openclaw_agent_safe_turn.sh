@@ -11,7 +11,7 @@ Usage:
 
 Options:
   --message <text>          Message to send (required)
-  --host <alias>            SSH alias for rb1 (default: rb1-admin)
+  --host <alias|local>      SSH alias, or local/self for on-host execution (default: rb1-admin)
   --mode <gateway|local>    Use gateway or embedded local path (default: gateway)
   --agent <id>              Agent id (default: main)
   --thinking <level>        Thinking level (default: off)
@@ -121,6 +121,10 @@ log() {
 }
 
 ssh_host() {
+  if [[ "$HOST_ALIAS" == "local" || "$HOST_ALIAS" == "localhost" || "$HOST_ALIAS" == "self" ]]; then
+    bash -lc "$*"
+    return $?
+  fi
   ssh -o BatchMode=yes -o ConnectTimeout=8 "$HOST_ALIAS" "$@"
 }
 
