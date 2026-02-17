@@ -446,3 +446,9 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
 - Status: Implemented low-risk overnight probe runner and summary scripts for 30-minute unmanaged checks with JSONL/log artifacts, plus on-host execution support in the safe-turn wrapper via `--host local`.
 - Evidence: Added `scripts/openclaw_overnight_probe.sh`, `scripts/openclaw_overnight_probe_summary.sh`, `runbooks/openclaw-overnight-probe.md`; updated `scripts/openclaw_agent_safe_turn.sh` (`--host local` support), `README.md`, and `runbooks/next-steps-planning-20260216.md`. Smoke test pass artifact: `notes/openclaw-artifacts/overnight-probe-20260217-041312.{jsonl,log}` with summary `notes/openclaw-overnight-probe-summary-20260217-041416.md`.
 - Next action: Sync updated repo to `rb1`, launch detached overnight probe on `rb1` with `--host local`, and verify active PID plus first cycle row.
+
+## 2026-02-17 04:18 EST (Codex)
+- Area: overnight unmanaged probe launch on `rb1`
+- Status: Pushed commit `edf8d2b` and deployed repo to `/home/tdj/cheney` on `rb1`; started detached probe on-host (`--host local`, 30-minute interval) so local client sleep does not interrupt runs. Initial cycle completed successfully.
+- Evidence: `rb1` process `pid=119319` (`bash scripts/openclaw_overnight_probe.sh --host local --interval-sec 1800 --cycles 0 --mode gateway`); launch log `notes/openclaw-artifacts/overnight-probe-launch-20260217-041629.out`; active artifact pointer `notes/openclaw-artifacts/overnight-probe.latest_jsonl` => `/home/tdj/cheney/notes/openclaw-artifacts/overnight-probe-20260217-041629.jsonl`; cycle-1 summary `ok=1 provider=ollama backstop=0 wrapper_elapsed_ms=7247`; summary command on rb1 passes.
+- Next action: Leave probe unmanaged overnight, then run `scripts/openclaw_overnight_probe_summary.sh` on `rb1` in the morning and commit resulting artifact pointers/findings.
