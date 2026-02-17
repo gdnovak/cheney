@@ -25,19 +25,21 @@ Execution checklists:
 - `runbooks/today-egpu-and-memory-plan.md`
 - `runbooks/next-steps-planning-20260216.md`
 
-## Latest Implementation Checkpoint (2026-02-17 03:09 EST)
+## Latest Implementation Checkpoint (2026-02-17 03:39 EST)
 
 - `DONE` Implemented phase-1 efficient routing stack on `rb1-fedora` (`tdj`):
   - Ollama installed as system service and enabled.
   - Local models pulled: `qwen2.5:7b`, `qwen2.5-coder:7b`.
   - OpenClaw routing set to local-first (`ollama/qwen2.5:7b`) with Codex fallback (`openai-codex/gpt-5.3-codex`).
 - `DONE` Added reusable routing validation harness: `scripts/openclaw_routing_validation.sh`.
+- `DONE` Added operational safe-turn wrapper: `scripts/openclaw_agent_safe_turn.sh`.
 - `DONE` Captured baseline + validation artifacts:
   - `notes/openclaw-artifacts/openclaw-routing-baseline-20260217-023746.log`
   - `notes/openclaw-routing-validation-20260217.md`
   - `notes/openclaw-artifacts/openclaw-routing-validation-20260217-030356.{log,jsonl}`
 - `DONE` Verified coder-path routing (`qwen2.5-coder:7b`) under controlled primary-model switch.
 - `DONE` Added remediation pass and reran validation with session-reset hygiene + explicit manual Codex backstop when native fallback does not advance.
+- `DONE` Validated safe-turn wrapper in normal and forced-outage paths (auto-backstop success with model restore).
 - `OPEN` Native fallback behavior remains limited for local-provider transport failures (`fetch failed` path); current mitigation is controlled manual backstop, tracked in `notes/openclaw-routing-implementation-20260217.md`.
 
 ## Prior Implementation Checkpoint (2026-02-16 22:30 EST)
@@ -176,6 +178,7 @@ Direction now in effect:
 - `runbooks/rb2-hard-power-recovery-validation.md`: true no-power recovery checklist for batteryless `rb2`.
 - `runbooks/tailscale-node-staging-rb2-mba.md`: utility-VM tailscale setup for `rb2` and `mba` (`lchl-tsnode-rb2`, `lchl-tsnode-mba`) with approval flow.
 - `scripts/`: future automation helpers.
+- `scripts/openclaw_agent_safe_turn.sh`: operational wrapper for routine OpenClaw turns with controlled Codex backstop.
 - `subagents/`: environment-specific Codex instruction scopes (includes `cheney-vessel-alpha` for VM contractor install).
 - `configs/`: future host/service config snapshots and templates.
 - `notes/`: ad hoc research and decision notes.
@@ -204,10 +207,10 @@ Direction now in effect:
 
 1. Execute next-phase planning tracks from `runbooks/next-steps-planning-20260216.md`.
 2. Keep eGPU in stable operating mode and document recovery-first handling for disconnect incidents.
-3. Fix OpenClaw fallback-path behavior and session hygiene, then re-run routing validation matrix.
+3. Benchmark wrapper-driven token/cost behavior and tune escalation thresholds.
 4. Refresh continuity validation suite for the current host-role layout.
 5. Continue phase-2 network optimization (port map + 2.5Gb path planning).
 
 ## Current Session Objective
 
-Resume from the 2026-02-17 03:09 checkpoint: keep recovery-first eGPU operations, maintain weekly memory workflow discipline, and complete OpenClaw fallback remediation + rerun.
+Resume from the 2026-02-17 03:39 checkpoint: keep recovery-first eGPU operations, maintain weekly memory workflow discipline, and benchmark/tune OpenClaw safe-turn wrapper behavior.

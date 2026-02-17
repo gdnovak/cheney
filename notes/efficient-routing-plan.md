@@ -86,4 +86,5 @@ Escalate from local to Codex when any of the following occur:
 - Phase-1 implementation executed on `rb1-fedora`.
 - Validation artifacts and outcomes: `notes/openclaw-routing-implementation-20260217.md`.
 - Remediation pass completed: session-reset validation + manual Codex backstop path added for non-failover transport errors.
-- Current open item: package an operational day-to-day wrapper using the same backstop logic.
+- Operational day-to-day wrapper implemented: `scripts/openclaw_agent_safe_turn.sh`.
+- Current open item: benchmark wrapper-driven token/cost behavior and tune thresholds.

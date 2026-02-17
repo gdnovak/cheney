@@ -69,6 +69,34 @@ Run #3 outcomes:
 - Manual backstop case: `PASS` (`provider=openai-codex`, model `gpt-5.3-codex`)
 - Overall checks: `10/13 PASS`
 
+## Operational Wrapper (Run #4)
+
+Implemented a day-to-day safe-turn wrapper:
+
+- Script: `scripts/openclaw_agent_safe_turn.sh`
+- Purpose: run normal OpenClaw turns with automatic Codex backstop when local transport failures occur (for example `fetch failed` on Ollama path), then restore local-primary model state.
+
+Validation evidence:
+
+1. Normal path (Ollama healthy):
+- Artifact: `notes/openclaw-artifacts/openclaw-safe-turn-20260217-033835.json`
+- Result: `backstopUsed=0`, final provider/model `ollama/qwen2.5:7b`, response `SAFE_WRAPPER_OK_NORMAL`.
+2. Forced outage path (Ollama stopped):
+- Artifact: `notes/openclaw-artifacts/openclaw-safe-turn-20260217-033846.json`
+- Result: `backstopUsed=1`, attempt1 `fetch failed` on `ollama`, attempt2 `SAFE_WRAPPER_OK_FALLBACK` on `openai-codex/gpt-5.3-codex`, then model restored to `ollama/qwen2.5:7b`.
+
+Operational usage:
+
+```bash
+scripts/openclaw_agent_safe_turn.sh --message "Your prompt here"
+```
+
+Machine-readable output:
+
+```bash
+scripts/openclaw_agent_safe_turn.sh --message "Your prompt here" --json
+```
+
 ## Key Findings
 
 1. Local-first routing is operational and stable for routine prompts.
@@ -87,4 +115,4 @@ Run #3 outcomes:
 
 ## Next Action
 
-Implement a dedicated operational wrapper for day-to-day agent turns (same backstop logic as the validator), then benchmark token/cost deltas across a short real-task sample.
+Benchmark token/cost deltas for wrapper-driven turns across a short real-task sample, then tune escalation thresholds if needed.
