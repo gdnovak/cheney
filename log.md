@@ -458,3 +458,9 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
 - Status: Stopped unmanaged overnight probe on `rb1` and generated a detailed human-readable report with per-cycle metrics/excerpts, interval behavior, and outlier analysis.
 - Evidence: Probe run artifact `notes/openclaw-artifacts/overnight-probe-20260217-041629.jsonl` (`21/21` success, no errors/backstops, all `ollama/qwen2.5:7b`); supporting logs `notes/openclaw-artifacts/overnight-probe-20260217-041629.log` and `notes/openclaw-artifacts/overnight-probe-launch-20260217-041629.out`; report `notes/openclaw-overnight-reliability-report-20260217.md`.
 - Next action: Decide whether to keep persistent-session probe behavior (context growth) or add periodic agent/session reset for flatter latency/token usage in future unattended runs.
+
+## 2026-02-17 15:08 EST (Codex)
+- Area: `rb1` controlled reboot validation after eGPU enclosure noise report
+- Status: Executed recovery validator with reboot to power-cycle `rb1` and verify post-boot continuity + GPU visibility. Validation passed end-to-end.
+- Evidence: `scripts/rb1_recovery_validate.sh --scenario egpu_enclosure_noise_reboot_20260217 --reboot` => `PASS`; reboot elapsed `42s`; matrix row appended in `notes/rb1-recovery-matrix-20260217.md`; artifact `notes/rb1-recovery-artifacts/rb1-recovery-egpu_enclosure_noise_reboot_20260217-20260217-150602.log`; post-check `nvidia-smi` shows internal `00000000:01:00.0` and external `00000000:0F:00.0` both detected.
+- Next action: Observe enclosure acoustics physically after cold restart; if noise persists, keep eGPU detached when idle and schedule hardware inspection/cleaning.
