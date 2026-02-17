@@ -464,3 +464,9 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
 - Status: Executed recovery validator with reboot to power-cycle `rb1` and verify post-boot continuity + GPU visibility. Validation passed end-to-end.
 - Evidence: `scripts/rb1_recovery_validate.sh --scenario egpu_enclosure_noise_reboot_20260217 --reboot` => `PASS`; reboot elapsed `42s`; matrix row appended in `notes/rb1-recovery-matrix-20260217.md`; artifact `notes/rb1-recovery-artifacts/rb1-recovery-egpu_enclosure_noise_reboot_20260217-20260217-150602.log`; post-check `nvidia-smi` shows internal `00000000:01:00.0` and external `00000000:0F:00.0` both detected.
 - Next action: Observe enclosure acoustics physically after cold restart; if noise persists, keep eGPU detached when idle and schedule hardware inspection/cleaning.
+
+## 2026-02-17 16:08 EST (Codex)
+- Area: Ollama-only dual-GPU stress execution + safety supervision (`rb1`)
+- Status: Executed supervised local-only stress run on `rb1` with no Codex fallback path, using concurrent `qwen2.5:7b` and `qwen2.5-coder:7b` requests plus thermal/kernel watchdog. Run completed and was stopped on request.
+- Evidence: Final artifact set synced to repo under `notes/ollama-stress-20260217-152444/` (`requests.jsonl`, `nvidia-monitor.csv`, `run.log`, `watchdog.log`); summary report `notes/ollama-stress-report-20260217.md`. Final metrics: `185/185` success, avg throughput `22 tok/s`, max observed GPU temp `76C`, watchdog stop events `0`, hard kernel fault detections `0`, both GPUs actively utilized.
+- Next action: Decide whether to preserve this watchdog profile as default for unattended local stress/benchmark runs, and whether to bias workload routing toward the faster `qwen2.5:7b` path for routine assistant tasks.
