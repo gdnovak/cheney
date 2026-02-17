@@ -14,6 +14,18 @@ Purpose: record what is already in place for external eGPU work, what is still m
    - Driver `580.119.02`
    - CUDA `13.0`
    - GPU detected by `nvidia-smi`: `NVIDIA GeForce GTX 1060`
+6. External eGPU is currently detected and driver-bound:
+   - PCI endpoint present: `0000:0f:00.0` (`10de:1c03`, GTX 1060 6GB)
+   - Thunderbolt path visible (`Razer Core` in kernel log and `boltctl list`)
+   - `nvidia-smi` shows both GPUs concurrently
+7. Fallback VLAN99 is restored:
+   - `rb1`: `enp0s20f0u6.99` (`fallback99`) -> `172.31.99.1/30`
+   - `rb2`: `vmbr0.99` -> `172.31.99.2/30`
+   - Bidirectional ping and fallback SSH path checks succeed
+8. Local LLM runtime smoke test completed:
+   - Pulled `llama3.2:1b` via Ollama
+   - Prompt returned expected output (`GPU_OK`)
+   - GPU process sample during inference showed `/usr/local/bin/ollama` using CUDA GPU on bus `0000:01:00.0`
 
 ## Why This Helps eGPU Work Later
 
@@ -24,27 +36,28 @@ Purpose: record what is already in place for external eGPU work, what is still m
 
 ## Known Constraints
 
-1. Fedora-side VLAN99 fallback (`172.31.99.1/30`) is still missing; current fallback ping between `rb1` and `rb2` fails.
-2. `sshd -T` reports `PermitRootLogin yes` because installer file `/etc/ssh/sshd_config.d/01-permitrootlogin.conf` overrides hardening intent. Password auth remains disabled, so root is currently key-only.
-3. No external eGPU attach matrix has been run in this session.
+1. `sshd -T` reports `PermitRootLogin yes` because installer file `/etc/ssh/sshd_config.d/01-permitrootlogin.conf` overrides hardening intent. Password auth remains disabled, so root is currently key-only.
+2. Full reboot-survival matrix (with eGPU attached and fallback active) is not yet completed.
+3. Kernel reports external GPU link limitation at `2.5 GT/s PCIe x4` on current path; practical workload impact still needs benchmarking.
+4. Current Ollama scheduling observed workload on internal GPU; explicit external-GPU pinning behavior has not yet been validated.
 
 ## Deferred Phase-5 eGPU Gates
 
 Run these in order:
 
-1. Restore dual-sided fallback first (`rb1` + `rb2`) to reduce recovery risk.
-2. Attach-test matrix on `rb1-fedora`:
+1. Attach-test matrix on `rb1-fedora`:
    - cold boot with Core attached
    - hot attach on idle host
    - attach with/without external display sink
-3. Capture for each test:
+2. Capture for each test:
    - `boltctl list`
    - `lspci -nnk | grep -EA3 'VGA|3D|Display'`
    - `nvidia-smi`
    - `journalctl -k --since "<test-start-time>"`
-4. Validate that management SSH and WoL remain unaffected after each attempt.
+3. Validate that management SSH, fallback VLAN99, and WoL remain unaffected after each attempt.
+4. Run one short GPU workload benchmark to estimate impact of current link speed limits.
 
 ## Pass/Fail Definition
 
-- Pass: external eGPU device appears reliably in PCI enumeration and remains stable across reboot/reattach without losing management access.
-- Fail: no stable external enumeration or management instability; keep internal NVIDIA as baseline and continue CPU-safe AI bootstrap tasks.
+- Pass: external eGPU appears reliably across attach/reboot scenarios, fallback path remains intact, and at least one workload runs without GPU reset/drop events.
+- Fail: unstable external enumeration, management instability, or reproducible GPU errors; keep internal NVIDIA as baseline and continue CPU-safe AI bootstrap tasks.

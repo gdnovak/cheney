@@ -10,14 +10,14 @@ Ensure at least one reliable remote-control path remains available while away, e
 - Current node Ethernet may traverse docks/eGPU enclosures and should be treated as potential failure points.
 - `rb1` management is intentionally on a dedicated USB Ethernet NIC, not on the Razer Core network path.
 
-## Current Methods (Verified 2026-02-16 18:55 EST)
+## Current Methods (Verified 2026-02-16 19:06 EST)
 
 | node_id | primary_remote_method | secondary_remote_method | wake_capability | known_issues | last_tested |
 |---|---|---|---|---|---|
-| rb14-2017 (`rb1-fedora`) | SSH alias `rb1-admin` (`tdj@192.168.5.107`) | SSH alias `rb1` (`root`, break-glass key path) | `Wake-on: g` on `enp0s20f0u6` | VLAN99 fallback path is not currently configured on Fedora side; installer drop-in still sets `PermitRootLogin yes` (password auth disabled) | 2026-02-16 18:55 EST |
-| rb14-2015 (`rb2-pve`) | SSH alias `rb2` + Proxmox UI `https://192.168.5.108:8006` | VLAN99 fallback endpoint `172.31.99.2` | `Wake-on: g` on `enx00051bde7e6e` | No-battery power risk; no-power AC restore still requires manual button press | 2026-02-16 18:55 EST |
-| mba-2011 (`kabbalah`) | SSH alias `mba` + Proxmox UI `https://192.168.5.66:8006` | utility VM path via `301` | `Wake-on: g` on `nic0` | Aging hardware and slower reboot profile | 2026-02-16 18:55 EST |
-| truenas VM (`100` on `rb2`) | LAN service endpoint `192.168.5.100` | Proxmox console from `rb2` | n/a (VM) | VM guest agent unavailable; manage via LAN and host-level controls | 2026-02-16 18:55 EST |
+| rb14-2017 (`rb1-fedora`) | SSH alias `rb1-admin` (`tdj@192.168.5.107`) | SSH alias `rb1` (`root`, break-glass key path) | `Wake-on: g` on `enp0s20f0u6` | Installer drop-in still sets `PermitRootLogin yes` (password auth disabled); fallback reboot-survival validation still pending | 2026-02-16 19:06 EST |
+| rb14-2015 (`rb2-pve`) | SSH alias `rb2` + Proxmox UI `https://192.168.5.108:8006` | VLAN99 fallback endpoint `172.31.99.2` | `Wake-on: g` on `enx00051bde7e6e` | No-battery power risk; no-power AC restore still requires manual button press | 2026-02-16 19:06 EST |
+| mba-2011 (`kabbalah`) | SSH alias `mba` + Proxmox UI `https://192.168.5.66:8006` | utility VM path via `301` | `Wake-on: g` on `nic0` | Aging hardware and slower reboot profile | 2026-02-16 19:06 EST |
+| truenas VM (`100` on `rb2`) | LAN service endpoint `192.168.5.100` | Proxmox console from `rb2` | n/a (VM) | VM guest agent unavailable; manage via LAN and host-level controls | 2026-02-16 19:06 EST |
 
 ## `rb1-fedora` Access Baseline (Applied 2026-02-16)
 
@@ -47,9 +47,11 @@ Ensure at least one reliable remote-control path remains available while away, e
   - `rb1` target fallback: `172.31.99.1/30`
   - `rb2` active fallback: `172.31.99.2/30`
 - Current state:
-  - `rb2` side is active (`vmbr0.99`).
-  - `rb1` side is currently absent post-Fedora reinstall.
-  - Bidirectional fallback ping currently fails.
+  - `rb2` side active: `vmbr0.99` -> `172.31.99.2/30`.
+  - `rb1` side active: `enp0s20f0u6.99` (`fallback99`) -> `172.31.99.1/30`.
+  - Bidirectional ping currently succeeds (`rb1 <-> rb2` over VLAN99).
+  - Fallback SSH path validated through jump tests to both endpoints.
+  - Remaining gap: post-reboot persistence validation on Fedora side.
 
 ## Tailscale Continuity Rule
 
@@ -82,5 +84,5 @@ Runbook:
 
 1. Confirm SSH paths work for `rb1-admin`, `rb1` (break-glass), `rb2`, and `mba` using current keys.
 2. Confirm Proxmox UI access remains available on `rb2` and `mba`.
-3. Re-establish dual-sided VLAN99 fallback before unattended windows.
+3. Re-validate VLAN99 fallback after each host reboot and before unattended windows.
 4. Record test timestamps and failures before any migration/cutover work.

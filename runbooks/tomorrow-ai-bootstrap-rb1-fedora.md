@@ -2,6 +2,15 @@
 
 Purpose: bring up a first attended AI stack on the new Fedora baremetal host with clear rollback and no overnight autonomy yet.
 
+## Current Checkpoint (2026-02-16 19:10 EST)
+
+- Phase A baseline: complete.
+- Phase B Ollama install: complete (`ollama` active/enabled on `127.0.0.1:11434`).
+- GPU runtime discovery: Ollama detects both CUDA GPUs (`0000:01:00.0` internal + `0000:0f:00.0` external).
+- Model pull + inference smoke: complete (`llama3.2:1b`, response `GPU_OK`).
+- Codex CLI install: complete (`codex-cli 0.101.0`).
+- Remaining for attended flow: Codex login/auth + attended workflow validation + smoke task logging.
+
 ## Scope
 
 In scope:

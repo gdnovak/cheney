@@ -4,19 +4,30 @@ Date anchor: 2026-02-16
 
 Purpose: make immediate progress on compute reliability (`rb1-fedora` eGPU) and assistant context quality (memory structure redesign).
 
-## Session Checkpoint (2026-02-16 18:55 EST)
+## Session Checkpoint (2026-02-16 19:10 EST)
 
 Track A progress:
 
 1. `DONE` Host baseline and updates applied.
 2. `DONE` Internal NVIDIA stack validated (`nvidia-smi` pass, driver `580.119.02`, CUDA `13.0`).
 3. `DONE` WoL persistence configured and revalidated after reboot.
-4. `OPEN` External eGPU attach/detection acceptance.
+4. `DONE` Fedora-side fallback VLAN99 restored and validated (`172.31.99.1/30` <-> `172.31.99.2/30`).
+5. `DONE` External eGPU hot-attach detection validated (`0f:00.0`, GTX 1060 6GB).
+6. `OPEN` Reboot-survival validation for fallback+eGPU state.
 
 Track B progress:
 
 1. `OPEN` Memory structure and RAG decision still pending.
 2. `OPEN` `memory/` scaffold not started.
+
+Bootstrap progress:
+
+1. `DONE` Ollama installed on `rb1` (`0.16.1`) and service is active.
+2. `DONE` Ollama runtime reports both CUDA GPUs as available inference compute.
+3. `DONE` Pulled `llama3.2:1b` and validated local inference response (`GPU_OK`).
+4. `DONE` Observed live GPU allocation by Ollama during inference (`/usr/local/bin/ollama` on CUDA GPU).
+5. `DONE` Installed Node/npm + Codex CLI (`codex-cli 0.101.0`) and cloned `~/cheney` on `rb1`.
+6. `OPEN` Codex login/auth + attended workflow validation on `rb1`.
 
 ## Track A: eGPU on `rb1-fedora`
 
