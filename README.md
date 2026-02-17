@@ -15,14 +15,14 @@ This repository tracks infrastructure planning and execution for agent tooling, 
 
 If you are resuming work, start here:
 
-1. Run reboot-survival validation for `rb1` fallback VLAN99 + eGPU attachment + Ollama service.
+1. Run reboot-survival validation for `rb1` fallback VLAN99 + eGPU attachment.
 2. Execute external eGPU acceptance matrix (cold boot, hot attach, display/no-display) and capture evidence in `notes/egpu-readiness-rb1-fedora-20260216.md`.
-3. Continue attended bootstrap by installing/validating Codex workflow on `rb1-fedora`.
+3. Reconfirm fallback persistence and management access after an `rb1` reboot (`rb1-admin`, `rb1`, VLAN99).
 4. Decide memory strategy (markdown graph only vs markdown+RAG), then scaffold `memory/`.
 
 Execution checklist: `runbooks/today-egpu-and-memory-plan.md`
 
-## Latest Implementation Checkpoint (2026-02-16 19:10 EST)
+## Latest Implementation Checkpoint (2026-02-16 19:29 EST)
 
 - `DONE` Added hardened admin access path `rb1-admin` (`tdj`) with key-only SSH and validated `sudo -n` access.
 - `DONE` Applied Fedora baseline updates on `rb1` (package refresh, core services active, reboot validated).
@@ -30,11 +30,12 @@ Execution checklist: `runbooks/today-egpu-and-memory-plan.md`
 - `DONE` Installed/validated NVIDIA stack on `rb1` internal GPU (`nvidia-smi` shows GTX 1060, driver `580.119.02`, CUDA `13.0`).
 - `DONE` Reintroduced Fedora-side fallback VLAN99 (`fallback99`, `172.31.99.1/30`) with bidirectional ping success and fallback SSH path verification (`rb1 <-> rb2` over `172.31.99.0/30`).
 - `DONE` External eGPU is hot-attach detected and driver-bound (`0f:00.0` / `10de:1c03`), with both GPUs visible in `nvidia-smi`.
-- `DONE` Installed and enabled Ollama (`0.16.1`) on `rb1`; service is active on `127.0.0.1:11434` and detects both CUDA GPUs.
-- `DONE` Pulled `llama3.2:1b` and ran local inference (`GPU_OK` response); runtime showed live CUDA allocation (`/usr/local/bin/ollama` on GPU bus `01:00.0`, ~1728 MiB).
-- `DONE` Installed Node/npm + Codex CLI on `rb1` (`codex-cli 0.101.0`), and cloned Cheney repo to `~/cheney`.
-- `OPEN` Codex login/auth on `rb1` remains pending (`codex login status` => `Not logged in`).
-- `OPEN` Reboot-survival validation for fallback VLAN99 + eGPU + Ollama remains pending.
+- `DONE` Rolled back AI bootstrap artifacts from `rb1` per scope request:
+  - Ollama service/binary/data removed
+  - Codex CLI removed
+  - host-local `~/cheney` clone removed
+- `DONE` Kept environment baseline intact (Node/npm retained; NVIDIA + fallback VLAN unchanged and verified).
+- `OPEN` Reboot-survival validation for fallback VLAN99 + eGPU remains pending.
 
 ## Naming Standard (`lcHL`)
 
@@ -80,11 +81,10 @@ Mandatory gate before phase 3:
 - Baremetal Fedora host now has validated NVIDIA driver stack (`nvidia-smi` pass, driver `580.119.02`).
 - External eGPU acceptance checks remain pending; preconditions/readiness findings are tracked in `notes/egpu-readiness-rb1-fedora-20260216.md`.
 
-4. `IN PROGRESS` Assistant bootstrap readiness on new host layout.
+4. `DEFERRED` Assistant bootstrap readiness on new host layout.
 - `tsDeb` watchdog timer reports active from guest-exec check.
 - Utility VMs (`201`, `301`) are running.
-- Ollama service is installed/running on `rb1-fedora` and reports both CUDA GPUs.
-- Codex CLI is installed on `rb1-fedora`; login/auth and attended smoke task remain pending.
+- AI runtime/tooling on `rb1` was rolled back intentionally and will not be reintroduced until explicitly requested.
 
 ## Current Hardware Context
 
@@ -95,7 +95,7 @@ Mandatory gate before phase 3:
 
 ## Immediate Objective
 
-Stabilize post-pivot operations: complete `rb1` eGPU bring-up, restore dual-sided VLAN99 fallback, and finish attended AI bootstrap on `rb1-fedora` while keeping `rb2` continuity controls intact.
+Stabilize post-pivot operations: complete `rb1` eGPU bring-up and confirm dual-sided VLAN99 reboot persistence while keeping `rb2` continuity controls intact.
 
 ## Storage Placement Decision (Current)
 
@@ -173,10 +173,10 @@ Direction now in effect:
 
 1. Confirm reboot survival for fallback VLAN99 and eGPU-attached state on `rb1-fedora`.
 2. Complete external eGPU acceptance on `rb1-fedora` with reboot-stability evidence.
-3. Complete attended Codex bootstrap on `rb1-fedora` and record smoke-test evidence.
+3. Keep AI bootstrap deferred until explicitly resumed.
 4. Refresh continuity validation suite for the current host-role layout.
 5. Continue phase-2 network optimization (port map + 2.5Gb path planning).
 
 ## Current Session Objective
 
-Resume from the 2026-02-16 19:06 checkpoint: run reboot validation, then continue external eGPU matrix and Codex bootstrap on `rb1-fedora`.
+Resume from the 2026-02-16 19:29 checkpoint: run reboot validation, then continue external eGPU matrix with AI bootstrap deferred.

@@ -22,10 +22,11 @@ Purpose: record what is already in place for external eGPU work, what is still m
    - `rb1`: `enp0s20f0u6.99` (`fallback99`) -> `172.31.99.1/30`
    - `rb2`: `vmbr0.99` -> `172.31.99.2/30`
    - Bidirectional ping and fallback SSH path checks succeed
-8. Local LLM runtime smoke test completed:
-   - Pulled `llama3.2:1b` via Ollama
-   - Prompt returned expected output (`GPU_OK`)
-   - GPU process sample during inference showed `/usr/local/bin/ollama` using CUDA GPU on bus `0000:01:00.0`
+8. AI runtime artifacts were intentionally removed after initial smoke validation:
+   - `ollama` removed from host
+   - `codex` removed from host
+   - host-local `~/cheney` clone removed
+   - environment baseline left intact for deferred AI bring-up later
 
 ## Why This Helps eGPU Work Later
 
@@ -39,7 +40,7 @@ Purpose: record what is already in place for external eGPU work, what is still m
 1. `sshd -T` reports `PermitRootLogin yes` because installer file `/etc/ssh/sshd_config.d/01-permitrootlogin.conf` overrides hardening intent. Password auth remains disabled, so root is currently key-only.
 2. Full reboot-survival matrix (with eGPU attached and fallback active) is not yet completed.
 3. Kernel reports external GPU link limitation at `2.5 GT/s PCIe x4` on current path; practical workload impact still needs benchmarking.
-4. Current Ollama scheduling observed workload on internal GPU; explicit external-GPU pinning behavior has not yet been validated.
+4. External-GPU pinning behavior under real workloads has not yet been validated (AI runtime currently deferred).
 
 ## Deferred Phase-5 eGPU Gates
 

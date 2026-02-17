@@ -4,7 +4,7 @@ Date anchor: 2026-02-16
 
 Purpose: make immediate progress on compute reliability (`rb1-fedora` eGPU) and assistant context quality (memory structure redesign).
 
-## Session Checkpoint (2026-02-16 19:10 EST)
+## Session Checkpoint (2026-02-16 19:29 EST)
 
 Track A progress:
 
@@ -22,12 +22,9 @@ Track B progress:
 
 Bootstrap progress:
 
-1. `DONE` Ollama installed on `rb1` (`0.16.1`) and service is active.
-2. `DONE` Ollama runtime reports both CUDA GPUs as available inference compute.
-3. `DONE` Pulled `llama3.2:1b` and validated local inference response (`GPU_OK`).
-4. `DONE` Observed live GPU allocation by Ollama during inference (`/usr/local/bin/ollama` on CUDA GPU).
-5. `DONE` Installed Node/npm + Codex CLI (`codex-cli 0.101.0`) and cloned `~/cheney` on `rb1`.
-6. `OPEN` Codex login/auth + attended workflow validation on `rb1`.
+1. `DONE` AI runtime/tooling rollback executed on `rb1` (`ollama` + `codex` removed, host-local `~/cheney` clone removed).
+2. `DONE` Environment baseline retained after rollback (NVIDIA, fallback99, SSH/WoL).
+3. `DEFERRED` AI bootstrap workflow until explicitly resumed.
 
 ## Track A: eGPU on `rb1-fedora`
 
