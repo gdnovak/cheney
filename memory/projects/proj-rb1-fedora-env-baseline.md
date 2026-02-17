@@ -29,8 +29,9 @@ Stabilize `rb1-fedora` for reliable experimentation while keeping management con
 ## Next Actions
 
 1. Preserve current stable operating mode (avoid unnecessary hot-unplug/replug).
-2. Execute Track 2 (continuity/recovery hardening) from `runbooks/next-steps-planning-20260216.md`.
+2. Track 2 continuity/recovery hardening is now implemented with reusable validator + incident runbook.
 3. Keep AI runtime deferred until explicitly requested.
+4. Proceed with Track 4 memory workflow maturation.
 
 ## Links
 

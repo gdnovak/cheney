@@ -108,6 +108,19 @@ Display sink check artifact:
    - fallback VLAN99 ping works both ways (`rb1` <-> `rb2`)
 4. Return to stable attached mode and continue planned work.
 
+Reusable validator now in repo:
+
+- `scripts/rb1_recovery_validate.sh`
+- Matrix output: `notes/rb1-recovery-matrix-YYYYMMDD.md`
+- Artifact output: `notes/rb1-recovery-artifacts/rb1-recovery-<scenario>-<timestamp>.log`
+
+Latest smoke result:
+
+- `track2_smoketest_rerun` => `PASS`
+- Artifacts:
+  - `notes/rb1-recovery-matrix-20260216.md`
+  - `notes/rb1-recovery-artifacts/rb1-recovery-track2_smoketest_rerun-20260216-205545.log`
+
 ## Post-Polish Baseline (2026-02-16 20:49 EST)
 
 1. SSH effective policy on `rb1` now reports:

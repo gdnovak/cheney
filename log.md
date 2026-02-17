@@ -343,3 +343,9 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
 - Status: Implemented Track 1 host polish: resolved SSH root-login precedence issue with explicit early access-policy include, captured clean post-acceptance baseline snapshot, and reduced nonessential service surface by disabling `bluetooth` and `ModemManager`.
 - Evidence: On host, `sshd -T` now reports `permitrootlogin without-password` + `passwordauthentication no`; baseline snapshot saved at `notes/rb1-operational-baseline-20260216-204915.md`; `systemctl is-enabled/is-active bluetooth ModemManager` now returns `disabled`/`inactive`.
 - Next action: Execute Track 2 continuity/recovery hardening (reusable recovery script + post-incident checklist runbook section).
+
+## 2026-02-16 20:55 EST (Codex)
+- Area: Track 2 continuity/recovery hardening implementation
+- Status: Added reusable `rb1` recovery validator script and dedicated incident-recovery runbook, then executed a live smoke validation. Initial strict service policy produced one expected FAIL row (`nvidia-powerd inactive`), validator policy was corrected to accept expected inactive state on this hardware, and rerun passed.
+- Evidence: Added `scripts/rb1_recovery_validate.sh`; added `runbooks/rb1-egpu-incident-recovery.md`; matrix `notes/rb1-recovery-matrix-20260216.md` now includes `track2_smoketest` (`FAIL`, policy tuning) and `track2_smoketest_rerun` (`PASS`); PASS artifact at `notes/rb1-recovery-artifacts/rb1-recovery-track2_smoketest_rerun-20260216-205545.log`.
+- Next action: Continue Track 4 memory workflow maturation while keeping this recovery validator as the standard post-incident/post-maintenance gate.

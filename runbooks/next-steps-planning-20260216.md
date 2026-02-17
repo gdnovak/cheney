@@ -45,6 +45,19 @@ Use recovery-first policy for eGPU operations:
 2. Add an explicit “post-incident checklist” runbook section for eGPU/TB faults.
 3. Schedule a controlled maintenance reboot verification after any major package/kernel update.
 
+### Track 2 Checkpoint (2026-02-16 20:55 EST)
+
+1. `DONE` Reusable validation/recovery script added:
+   - `scripts/rb1_recovery_validate.sh`
+2. `DONE` Explicit post-incident operator runbook added:
+   - `runbooks/rb1-egpu-incident-recovery.md`
+3. `DONE` Maintenance timing rule documented:
+   - run validator after kernel/NVIDIA/TB-related updates
+4. `DONE` Live smoke validation executed:
+   - `notes/rb1-recovery-matrix-20260216.md` (`track2_smoketest_rerun` => `PASS`)
+   - `notes/rb1-recovery-artifacts/rb1-recovery-track2_smoketest_rerun-20260216-205545.log`
+5. `NEXT` Continue Track 4 memory workflow maturation (or run reboot-mode validator during next maintenance window).
+
 ### Track 3: Assistant Bootstrap Readiness (Still Deferred)
 
 1. Keep AI runtime disabled until explicitly resumed.
