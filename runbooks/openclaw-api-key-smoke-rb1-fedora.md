@@ -11,11 +11,18 @@ Completed:
 3. Confirmed no gateway daemon/service is installed.
 4. Confirmed API-key wiring by running an intentional invalid-key test and receiving OpenAI `401` (provider path reached successfully).
 5. Recorded artifact: `notes/openclaw-artifacts/openclaw-rb1-headless-smoke-prekey-20260216-215225.log`.
+6. Executed real-key smoke attempts and confirmed provider/model execution path with live key:
+   - `notes/openclaw-artifacts/openclaw-rb1-headless-smoke-realkey-20260216-222828.log` (`openai/gpt-5-mini`)
+   - `notes/openclaw-artifacts/openclaw-rb1-headless-smoke-realkey-retry-20260216-222853.log` (`openai/gpt-4.1-nano`)
+   - both returned `API rate limit reached` before model completion.
+7. Confirmed ephemeral cleanup:
+   - `/home/tdj/.openai_key_once` removed.
+   - `/tmp/openai_key_once` absent on `rb1`.
+   - post-cleanup agent call returns `No API key found for provider "openai"`.
 
 Pending:
 
-1. Run one real-key smoke prompt and capture success artifact.
-2. Unset key and confirm clean environment post-test.
+1. Re-run one real-key smoke prompt after OpenAI rate-limit window resets (or with a higher-quota key) and capture `OPENCLAW_SMOKE_OK`.
 
 ## Scope
 

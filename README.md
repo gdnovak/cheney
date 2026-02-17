@@ -45,7 +45,7 @@ Execution checklists:
   - internal+external NVIDIA GPUs remained visible.
 - `DONE` Installed OpenClaw CLI on `rb1-fedora` for attended headless API-key evaluation (`openclaw 2026.2.15`).
 - `DONE` Created isolated OpenClaw profile `rb1eval` and validated OpenAI provider wiring path with intentional invalid-key `401` response.
-- `PENDING` Execute one real-key smoke prompt and capture artifact; keep daemon install disabled in this phase.
+- `IN PROGRESS` Real-key smoke attempts reached OpenAI but hit API rate limit on `gpt-5-mini` and `gpt-4.1-nano`; rerun required after quota reset to capture `OPENCLAW_SMOKE_OK`.
 
 ## Naming Standard (`lcHL`)
 
