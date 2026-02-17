@@ -1,0 +1,472 @@
+2026-02-16 19:56:03 EST Scenario=hot_attach_idle_physical host=rb1-admin peer=rb2 pci_id=10de:1c03
+2026-02-16 19:56:03 EST Start marker for kernel log capture: 2026-02-16T19:56:03-05:00
+2026-02-16 19:56:03 EST WAITING_FOR_DETACH timeout=300s
+2026-02-16 19:56:25 EST DETACH_DETECTED
+2026-02-16 19:56:25 EST WAITING_FOR_ATTACH timeout=300s
+2026-02-16 19:58:05 EST STATUS=manual_capture_after_attach_failure
+
+## post-failure quick checks
+260c7006-8334-4a1c-ad0e-32cf800a41a8
+index, pci.bus_id, name
+0, 00000000:01:00.0, NVIDIA GeForce GTX 1060
+
+## kernel log since scenario start
+Feb 16 19:56:19 rb1-fedora kernel: xhci_hcd 0000:14:00.0: remove, state 1
+Feb 16 19:56:19 rb1-fedora kernel: usb usb8: USB disconnect, device number 1
+Feb 16 19:56:19 rb1-fedora kernel: usb 8-1: USB disconnect, device number 2
+Feb 16 19:56:19 rb1-fedora kernel: ax88179_178a 8-1:1.0 enp20s0u1: unregister 'ax88179_178a' usb-0000:14:00.0-1, ASIX AX88179 USB 3.0 Gigabit Ethernet
+Feb 16 19:56:19 rb1-fedora kernel: xhci_hcd 0000:14:00.0: USB bus 8 deregistered
+Feb 16 19:56:19 rb1-fedora kernel: xhci_hcd 0000:14:00.0: remove, state 1
+Feb 16 19:56:19 rb1-fedora kernel: usb usb7: USB disconnect, device number 1
+Feb 16 19:56:19 rb1-fedora kernel: usb 7-2: USB disconnect, device number 2
+Feb 16 19:56:19 rb1-fedora kernel: xhci_hcd 0000:14:00.0: USB bus 7 deregistered
+Feb 16 19:56:19 rb1-fedora kernel: xhci_hcd 0000:13:00.0: remove, state 4
+Feb 16 19:56:19 rb1-fedora kernel: usb usb6: USB disconnect, device number 1
+Feb 16 19:56:19 rb1-fedora kernel: xhci_hcd 0000:13:00.0: USB bus 6 deregistered
+Feb 16 19:56:19 rb1-fedora kernel: xhci_hcd 0000:13:00.0: remove, state 4
+Feb 16 19:56:19 rb1-fedora kernel: usb usb5: USB disconnect, device number 1
+Feb 16 19:56:19 rb1-fedora kernel: xhci_hcd 0000:13:00.0: USB bus 5 deregistered
+Feb 16 19:56:19 rb1-fedora kernel: xhci_hcd 0000:12:00.0: remove, state 4
+Feb 16 19:56:19 rb1-fedora kernel: usb usb4: USB disconnect, device number 1
+Feb 16 19:56:19 rb1-fedora kernel: xhci_hcd 0000:12:00.0: USB bus 4 deregistered
+Feb 16 19:56:19 rb1-fedora kernel: xhci_hcd 0000:12:00.0: remove, state 4
+Feb 16 19:56:19 rb1-fedora kernel: usb usb3: USB disconnect, device number 1
+Feb 16 19:56:19 rb1-fedora kernel: xhci_hcd 0000:12:00.0: USB bus 3 deregistered
+Feb 16 19:56:20 rb1-fedora kernel: snd_hda_codec_nvhdmi hdaudioC2D0: HDMI: invalid ELD buf size -1
+Feb 16 19:56:20 rb1-fedora kernel: snd_hda_codec_nvhdmi hdaudioC2D0: HDMI: invalid ELD buf size -1
+Feb 16 19:56:20 rb1-fedora kernel: snd_hda_codec_nvhdmi hdaudioC2D0: HDMI: invalid ELD buf size -1
+Feb 16 19:56:20 rb1-fedora kernel: snd_hda_codec_nvhdmi hdaudioC2D0: HDMI: invalid ELD buf size -1
+Feb 16 19:56:20 rb1-fedora kernel: snd_hda_codec_nvhdmi hdaudioC2D0: HDMI: invalid ELD buf size -1
+Feb 16 19:56:20 rb1-fedora kernel: snd_hda_codec_nvhdmi hdaudioC2D0: HDMI: invalid ELD buf size -1
+Feb 16 19:56:20 rb1-fedora kernel: snd_hda_codec_nvhdmi hdaudioC2D0: HDMI: invalid ELD buf size -1
+Feb 16 19:56:20 rb1-fedora kernel: snd_hda_codec_nvhdmi hdaudioC2D0: HDMI: invalid ELD buf size -1
+Feb 16 19:56:20 rb1-fedora kernel: snd_hda_codec_nvhdmi hdaudioC2D0: HDMI: invalid ELD buf size -1
+Feb 16 19:56:20 rb1-fedora kernel: snd_hda_codec_nvhdmi hdaudioC2D0: HDMI: invalid ELD buf size -1
+Feb 16 19:56:20 rb1-fedora kernel: snd_hda_codec_nvhdmi hdaudioC2D0: HDMI: invalid ELD buf size -1
+Feb 16 19:56:20 rb1-fedora kernel: snd_hda_codec_nvhdmi hdaudioC2D0: HDMI: invalid ELD buf size -1
+Feb 16 19:56:20 rb1-fedora kernel: snd_hda_codec_nvhdmi hdaudioC2D0: HDMI: invalid ELD buf size -1
+Feb 16 19:56:20 rb1-fedora kernel: snd_hda_codec_nvhdmi hdaudioC2D0: HDMI: invalid ELD buf size -1
+Feb 16 19:56:20 rb1-fedora kernel: snd_hda_codec_nvhdmi hdaudioC2D0: HDMI: invalid ELD buf size -1
+Feb 16 19:56:20 rb1-fedora kernel: snd_hda_codec_nvhdmi hdaudioC2D0: HDMI: invalid ELD buf size -1
+Feb 16 19:56:20 rb1-fedora kernel: snd_hda_intel 0000:0f:00.1: GPU sound probed, but not operational: please add a quirk to driver_denylist
+Feb 16 19:56:20 rb1-fedora kernel: [drm] [nvidia-drm] [GPU ID 0x00000f00] Removing device
+Feb 16 19:56:20 rb1-fedora kernel: [drm] [nvidia-drm] [GPU ID 0x00000f00] Unloading driver
+Feb 16 19:56:20 rb1-fedora kernel: NVRM: GPU at PCI:0000:0f:00: GPU-4c3e6a0f-0006-5c80-ab64-8198541fc1c6
+Feb 16 19:56:20 rb1-fedora kernel: NVRM: Xid (PCI:0000:0f:00): 79, pid=104, name=kworker/u32:3, GPU has fallen off the bus.
+Feb 16 19:56:20 rb1-fedora kernel: NVRM: GPU 0000:0f:00.0: GPU has fallen off the bus.
+Feb 16 19:56:20 rb1-fedora kernel: nvidia-modeset: ERROR: GPU:1: Failed to query display engine channel state: 0x0000927c:0:0:0x00000040
+Feb 16 19:56:20 rb1-fedora kernel: nvidia-modeset: ERROR: GPU:1: Failed to query display engine channel state: 0x0000927c:1:0:0x0000000f
+Feb 16 19:56:20 rb1-fedora kernel: nvidia-modeset: ERROR: GPU:1: Failed to query display engine channel state: 0x0000927c:2:0:0x0000000f
+Feb 16 19:56:20 rb1-fedora kernel: nvidia-modeset: ERROR: GPU:1: Failed to query display engine channel state: 0x0000927c:3:0:0x0000000f
+Feb 16 19:56:20 rb1-fedora kernel: NVRM: Xid (PCI:0000:0f:00): 154, GPU recovery action changed from 0x0 (None) to 0x1 (GPU Reset Required)
+Feb 16 19:56:20 rb1-fedora kernel: nvidia-modeset: ERROR: GPU:1: Failed to query display engine channel state: 0x0000987d:0:0:0x0000000f
+Feb 16 19:56:20 rb1-fedora kernel: nvidia-modeset: WARNING: GPU:1: Failed to disable HDMI FRL retrain notifications (subdevice: 0) (error: 0x1)
+Feb 16 19:56:20 rb1-fedora kernel: ------------[ cut here ]------------
+Feb 16 19:56:20 rb1-fedora kernel: WARNING: CPU: 4 PID: 104 at nvidia/nv.c:5082 nvidia_dev_put+0xa4/0xb0 [nvidia]
+Feb 16 19:56:20 rb1-fedora kernel: Modules linked in: 8021q garp mrp stp llc rfkill nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 nf_tables qrtr nvidia_drm(POE) nvidia_modeset(POE) sunrpc nvidia_uvm(POE) binfmt_misc r8153_ecm cdc_ether snd_hda_codec_intelhdmi snd_hda_codec_alc269 snd_soc_avs snd_hda_scodec_component snd_hda_codec_realtek_lib intel_rapl_msr intel_rapl_common snd_soc_hda_codec snd_hda_codec_generic snd_hda_ext_core intel_uncore_frequency snd_hda_codec_nvhdmi intel_uncore_frequency_common snd_hda_codec_hdmi snd_soc_core snd_hda_intel snd_hda_codec intel_tcc_cooling snd_compress x86_pkg_temp_thermal ac97_bus intel_powerclamp snd_pcm_dmaengine snd_hda_core snd_seq coretemp rapl vfat iTCO_wdt ax88179_178a snd_intel_dspcfg intel_pmc_bxt mei_pxp mei_hdcp iTCO_vendor_support r8152 usbnet snd_seq_device intel_cstate snd_intel_sdw_acpi fat snd_hwdep intel_uncore intel_wmi_thunderbolt nvidia(POE) snd_pcm mii
+Feb 16 19:56:20 rb1-fedora kernel:  mei_me i2c_i801 snd_timer mei i2c_smbus snd idma64 soundcore intel_pch_thermal drm_ttm_helper intel_pmc_core pmt_telemetry pmt_discovery pmt_class acpi_pad intel_pmc_ssram_telemetry intel_vsec joydev loop dm_multipath nfnetlink zram lz4hc_compress lz4_compress xfs i915 i2c_algo_bit drm_buddy ttm nvme drm_display_helper nvme_core hid_rmi rmi_core nvme_keyring nvme_auth mxm_wmi thunderbolt polyval_clmulni ghash_clmulni_intel serio_raw hkdf cec video i2c_hid_acpi i2c_hid intel_oc_wdt wmi pinctrl_sunrisepoint scsi_dh_rdac scsi_dh_emc scsi_dh_alua i2c_dev fuse
+Feb 16 19:56:20 rb1-fedora kernel: CPU: 4 UID: 0 PID: 104 Comm: kworker/u32:3 Tainted: P           OE       6.18.9-200.fc43.x86_64 #1 PREEMPT(lazy) 
+Feb 16 19:56:20 rb1-fedora kernel: Tainted: [P]=PROPRIETARY_MODULE, [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+Feb 16 19:56:20 rb1-fedora kernel: Hardware name: Razer Blade/Razer, BIOS 3.03 09/12/2017
+Feb 16 19:56:20 rb1-fedora kernel: Workqueue: kacpi_hotplug acpi_hotplug_work_fn
+Feb 16 19:56:20 rb1-fedora kernel: RIP: 0010:nvidia_dev_put+0xa4/0xb0 [nvidia]
+Feb 16 19:56:20 rb1-fedora kernel: Code: 89 de 4c 89 e7 e8 7c 15 d8 00 85 c0 75 1c 5b 48 89 ef 5d 41 5c e9 6c 5f 3a d2 5b 48 c7 c7 b0 77 5c c2 5d 41 5c e9 5c 5f 3a d2 <0f> 0b eb e0 0f 1f 84 00 00 00 00 00 90 90 90 90 90 90 90 90 90 90
+Feb 16 19:56:20 rb1-fedora kernel: RSP: 0018:ffffcfd6408d79a8 EFLAGS: 00010202
+Feb 16 19:56:20 rb1-fedora kernel: RAX: 0000000000000026 RBX: ffff8add409b8000 RCX: ffffcfd6408d7928
+Feb 16 19:56:20 rb1-fedora kernel: RDX: 0000000000000000 RSI: 0000000000000246 RDI: ffffcfd6408d78d8
+Feb 16 19:56:20 rb1-fedora kernel: RBP: ffff8add409b8690 R08: 0000000000000000 R09: 0000000000000000
+Feb 16 19:56:20 rb1-fedora kernel: R10: ffffcfd6408d7950 R11: ffff8add00042200 R12: ffff8add0946b000
+Feb 16 19:56:20 rb1-fedora kernel: R13: ffffcfd6404e40a0 R14: ffff8add35e03018 R15: ffff8add0032a908
+Feb 16 19:56:20 rb1-fedora kernel: FS:  0000000000000000(0000) GS:ffff8ae0e9226000(0000) knlGS:0000000000000000
+Feb 16 19:56:20 rb1-fedora kernel: CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+Feb 16 19:56:20 rb1-fedora kernel: CR2: 00007f211bb777f8 CR3: 000000010bc12004 CR4: 00000000003706f0
+Feb 16 19:56:20 rb1-fedora kernel: Call Trace:
+Feb 16 19:56:20 rb1-fedora kernel:  <TASK>
+Feb 16 19:56:20 rb1-fedora kernel:  nvkms_close_gpu+0x4a/0x80 [nvidia_modeset]
+Feb 16 19:56:20 rb1-fedora kernel:  _nv003187kms+0xd5/0x1e0 [nvidia_modeset]
+Feb 16 19:56:20 rb1-fedora kernel:  _nv002941kms+0xff/0x140 [nvidia_modeset]
+Feb 16 19:56:20 rb1-fedora kernel:  _nv000416kms+0xe4/0x180 [nvidia_modeset]
+Feb 16 19:56:20 rb1-fedora kernel:  ? _nv000746kms+0xb0/0xb0 [nvidia_modeset]
+Feb 16 19:56:20 rb1-fedora kernel:  _nv003156kms+0x8d/0xa0 [nvidia_modeset]
+Feb 16 19:56:20 rb1-fedora kernel:  _nv000739kms+0x6e/0xa0 [nvidia_modeset]
+Feb 16 19:56:20 rb1-fedora kernel:  nvKmsIoctl+0xf9/0x270 [nvidia_modeset]
+Feb 16 19:56:20 rb1-fedora kernel:  ? drm_modeset_drop_locks+0x52/0x70
+Feb 16 19:56:20 rb1-fedora kernel:  nvkms_ioctl_from_kapi+0x6f/0xe0 [nvidia_modeset]
+Feb 16 19:56:20 rb1-fedora kernel:  _nv000739kms+0x3a/0x40 [nvidia_modeset]
+Feb 16 19:56:20 rb1-fedora kernel:  nv_drm_dev_unload+0x5b/0xf0 [nvidia_drm]
+Feb 16 19:56:20 rb1-fedora kernel:  nv_drm_dev_destroy+0x16/0x30 [nvidia_drm]
+Feb 16 19:56:20 rb1-fedora kernel:  nv_pci_remove+0xc2/0x460 [nvidia]
+Feb 16 19:56:20 rb1-fedora kernel:  pci_device_remove+0x4a/0xc0
+Feb 16 19:56:20 rb1-fedora kernel:  device_release_driver_internal+0x19e/0x200
+Feb 16 19:56:20 rb1-fedora kernel:  pci_stop_bus_device+0x63/0x80
+Feb 16 19:56:20 rb1-fedora kernel:  pci_stop_bus_device+0x2c/0x80
+Feb 16 19:56:20 rb1-fedora kernel:  pci_stop_bus_device+0x2c/0x80
+Feb 16 19:56:20 rb1-fedora kernel:  pci_stop_and_remove_bus_device+0x16/0x30
+Feb 16 19:56:20 rb1-fedora kernel:  trim_stale_devices+0x13b/0x1a0
+Feb 16 19:56:20 rb1-fedora kernel:  trim_stale_devices+0xbe/0x1a0
+Feb 16 19:56:20 rb1-fedora kernel:  trim_stale_devices+0xbe/0x1a0
+Feb 16 19:56:20 rb1-fedora kernel:  acpiphp_check_bridge.part.0+0x156/0x1a0
+Feb 16 19:56:20 rb1-fedora kernel:  hotplug_event+0xb0/0x220
+Feb 16 19:56:20 rb1-fedora kernel:  acpiphp_hotplug_notify+0x24/0x70
+Feb 16 19:56:20 rb1-fedora kernel:  acpi_device_hotplug+0xbb/0x230
+Feb 16 19:56:20 rb1-fedora kernel:  ? __pfx_acpiphp_hotplug_notify+0x10/0x10
+Feb 16 19:56:20 rb1-fedora kernel:  acpi_hotplug_work_fn+0x1e/0x30
+Feb 16 19:56:20 rb1-fedora kernel:  process_one_work+0x192/0x350
+Feb 16 19:56:20 rb1-fedora kernel:  worker_thread+0x25a/0x3a0
+Feb 16 19:56:20 rb1-fedora kernel:  ? __pfx_worker_thread+0x10/0x10
+Feb 16 19:56:20 rb1-fedora kernel:  kthread+0xfc/0x240
+Feb 16 19:56:20 rb1-fedora kernel:  ? __pfx_kthread+0x10/0x10
+Feb 16 19:56:20 rb1-fedora kernel:  ? __pfx_kthread+0x10/0x10
+Feb 16 19:56:20 rb1-fedora kernel:  ret_from_fork+0xf4/0x110
+Feb 16 19:56:20 rb1-fedora kernel:  ? __pfx_kthread+0x10/0x10
+Feb 16 19:56:20 rb1-fedora kernel:  ret_from_fork_asm+0x1a/0x30
+Feb 16 19:56:20 rb1-fedora kernel:  </TASK>
+Feb 16 19:56:20 rb1-fedora kernel: ---[ end trace 0000000000000000 ]---
+Feb 16 19:56:20 rb1-fedora kernel: thunderbolt 0-101: device disconnected
+Feb 16 19:56:20 rb1-fedora kernel: thunderbolt 0-1: device disconnected
+Feb 16 19:56:24 rb1-fedora kernel: pcieport 0000:0e:01.0: Unable to change power state from D0 to D3hot, device inaccessible
+Feb 16 19:56:24 rb1-fedora kernel: i915 0000:00:02.0: vgaarb: VGA decodes changed: olddecodes=none,decodes=none:owns=io+mem
+Feb 16 19:56:24 rb1-fedora kernel: pci_bus 0000:0f: busn_res: [bus 0f] is released
+Feb 16 19:56:24 rb1-fedora kernel: pci_bus 0000:12: busn_res: [bus 12] is released
+Feb 16 19:56:24 rb1-fedora kernel: pci_bus 0000:13: busn_res: [bus 13] is released
+Feb 16 19:56:24 rb1-fedora kernel: pci_bus 0000:14: busn_res: [bus 14] is released
+Feb 16 19:56:24 rb1-fedora kernel: pci_bus 0000:11: busn_res: [bus 11-39] is released
+Feb 16 19:56:24 rb1-fedora kernel: pci_bus 0000:10: busn_res: [bus 10-39] is released
+Feb 16 19:56:24 rb1-fedora kernel: pci_bus 0000:0e: busn_res: [bus 0e-39] is released
+Feb 16 19:56:24 rb1-fedora kernel: pci_bus 0000:05: busn_res: can not insert [bus 05-39] under [bus 03-3a] (conflicts with (null) [bus 0d-39])
+Feb 16 19:56:24 rb1-fedora kernel: pcieport 0000:03:01.0: PCI bridge to [bus 05-39]
+Feb 16 19:56:24 rb1-fedora kernel: pci_bus 0000:03: Allocating resources
+Feb 16 19:56:30 rb1-fedora kernel: pci_bus 0000:03: Allocating resources
+Feb 16 19:56:35 rb1-fedora kernel: pcieport 0000:00:1c.0: AER: Correctable error message received from 0000:00:1c.0
+Feb 16 19:56:35 rb1-fedora kernel: pcieport 0000:00:1c.0: PCIe Bus Error: severity=Correctable, type=Physical Layer, (Receiver ID)
+Feb 16 19:56:35 rb1-fedora kernel: pcieport 0000:00:1c.0:   device [8086:a110] error status/mask=00002001/00002000
+Feb 16 19:56:35 rb1-fedora kernel: pcieport 0000:00:1c.0:    [ 0] RxErr                  (First)
+Feb 16 19:56:36 rb1-fedora kernel: pcieport 0000:03:00.0: Unable to change power state from D3hot to D0, device inaccessible
+Feb 16 19:56:36 rb1-fedora kernel: pcieport 0000:03:02.0: Unable to change power state from D3hot to D0, device inaccessible
+Feb 16 19:56:37 rb1-fedora kernel: pcieport 0000:03:02.0: Unable to change power state from D3cold to D0, device inaccessible
+Feb 16 19:56:37 rb1-fedora kernel: pcieport 0000:03:00.0: Unable to change power state from D3cold to D0, device inaccessible
+Feb 16 19:56:37 rb1-fedora kernel: pci_bus 0000:04: busn_res: [bus 04] is released
+Feb 16 19:56:37 rb1-fedora kernel: pci_bus 0000:3a: busn_res: [bus 3a] is released
+Feb 16 19:56:37 rb1-fedora kernel: pci_bus 0000:03: busn_res: [bus 03-3a] is released
+Feb 16 19:56:40 rb1-fedora kernel: pcieport 0000:00:1c.0: AER: Correctable error message received from 0000:00:1c.0
+Feb 16 19:56:40 rb1-fedora kernel: pcieport 0000:00:1c.0: PCIe Bus Error: severity=Correctable, type=Data Link Layer, (Transmitter ID)
+Feb 16 19:56:40 rb1-fedora kernel: pcieport 0000:00:1c.0:   device [8086:a110] error status/mask=00001000/00002000
+Feb 16 19:56:40 rb1-fedora kernel: pcieport 0000:00:1c.0:    [12] Timeout               
+Feb 16 19:56:40 rb1-fedora kernel: pcieport 0000:00:1c.0: AER: Correctable error message received from 0000:00:1c.0
+Feb 16 19:56:40 rb1-fedora kernel: pcieport 0000:00:1c.0: PCIe Bus Error: severity=Correctable, type=Data Link Layer, (Transmitter ID)
+Feb 16 19:56:40 rb1-fedora kernel: pcieport 0000:00:1c.0:   device [8086:a110] error status/mask=00001000/00002000
+Feb 16 19:56:40 rb1-fedora kernel: pcieport 0000:00:1c.0:    [12] Timeout               
+Feb 16 19:56:40 rb1-fedora kernel: pcieport 0000:00:1c.0: AER: Correctable error message received from 0000:00:1c.0
+Feb 16 19:56:40 rb1-fedora kernel: pcieport 0000:00:1c.0: PCIe Bus Error: severity=Correctable, type=Data Link Layer, (Transmitter ID)
+Feb 16 19:56:40 rb1-fedora kernel: pcieport 0000:00:1c.0:   device [8086:a110] error status/mask=00001000/00002000
+Feb 16 19:56:40 rb1-fedora kernel: pcieport 0000:00:1c.0:    [12] Timeout               
+Feb 16 19:56:40 rb1-fedora kernel: pcieport 0000:00:1c.0: AER: Correctable error message received from 0000:00:1c.0
+Feb 16 19:56:40 rb1-fedora kernel: pcieport 0000:00:1c.0: PCIe Bus Error: severity=Correctable, type=Data Link Layer, (Transmitter ID)
+Feb 16 19:56:40 rb1-fedora kernel: pcieport 0000:00:1c.0:   device [8086:a110] error status/mask=00001000/00002000
+Feb 16 19:56:40 rb1-fedora kernel: pcieport 0000:00:1c.0:    [12] Timeout               
+Feb 16 19:56:40 rb1-fedora kernel: pcieport 0000:00:1c.0: AER: Correctable error message received from 0000:00:1c.0
+Feb 16 19:56:40 rb1-fedora kernel: pcieport 0000:00:1c.0: PCIe Bus Error: severity=Correctable, type=Data Link Layer, (Transmitter ID)
+Feb 16 19:56:40 rb1-fedora kernel: pcieport 0000:00:1c.0:   device [8086:a110] error status/mask=00001000/00002000
+Feb 16 19:56:40 rb1-fedora kernel: pcieport 0000:00:1c.0:    [12] Timeout               
+Feb 16 19:56:40 rb1-fedora kernel: pcieport 0000:00:1c.0: AER: Correctable error message received from 0000:00:1c.0 (no details found
+Feb 16 19:56:40 rb1-fedora kernel: pcieport 0000:00:1c.0: AER: Correctable error message received from 0000:00:1c.0
+Feb 16 19:56:40 rb1-fedora kernel: pcieport 0000:00:1c.0: PCIe Bus Error: severity=Correctable, type=Data Link Layer, (Transmitter ID)
+Feb 16 19:56:40 rb1-fedora kernel: pcieport 0000:00:1c.0:   device [8086:a110] error status/mask=00001000/00002000
+Feb 16 19:56:40 rb1-fedora kernel: pcieport 0000:00:1c.0:    [12] Timeout               
+Feb 16 19:56:40 rb1-fedora kernel: pcieport 0000:00:1c.0: AER: Correctable error message received from 0000:00:1c.0
+Feb 16 19:56:40 rb1-fedora kernel: pcieport 0000:00:1c.0: PCIe Bus Error: severity=Correctable, type=Data Link Layer, (Transmitter ID)
+Feb 16 19:56:40 rb1-fedora kernel: pcieport 0000:00:1c.0:   device [8086:a110] error status/mask=00001000/00002000
+Feb 16 19:56:40 rb1-fedora kernel: pcieport 0000:00:1c.0:    [12] Timeout               
+Feb 16 19:56:40 rb1-fedora kernel: pcieport 0000:00:1c.0: AER: Correctable error message received from 0000:00:1c.0
+Feb 16 19:56:40 rb1-fedora kernel: pcieport 0000:00:1c.0: PCIe Bus Error: severity=Correctable, type=Data Link Layer, (Transmitter ID)
+Feb 16 19:56:40 rb1-fedora kernel: pcieport 0000:00:1c.0:   device [8086:a110] error status/mask=00001000/00002000
+Feb 16 19:56:40 rb1-fedora kernel: pcieport 0000:00:1c.0:    [12] Timeout               
+Feb 16 19:56:40 rb1-fedora kernel: pcieport 0000:00:1c.0: AER: Correctable error message received from 0000:00:1c.0
+Feb 16 19:56:40 rb1-fedora kernel: pcieport 0000:00:1c.0: PCIe Bus Error: severity=Correctable, type=Data Link Layer, (Transmitter ID)
+Feb 16 19:56:40 rb1-fedora kernel: pcieport 0000:00:1c.0:   device [8086:a110] error status/mask=00001000/00002000
+Feb 16 19:56:40 rb1-fedora kernel: pcieport 0000:00:1c.0:    [12] Timeout               
+Feb 16 19:56:40 rb1-fedora kernel: pci 0000:02:00.0: [8086:15da] type 01 class 0x060400 PCIe Switch Upstream Port
+Feb 16 19:56:40 rb1-fedora kernel: pci 0000:02:00.0: PCI bridge to [bus 03-3a]
+Feb 16 19:56:40 rb1-fedora kernel: pci 0000:02:00.0:   bridge window [mem 0xc4000000-0xda0fffff]
+Feb 16 19:56:40 rb1-fedora kernel: pci 0000:02:00.0:   bridge window [mem 0x80000000-0xa1ffffff 64bit pref]
+Feb 16 19:56:40 rb1-fedora kernel: pci 0000:02:00.0: enabling Extended Tags
+Feb 16 19:56:40 rb1-fedora kernel: pci 0000:02:00.0: supports D1 D2
+Feb 16 19:56:40 rb1-fedora kernel: pci 0000:02:00.0: PME# supported from D0 D1 D2 D3hot D3cold
+Feb 16 19:56:40 rb1-fedora kernel: pcieport 0000:00:1c.0: ASPM: current common clock configuration is inconsistent, reconfiguring
+Feb 16 19:56:40 rb1-fedora kernel: pci 0000:03:00.0: [8086:15da] type 01 class 0x060400 PCIe Switch Downstream Port
+Feb 16 19:56:40 rb1-fedora kernel: pci 0000:03:00.0: PCI bridge to [bus 04]
+Feb 16 19:56:40 rb1-fedora kernel: pci 0000:03:00.0:   bridge window [mem 0xda000000-0xda0fffff]
+Feb 16 19:56:40 rb1-fedora kernel: pci 0000:03:00.0: enabling Extended Tags
+Feb 16 19:56:40 rb1-fedora kernel: pci 0000:03:00.0: supports D1 D2
+Feb 16 19:56:40 rb1-fedora kernel: pci 0000:03:00.0: PME# supported from D0 D1 D2 D3hot D3cold
+Feb 16 19:56:40 rb1-fedora kernel: pci 0000:03:01.0: [8086:15da] type 01 class 0x060400 PCIe Switch Downstream Port
+Feb 16 19:56:40 rb1-fedora kernel: pci 0000:03:01.0: PCI bridge to [bus 0d-39]
+Feb 16 19:56:40 rb1-fedora kernel: pci 0000:03:01.0:   bridge window [mem 0xc4000000-0xd9efffff]
+Feb 16 19:56:40 rb1-fedora kernel: pci 0000:03:01.0:   bridge window [mem 0x80000000-0xa1ffffff 64bit pref]
+Feb 16 19:56:40 rb1-fedora kernel: pci 0000:03:01.0: enabling Extended Tags
+Feb 16 19:56:40 rb1-fedora kernel: pci 0000:03:01.0: supports D1 D2
+Feb 16 19:56:40 rb1-fedora kernel: pci 0000:03:01.0: PME# supported from D0 D1 D2 D3hot D3cold
+Feb 16 19:56:40 rb1-fedora kernel: pci 0000:03:02.0: [8086:15da] type 01 class 0x060400 PCIe Switch Downstream Port
+Feb 16 19:56:40 rb1-fedora kernel: pci 0000:03:02.0: PCI bridge to [bus 3a]
+Feb 16 19:56:40 rb1-fedora kernel: pci 0000:03:02.0:   bridge window [mem 0xd9f00000-0xd9ffffff]
+Feb 16 19:56:40 rb1-fedora kernel: pci 0000:03:02.0: enabling Extended Tags
+Feb 16 19:56:40 rb1-fedora kernel: pci 0000:03:02.0: supports D1 D2
+Feb 16 19:56:40 rb1-fedora kernel: pci 0000:03:02.0: PME# supported from D0 D1 D2 D3hot D3cold
+Feb 16 19:56:40 rb1-fedora kernel: pci 0000:02:00.0: PCI bridge to [bus 03-3a]
+Feb 16 19:56:40 rb1-fedora kernel: pci 0000:04:00.0: [8086:15d9] type 00 class 0x088000 PCIe Endpoint
+Feb 16 19:56:40 rb1-fedora kernel: pci 0000:04:00.0: BAR 0 [mem 0xda000000-0xda03ffff]
+Feb 16 19:56:40 rb1-fedora kernel: pci 0000:04:00.0: BAR 1 [mem 0xda040000-0xda040fff]
+Feb 16 19:56:40 rb1-fedora kernel: pci 0000:04:00.0: enabling Extended Tags
+Feb 16 19:56:40 rb1-fedora kernel: pci 0000:04:00.0: supports D1 D2
+Feb 16 19:56:40 rb1-fedora kernel: pci 0000:04:00.0: PME# supported from D0 D1 D2 D3hot D3cold
+Feb 16 19:56:40 rb1-fedora kernel: pci 0000:03:00.0: PCI bridge to [bus 04]
+Feb 16 19:56:40 rb1-fedora kernel: sysfs: cannot create duplicate filename '/class/pci_bus/0000:0d'
+Feb 16 19:56:40 rb1-fedora kernel: CPU: 1 UID: 0 PID: 12 Comm: kworker/u32:0 Tainted: P        W  OE       6.18.9-200.fc43.x86_64 #1 PREEMPT(lazy) 
+Feb 16 19:56:40 rb1-fedora kernel: Tainted: [P]=PROPRIETARY_MODULE, [W]=WARN, [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+Feb 16 19:56:40 rb1-fedora kernel: Hardware name: Razer Blade/Razer, BIOS 3.03 09/12/2017
+Feb 16 19:56:40 rb1-fedora kernel: Workqueue: kacpi_hotplug acpi_hotplug_work_fn
+Feb 16 19:56:40 rb1-fedora kernel: Call Trace:
+Feb 16 19:56:40 rb1-fedora kernel:  <TASK>
+Feb 16 19:56:40 rb1-fedora kernel:  dump_stack_lvl+0x5d/0x80
+Feb 16 19:56:40 rb1-fedora kernel:  sysfs_warn_dup.cold+0x17/0x23
+Feb 16 19:56:40 rb1-fedora kernel:  sysfs_do_create_link_sd+0xc6/0xd0
+Feb 16 19:56:40 rb1-fedora kernel:  device_add+0x29a/0x6f0
+Feb 16 19:56:40 rb1-fedora kernel:  pci_alloc_child_bus+0x1c9/0x260
+Feb 16 19:56:40 rb1-fedora kernel:  pci_add_new_bus+0x17/0xa0
+Feb 16 19:56:40 rb1-fedora kernel:  pci_scan_bridge_extend+0x56e/0x5d0
+Feb 16 19:56:40 rb1-fedora kernel:  ? pci_read_bridge_bases.cold+0xb7/0x13c
+Feb 16 19:56:40 rb1-fedora kernel:  pci_scan_child_bus_extend+0x10a/0x2c0
+Feb 16 19:56:40 rb1-fedora kernel:  pci_scan_bridge_extend+0x4ff/0x5d0
+Feb 16 19:56:40 rb1-fedora kernel:  enable_slot+0x249/0x4d0
+Feb 16 19:56:40 rb1-fedora kernel:  acpiphp_check_bridge.part.0+0x16f/0x1a0
+Feb 16 19:56:40 rb1-fedora kernel:  hotplug_event+0xb0/0x220
+Feb 16 19:56:40 rb1-fedora kernel:  acpiphp_hotplug_notify+0x24/0x70
+Feb 16 19:56:40 rb1-fedora kernel:  acpi_device_hotplug+0xbb/0x230
+Feb 16 19:56:40 rb1-fedora kernel:  ? __pfx_acpiphp_hotplug_notify+0x10/0x10
+Feb 16 19:56:40 rb1-fedora kernel:  acpi_hotplug_work_fn+0x1e/0x30
+Feb 16 19:56:40 rb1-fedora kernel:  process_one_work+0x192/0x350
+Feb 16 19:56:40 rb1-fedora kernel:  worker_thread+0x25a/0x3a0
+Feb 16 19:56:40 rb1-fedora kernel:  ? __pfx_worker_thread+0x10/0x10
+Feb 16 19:56:40 rb1-fedora kernel:  kthread+0xfc/0x240
+Feb 16 19:56:40 rb1-fedora kernel:  ? __pfx_kthread+0x10/0x10
+Feb 16 19:56:40 rb1-fedora kernel:  ? __pfx_kthread+0x10/0x10
+Feb 16 19:56:40 rb1-fedora kernel:  ret_from_fork+0xf4/0x110
+Feb 16 19:56:40 rb1-fedora kernel:  ? __pfx_kthread+0x10/0x10
+Feb 16 19:56:40 rb1-fedora kernel:  ret_from_fork_asm+0x1a/0x30
+Feb 16 19:56:40 rb1-fedora kernel:  </TASK>
+Feb 16 19:56:40 rb1-fedora kernel: ------------[ cut here ]------------
+Feb 16 19:56:40 rb1-fedora kernel: WARNING: CPU: 1 PID: 12 at drivers/pci/probe.c:1248 pci_alloc_child_bus+0x231/0x260
+Feb 16 19:56:40 rb1-fedora kernel: Modules linked in: 8021q garp mrp stp llc rfkill nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 nf_tables qrtr nvidia_drm(POE) nvidia_modeset(POE) sunrpc nvidia_uvm(POE) binfmt_misc r8153_ecm cdc_ether snd_hda_codec_intelhdmi snd_hda_codec_alc269 snd_soc_avs snd_hda_scodec_component snd_hda_codec_realtek_lib intel_rapl_msr intel_rapl_common snd_soc_hda_codec snd_hda_codec_generic snd_hda_ext_core intel_uncore_frequency snd_hda_codec_nvhdmi intel_uncore_frequency_common snd_hda_codec_hdmi snd_soc_core snd_hda_intel snd_hda_codec intel_tcc_cooling snd_compress x86_pkg_temp_thermal ac97_bus intel_powerclamp snd_pcm_dmaengine snd_hda_core snd_seq coretemp rapl vfat iTCO_wdt ax88179_178a snd_intel_dspcfg intel_pmc_bxt mei_pxp mei_hdcp iTCO_vendor_support r8152 usbnet snd_seq_device intel_cstate snd_intel_sdw_acpi fat snd_hwdep intel_uncore intel_wmi_thunderbolt nvidia(POE) snd_pcm mii
+Feb 16 19:56:40 rb1-fedora kernel:  mei_me i2c_i801 snd_timer mei i2c_smbus snd idma64 soundcore intel_pch_thermal drm_ttm_helper intel_pmc_core pmt_telemetry pmt_discovery pmt_class acpi_pad intel_pmc_ssram_telemetry intel_vsec joydev loop dm_multipath nfnetlink zram lz4hc_compress lz4_compress xfs i915 i2c_algo_bit drm_buddy ttm nvme drm_display_helper nvme_core hid_rmi rmi_core nvme_keyring nvme_auth mxm_wmi thunderbolt polyval_clmulni ghash_clmulni_intel serio_raw hkdf cec video i2c_hid_acpi i2c_hid intel_oc_wdt wmi pinctrl_sunrisepoint scsi_dh_rdac scsi_dh_emc scsi_dh_alua i2c_dev fuse
+Feb 16 19:56:40 rb1-fedora kernel: CPU: 1 UID: 0 PID: 12 Comm: kworker/u32:0 Tainted: P        W  OE       6.18.9-200.fc43.x86_64 #1 PREEMPT(lazy) 
+Feb 16 19:56:40 rb1-fedora kernel: Tainted: [P]=PROPRIETARY_MODULE, [W]=WARN, [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+Feb 16 19:56:40 rb1-fedora kernel: Hardware name: Razer Blade/Razer, BIOS 3.03 09/12/2017
+Feb 16 19:56:40 rb1-fedora kernel: Workqueue: kacpi_hotplug acpi_hotplug_work_fn
+Feb 16 19:56:40 rb1-fedora kernel: RIP: 0010:pci_alloc_child_bus+0x231/0x260
+Feb 16 19:56:40 rb1-fedora kernel: Code: 5d 41 5c 41 5d 41 5e c3 cc cc cc cc 49 8b 84 24 10 01 00 00 48 89 83 58 01 00 00 eb 95 49 8b 84 24 c0 00 00 00 e9 42 fe ff ff <0f> 0b 4c 89 f7 e8 05 50 25 00 31 db eb b1 0f 0b 48 c7 c6 b4 ed 12
+Feb 16 19:56:40 rb1-fedora kernel: RSP: 0018:ffffcfd6400bfb90 EFLAGS: 00010282
+Feb 16 19:56:40 rb1-fedora kernel: RAX: 00000000ffffffef RBX: ffff8add7c16e800 RCX: 00000000003c0001
+Feb 16 19:56:40 rb1-fedora kernel: RDX: 0000000000000002 RSI: ffffffff95a13c80 RDI: ffff8add7c16e950
+Feb 16 19:56:40 rb1-fedora kernel: RBP: ffff8add0fdc7000 R08: 0000000000000000 R09: ffffffff931df3da
+Feb 16 19:56:40 rb1-fedora kernel: R10: ffff8add16ac4c00 R11: ffff8add0004f800 R12: ffff8add7c168800
+Feb 16 19:56:40 rb1-fedora kernel: R13: 000000000000000d R14: ffff8add7c16e918 R15: 0000000000390d03
+Feb 16 19:56:40 rb1-fedora kernel: FS:  0000000000000000(0000) GS:ffff8ae0e90a6000(0000) knlGS:0000000000000000
+Feb 16 19:56:40 rb1-fedora kernel: CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+Feb 16 19:56:40 rb1-fedora kernel: CR2: 00007f7e9134ba48 CR3: 000000046f62e001 CR4: 00000000003706f0
+Feb 16 19:56:40 rb1-fedora kernel: Call Trace:
+Feb 16 19:56:40 rb1-fedora kernel:  <TASK>
+Feb 16 19:56:40 rb1-fedora kernel:  pci_add_new_bus+0x17/0xa0
+Feb 16 19:56:40 rb1-fedora kernel:  pci_scan_bridge_extend+0x56e/0x5d0
+Feb 16 19:56:40 rb1-fedora kernel:  ? pci_read_bridge_bases.cold+0xb7/0x13c
+Feb 16 19:56:40 rb1-fedora kernel:  pci_scan_child_bus_extend+0x10a/0x2c0
+Feb 16 19:56:40 rb1-fedora kernel:  pci_scan_bridge_extend+0x4ff/0x5d0
+Feb 16 19:56:40 rb1-fedora kernel:  enable_slot+0x249/0x4d0
+Feb 16 19:56:40 rb1-fedora kernel:  acpiphp_check_bridge.part.0+0x16f/0x1a0
+Feb 16 19:56:40 rb1-fedora kernel:  hotplug_event+0xb0/0x220
+Feb 16 19:56:40 rb1-fedora kernel:  acpiphp_hotplug_notify+0x24/0x70
+Feb 16 19:56:40 rb1-fedora kernel:  acpi_device_hotplug+0xbb/0x230
+Feb 16 19:56:40 rb1-fedora kernel:  ? __pfx_acpiphp_hotplug_notify+0x10/0x10
+Feb 16 19:56:40 rb1-fedora kernel:  acpi_hotplug_work_fn+0x1e/0x30
+Feb 16 19:56:40 rb1-fedora kernel:  process_one_work+0x192/0x350
+Feb 16 19:56:40 rb1-fedora kernel:  worker_thread+0x25a/0x3a0
+Feb 16 19:56:40 rb1-fedora kernel:  ? __pfx_worker_thread+0x10/0x10
+Feb 16 19:56:40 rb1-fedora kernel:  kthread+0xfc/0x240
+Feb 16 19:56:40 rb1-fedora kernel:  ? __pfx_kthread+0x10/0x10
+Feb 16 19:56:40 rb1-fedora kernel:  ? __pfx_kthread+0x10/0x10
+Feb 16 19:56:40 rb1-fedora kernel:  ret_from_fork+0xf4/0x110
+Feb 16 19:56:40 rb1-fedora kernel:  ? __pfx_kthread+0x10/0x10
+Feb 16 19:56:40 rb1-fedora kernel:  ret_from_fork_asm+0x1a/0x30
+Feb 16 19:56:40 rb1-fedora kernel:  </TASK>
+Feb 16 19:56:40 rb1-fedora kernel: ---[ end trace 0000000000000000 ]---
+Feb 16 19:56:40 rb1-fedora kernel: pci 0000:03:02.0: PCI bridge to [bus 3a]
+Feb 16 19:56:40 rb1-fedora kernel: pci_bus 0000:03: Allocating resources
+Feb 16 19:56:40 rb1-fedora kernel: pci 0000:03:00.0: PCI bridge to [bus 04]
+Feb 16 19:56:40 rb1-fedora kernel: pci 0000:03:00.0:   bridge window [mem 0xda000000-0xda0fffff]
+Feb 16 19:56:40 rb1-fedora kernel: pci 0000:03:02.0: PCI bridge to [bus 3a]
+Feb 16 19:56:40 rb1-fedora kernel: pci 0000:03:02.0:   bridge window [mem 0xd9f00000-0xd9ffffff]
+Feb 16 19:56:40 rb1-fedora kernel: pci 0000:03:02.0: PCI bridge to [bus 3a]
+Feb 16 19:56:40 rb1-fedora kernel: pci 0000:03:02.0:   bridge window [mem 0xd9f00000-0xd9ffffff]
+Feb 16 19:56:40 rb1-fedora kernel: pci 0000:02:00.0: PCI bridge to [bus 03-3a]
+Feb 16 19:56:40 rb1-fedora kernel: pci 0000:02:00.0:   bridge window [mem 0xc4000000-0xda0fffff]
+Feb 16 19:56:40 rb1-fedora kernel: pci 0000:02:00.0:   bridge window [mem 0x80000000-0xa1ffffff 64bit pref]
+Feb 16 19:56:47 rb1-fedora kernel: pcieport 0000:00:1c.0: AER: Correctable error message received from 0000:02:00.0
+Feb 16 19:56:47 rb1-fedora kernel: pcieport 0000:02:00.0: PCIe Bus Error: severity=Correctable, type=Data Link Layer, (Receiver ID)
+Feb 16 19:56:47 rb1-fedora kernel: pcieport 0000:02:00.0:   device [8086:15da] error status/mask=00002080/00002000
+Feb 16 19:56:47 rb1-fedora kernel: pcieport 0000:02:00.0:    [ 7] BadDLLP               
+Feb 16 19:56:48 rb1-fedora kernel: pcieport 0000:00:1c.0: AER: Correctable error message received from 0000:02:00.0
+Feb 16 19:56:48 rb1-fedora kernel: pcieport 0000:02:00.0: PCIe Bus Error: severity=Correctable, type=Data Link Layer, (Receiver ID)
+Feb 16 19:56:48 rb1-fedora kernel: pcieport 0000:02:00.0:   device [8086:15da] error status/mask=00000080/00002000
+Feb 16 19:56:48 rb1-fedora kernel: pcieport 0000:02:00.0:    [ 7] BadDLLP               
+Feb 16 19:56:49 rb1-fedora kernel: pcieport 0000:00:1c.0: AER: Correctable error message received from 0000:02:00.0
+Feb 16 19:56:49 rb1-fedora kernel: pcieport 0000:02:00.0: PCIe Bus Error: severity=Correctable, type=Data Link Layer, (Receiver ID)
+Feb 16 19:56:49 rb1-fedora kernel: pcieport 0000:02:00.0:   device [8086:15da] error status/mask=00000080/00002000
+Feb 16 19:56:49 rb1-fedora kernel: pcieport 0000:02:00.0:    [ 7] BadDLLP               
+Feb 16 19:56:50 rb1-fedora kernel: pcieport 0000:00:1c.0: AER: Correctable error message received from 0000:02:00.0
+Feb 16 19:56:50 rb1-fedora kernel: pcieport 0000:02:00.0: PCIe Bus Error: severity=Correctable, type=Data Link Layer, (Receiver ID)
+Feb 16 19:56:50 rb1-fedora kernel: pcieport 0000:02:00.0:   device [8086:15da] error status/mask=00000080/00002000
+Feb 16 19:56:50 rb1-fedora kernel: pcieport 0000:02:00.0:    [ 7] BadDLLP               
+Feb 16 19:56:51 rb1-fedora kernel: sysfs: cannot create duplicate filename '/class/pci_bus/0000:0d'
+Feb 16 19:56:51 rb1-fedora kernel: CPU: 4 UID: 0 PID: 12 Comm: kworker/u32:0 Tainted: P        W  OE       6.18.9-200.fc43.x86_64 #1 PREEMPT(lazy) 
+Feb 16 19:56:51 rb1-fedora kernel: Tainted: [P]=PROPRIETARY_MODULE, [W]=WARN, [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+Feb 16 19:56:51 rb1-fedora kernel: Hardware name: Razer Blade/Razer, BIOS 3.03 09/12/2017
+Feb 16 19:56:51 rb1-fedora kernel: Workqueue: kacpi_hotplug acpi_hotplug_work_fn
+Feb 16 19:56:51 rb1-fedora kernel: Call Trace:
+Feb 16 19:56:51 rb1-fedora kernel:  <TASK>
+Feb 16 19:56:51 rb1-fedora kernel:  dump_stack_lvl+0x5d/0x80
+Feb 16 19:56:51 rb1-fedora kernel:  sysfs_warn_dup.cold+0x17/0x23
+Feb 16 19:56:51 rb1-fedora kernel:  sysfs_do_create_link_sd+0xc6/0xd0
+Feb 16 19:56:51 rb1-fedora kernel:  device_add+0x29a/0x6f0
+Feb 16 19:56:51 rb1-fedora kernel:  pci_alloc_child_bus+0x1c9/0x260
+Feb 16 19:56:51 rb1-fedora kernel:  pci_add_new_bus+0x17/0xa0
+Feb 16 19:56:51 rb1-fedora kernel:  pci_scan_bridge_extend+0x56e/0x5d0
+Feb 16 19:56:51 rb1-fedora kernel:  pci_scan_child_bus_extend+0x10a/0x2c0
+Feb 16 19:56:51 rb1-fedora kernel:  pci_scan_bridge_extend+0x4ff/0x5d0
+Feb 16 19:56:51 rb1-fedora kernel:  enable_slot+0x249/0x4d0
+Feb 16 19:56:51 rb1-fedora kernel:  ? rpm_idle+0x1f/0x2e0
+Feb 16 19:56:51 rb1-fedora kernel:  acpiphp_check_bridge.part.0+0x16f/0x1a0
+Feb 16 19:56:51 rb1-fedora kernel:  hotplug_event+0xb0/0x220
+Feb 16 19:56:51 rb1-fedora kernel:  acpiphp_hotplug_notify+0x24/0x70
+Feb 16 19:56:51 rb1-fedora kernel:  acpi_device_hotplug+0xbb/0x230
+Feb 16 19:56:51 rb1-fedora kernel:  ? __pfx_acpiphp_hotplug_notify+0x10/0x10
+Feb 16 19:56:51 rb1-fedora kernel:  acpi_hotplug_work_fn+0x1e/0x30
+Feb 16 19:56:51 rb1-fedora kernel:  process_one_work+0x192/0x350
+Feb 16 19:56:51 rb1-fedora kernel:  worker_thread+0x25a/0x3a0
+Feb 16 19:56:51 rb1-fedora kernel:  ? __pfx_worker_thread+0x10/0x10
+Feb 16 19:56:51 rb1-fedora kernel:  kthread+0xfc/0x240
+Feb 16 19:56:51 rb1-fedora kernel:  ? __pfx_kthread+0x10/0x10
+Feb 16 19:56:51 rb1-fedora kernel:  ? __pfx_kthread+0x10/0x10
+Feb 16 19:56:51 rb1-fedora kernel:  ret_from_fork+0xf4/0x110
+Feb 16 19:56:51 rb1-fedora kernel:  ? __pfx_kthread+0x10/0x10
+Feb 16 19:56:51 rb1-fedora kernel:  ret_from_fork_asm+0x1a/0x30
+Feb 16 19:56:51 rb1-fedora kernel:  </TASK>
+Feb 16 19:56:51 rb1-fedora kernel: ------------[ cut here ]------------
+Feb 16 19:56:51 rb1-fedora kernel: WARNING: CPU: 4 PID: 12 at drivers/pci/probe.c:1248 pci_alloc_child_bus+0x231/0x260
+Feb 16 19:56:51 rb1-fedora kernel: Modules linked in: 8021q garp mrp stp llc rfkill nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 nf_tables qrtr nvidia_drm(POE) nvidia_modeset(POE) sunrpc nvidia_uvm(POE) binfmt_misc r8153_ecm cdc_ether snd_hda_codec_intelhdmi snd_hda_codec_alc269 snd_soc_avs snd_hda_scodec_component snd_hda_codec_realtek_lib intel_rapl_msr intel_rapl_common snd_soc_hda_codec snd_hda_codec_generic snd_hda_ext_core intel_uncore_frequency snd_hda_codec_nvhdmi intel_uncore_frequency_common snd_hda_codec_hdmi snd_soc_core snd_hda_intel snd_hda_codec intel_tcc_cooling snd_compress x86_pkg_temp_thermal ac97_bus intel_powerclamp snd_pcm_dmaengine snd_hda_core snd_seq coretemp rapl vfat iTCO_wdt ax88179_178a snd_intel_dspcfg intel_pmc_bxt mei_pxp mei_hdcp iTCO_vendor_support r8152 usbnet snd_seq_device intel_cstate snd_intel_sdw_acpi fat snd_hwdep intel_uncore intel_wmi_thunderbolt nvidia(POE) snd_pcm mii
+Feb 16 19:56:51 rb1-fedora kernel:  mei_me i2c_i801 snd_timer mei i2c_smbus snd idma64 soundcore intel_pch_thermal drm_ttm_helper intel_pmc_core pmt_telemetry pmt_discovery pmt_class acpi_pad intel_pmc_ssram_telemetry intel_vsec joydev loop dm_multipath nfnetlink zram lz4hc_compress lz4_compress xfs i915 i2c_algo_bit drm_buddy ttm nvme drm_display_helper nvme_core hid_rmi rmi_core nvme_keyring nvme_auth mxm_wmi thunderbolt polyval_clmulni ghash_clmulni_intel serio_raw hkdf cec video i2c_hid_acpi i2c_hid intel_oc_wdt wmi pinctrl_sunrisepoint scsi_dh_rdac scsi_dh_emc scsi_dh_alua i2c_dev fuse
+Feb 16 19:56:51 rb1-fedora kernel: CPU: 4 UID: 0 PID: 12 Comm: kworker/u32:0 Tainted: P        W  OE       6.18.9-200.fc43.x86_64 #1 PREEMPT(lazy) 
+Feb 16 19:56:51 rb1-fedora kernel: Tainted: [P]=PROPRIETARY_MODULE, [W]=WARN, [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+Feb 16 19:56:51 rb1-fedora kernel: Hardware name: Razer Blade/Razer, BIOS 3.03 09/12/2017
+Feb 16 19:56:51 rb1-fedora kernel: Workqueue: kacpi_hotplug acpi_hotplug_work_fn
+Feb 16 19:56:51 rb1-fedora kernel: RIP: 0010:pci_alloc_child_bus+0x231/0x260
+Feb 16 19:56:51 rb1-fedora kernel: Code: 5d 41 5c 41 5d 41 5e c3 cc cc cc cc 49 8b 84 24 10 01 00 00 48 89 83 58 01 00 00 eb 95 49 8b 84 24 c0 00 00 00 e9 42 fe ff ff <0f> 0b 4c 89 f7 e8 05 50 25 00 31 db eb b1 0f 0b 48 c7 c6 b4 ed 12
+Feb 16 19:56:51 rb1-fedora kernel: RSP: 0018:ffffcfd6400bfb90 EFLAGS: 00010282
+Feb 16 19:56:51 rb1-fedora kernel: RAX: 00000000ffffffef RBX: ffff8add33842800 RCX: 00000000003e4004
+Feb 16 19:56:51 rb1-fedora kernel: RDX: 0000000000000002 RSI: ffffffff95a13c80 RDI: ffff8add33842950
+Feb 16 19:56:51 rb1-fedora kernel: RBP: ffff8add0fdc7000 R08: 0000000000000000 R09: ffffffff931df3da
+Feb 16 19:56:51 rb1-fedora kernel: R10: ffff8add033af500 R11: ffff8add0004f800 R12: ffff8add7c168800
+Feb 16 19:56:51 rb1-fedora kernel: R13: 000000000000000d R14: ffff8add33842918 R15: 0000000000390d03
+Feb 16 19:56:51 rb1-fedora kernel: FS:  0000000000000000(0000) GS:ffff8ae0e9226000(0000) knlGS:0000000000000000
+Feb 16 19:56:51 rb1-fedora kernel: CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+Feb 16 19:56:51 rb1-fedora kernel: CR2: 00007f211b777cb4 CR3: 000000046f62e005 CR4: 00000000003706f0
+Feb 16 19:56:51 rb1-fedora kernel: Call Trace:
+Feb 16 19:56:51 rb1-fedora kernel:  <TASK>
+Feb 16 19:56:51 rb1-fedora kernel:  pci_add_new_bus+0x17/0xa0
+Feb 16 19:56:51 rb1-fedora kernel:  pci_scan_bridge_extend+0x56e/0x5d0
+Feb 16 19:56:51 rb1-fedora kernel:  pci_scan_child_bus_extend+0x10a/0x2c0
+Feb 16 19:56:51 rb1-fedora kernel:  pci_scan_bridge_extend+0x4ff/0x5d0
+Feb 16 19:56:51 rb1-fedora kernel:  enable_slot+0x249/0x4d0
+Feb 16 19:56:51 rb1-fedora kernel:  ? rpm_idle+0x1f/0x2e0
+Feb 16 19:56:51 rb1-fedora kernel:  acpiphp_check_bridge.part.0+0x16f/0x1a0
+Feb 16 19:56:51 rb1-fedora kernel:  hotplug_event+0xb0/0x220
+Feb 16 19:56:51 rb1-fedora kernel:  acpiphp_hotplug_notify+0x24/0x70
+Feb 16 19:56:51 rb1-fedora kernel:  acpi_device_hotplug+0xbb/0x230
+Feb 16 19:56:51 rb1-fedora kernel:  ? __pfx_acpiphp_hotplug_notify+0x10/0x10
+Feb 16 19:56:51 rb1-fedora kernel:  acpi_hotplug_work_fn+0x1e/0x30
+Feb 16 19:56:51 rb1-fedora kernel:  process_one_work+0x192/0x350
+Feb 16 19:56:51 rb1-fedora kernel:  worker_thread+0x25a/0x3a0
+Feb 16 19:56:51 rb1-fedora kernel:  ? __pfx_worker_thread+0x10/0x10
+Feb 16 19:56:51 rb1-fedora kernel:  kthread+0xfc/0x240
+Feb 16 19:56:51 rb1-fedora kernel:  ? __pfx_kthread+0x10/0x10
+Feb 16 19:56:51 rb1-fedora kernel:  ? __pfx_kthread+0x10/0x10
+Feb 16 19:56:51 rb1-fedora kernel:  ret_from_fork+0xf4/0x110
+Feb 16 19:56:51 rb1-fedora kernel:  ? __pfx_kthread+0x10/0x10
+Feb 16 19:56:51 rb1-fedora kernel:  ret_from_fork_asm+0x1a/0x30
+Feb 16 19:56:51 rb1-fedora kernel:  </TASK>
+Feb 16 19:56:51 rb1-fedora kernel: ---[ end trace 0000000000000000 ]---
+Feb 16 19:56:51 rb1-fedora kernel: pci_bus 0000:03: Allocating resources
+Feb 16 19:56:51 rb1-fedora kernel: BUG: kernel NULL pointer dereference, address: 0000000000000018
+Feb 16 19:56:51 rb1-fedora kernel: #PF: supervisor read access in kernel mode
+Feb 16 19:56:51 rb1-fedora kernel: #PF: error_code(0x0000) - not-present page
+Feb 16 19:56:51 rb1-fedora kernel: PGD 0 P4D 0 
+Feb 16 19:56:51 rb1-fedora kernel: Oops: Oops: 0000 [#1] SMP PTI
+Feb 16 19:56:51 rb1-fedora kernel: CPU: 4 UID: 0 PID: 12 Comm: kworker/u32:0 Tainted: P        W  OE       6.18.9-200.fc43.x86_64 #1 PREEMPT(lazy) 
+Feb 16 19:56:51 rb1-fedora kernel: Tainted: [P]=PROPRIETARY_MODULE, [W]=WARN, [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+Feb 16 19:56:51 rb1-fedora kernel: Hardware name: Razer Blade/Razer, BIOS 3.03 09/12/2017
+Feb 16 19:56:51 rb1-fedora kernel: Workqueue: kacpi_hotplug acpi_hotplug_work_fn
+Feb 16 19:56:51 rb1-fedora kernel: RIP: 0010:pbus_select_window_for_type+0x68/0x110
+Feb 16 19:56:51 rb1-fedora kernel: Code: 89 7c 24 08 e8 c9 a7 fe ff 48 8b 7c 24 08 be 02 00 00 00 48 89 04 24 e8 b6 a7 fe ff 48 8b 4c 24 10 48 8b 14 24 f6 c5 20 74 22 <48> 8b 70 18 f7 c6 00 02 00 00 74 16 f7 c1 00 00 10 00 0f 85 87 00
+Feb 16 19:56:51 rb1-fedora kernel: RSP: 0018:ffffcfd6400bfb30 EFLAGS: 00010202
+Feb 16 19:56:51 rb1-fedora kernel: RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000102200
+Feb 16 19:56:51 rb1-fedora kernel: RDX: 0000000000000000 RSI: 0000000000000002 RDI: ffff8add33842800
+Feb 16 19:56:51 rb1-fedora kernel: RBP: ffff8add33842800 R08: ffffcfd6400bfd50 R09: 0000000000100000
+Feb 16 19:56:51 rb1-fedora kernel: R10: ffff8add0fdc3748 R11: 0000000000000000 R12: 0000000000200000
+Feb 16 19:56:51 rb1-fedora kernel: R13: ffffcfd6400bfd50 R14: ffffcfd6400bfd50 R15: ffff8add02431028
+Feb 16 19:56:51 rb1-fedora kernel: FS:  0000000000000000(0000) GS:ffff8ae0e9226000(0000) knlGS:0000000000000000
+Feb 16 19:56:51 rb1-fedora kernel: CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+Feb 16 19:56:51 rb1-fedora kernel: CR2: 0000000000000018 CR3: 000000046f62e005 CR4: 00000000003706f0
+Feb 16 19:56:51 rb1-fedora kernel: Call Trace:
+Feb 16 19:56:51 rb1-fedora kernel:  <TASK>
+Feb 16 19:56:51 rb1-fedora kernel:  pbus_size_mem+0x3e/0x9c0
+Feb 16 19:56:51 rb1-fedora kernel:  ? pbus_select_window_for_type+0x5a/0x110
+Feb 16 19:56:51 rb1-fedora kernel:  ? pbus_size_mem+0x3e/0x9c0
+Feb 16 19:56:51 rb1-fedora kernel:  ? pbus_size_io+0x2b/0x420
+Feb 16 19:56:51 rb1-fedora kernel:  __pci_bus_size_bridges+0x1ca/0x1e0
+Feb 16 19:56:51 rb1-fedora kernel:  __pci_bus_size_bridges+0x3b/0x1e0
+Feb 16 19:56:51 rb1-fedora kernel:  enable_slot+0x2c6/0x4d0
+Feb 16 19:56:51 rb1-fedora kernel:  acpiphp_check_bridge.part.0+0x16f/0x1a0
+Feb 16 19:56:51 rb1-fedora kernel:  hotplug_event+0xb0/0x220
+Feb 16 19:56:51 rb1-fedora kernel:  acpiphp_hotplug_notify+0x24/0x70
+Feb 16 19:56:51 rb1-fedora kernel:  acpi_device_hotplug+0xbb/0x230
+Feb 16 19:56:51 rb1-fedora kernel:  ? __pfx_acpiphp_hotplug_notify+0x10/0x10
+Feb 16 19:56:51 rb1-fedora kernel:  acpi_hotplug_work_fn+0x1e/0x30
+Feb 16 19:56:51 rb1-fedora kernel:  process_one_work+0x192/0x350
+Feb 16 19:56:51 rb1-fedora kernel:  worker_thread+0x25a/0x3a0
+Feb 16 19:56:51 rb1-fedora kernel:  ? __pfx_worker_thread+0x10/0x10
+Feb 16 19:56:51 rb1-fedora kernel:  kthread+0xfc/0x240
+Feb 16 19:56:51 rb1-fedora kernel:  ? __pfx_kthread+0x10/0x10
+Feb 16 19:56:51 rb1-fedora kernel:  ? __pfx_kthread+0x10/0x10
+Feb 16 19:56:51 rb1-fedora kernel:  ret_from_fork+0xf4/0x110
+Feb 16 19:56:51 rb1-fedora kernel:  ? __pfx_kthread+0x10/0x10
+Feb 16 19:56:51 rb1-fedora kernel:  ret_from_fork_asm+0x1a/0x30
+Feb 16 19:56:51 rb1-fedora kernel:  </TASK>
+Feb 16 19:56:51 rb1-fedora kernel: Modules linked in: 8021q garp mrp stp llc rfkill nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 nf_tables qrtr nvidia_drm(POE) nvidia_modeset(POE) sunrpc nvidia_uvm(POE) binfmt_misc r8153_ecm cdc_ether snd_hda_codec_intelhdmi snd_hda_codec_alc269 snd_soc_avs snd_hda_scodec_component snd_hda_codec_realtek_lib intel_rapl_msr intel_rapl_common snd_soc_hda_codec snd_hda_codec_generic snd_hda_ext_core intel_uncore_frequency snd_hda_codec_nvhdmi intel_uncore_frequency_common snd_hda_codec_hdmi snd_soc_core snd_hda_intel snd_hda_codec intel_tcc_cooling snd_compress x86_pkg_temp_thermal ac97_bus intel_powerclamp snd_pcm_dmaengine snd_hda_core snd_seq coretemp rapl vfat iTCO_wdt ax88179_178a snd_intel_dspcfg intel_pmc_bxt mei_pxp mei_hdcp iTCO_vendor_support r8152 usbnet snd_seq_device intel_cstate snd_intel_sdw_acpi fat snd_hwdep intel_uncore intel_wmi_thunderbolt nvidia(POE) snd_pcm mii
+Feb 16 19:56:51 rb1-fedora kernel:  mei_me i2c_i801 snd_timer mei i2c_smbus snd idma64 soundcore intel_pch_thermal drm_ttm_helper intel_pmc_core pmt_telemetry pmt_discovery pmt_class acpi_pad intel_pmc_ssram_telemetry intel_vsec joydev loop dm_multipath nfnetlink zram lz4hc_compress lz4_compress xfs i915 i2c_algo_bit drm_buddy ttm nvme drm_display_helper nvme_core hid_rmi rmi_core nvme_keyring nvme_auth mxm_wmi thunderbolt polyval_clmulni ghash_clmulni_intel serio_raw hkdf cec video i2c_hid_acpi i2c_hid intel_oc_wdt wmi pinctrl_sunrisepoint scsi_dh_rdac scsi_dh_emc scsi_dh_alua i2c_dev fuse
+Feb 16 19:56:51 rb1-fedora kernel: CR2: 0000000000000018
+Feb 16 19:56:51 rb1-fedora kernel: ---[ end trace 0000000000000000 ]---
+Feb 16 19:56:51 rb1-fedora kernel: RIP: 0010:pbus_select_window_for_type+0x68/0x110
+Feb 16 19:56:51 rb1-fedora kernel: Code: 89 7c 24 08 e8 c9 a7 fe ff 48 8b 7c 24 08 be 02 00 00 00 48 89 04 24 e8 b6 a7 fe ff 48 8b 4c 24 10 48 8b 14 24 f6 c5 20 74 22 <48> 8b 70 18 f7 c6 00 02 00 00 74 16 f7 c1 00 00 10 00 0f 85 87 00
+Feb 16 19:56:51 rb1-fedora kernel: RSP: 0018:ffffcfd6400bfb30 EFLAGS: 00010202
+Feb 16 19:56:51 rb1-fedora kernel: RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000102200
+Feb 16 19:56:51 rb1-fedora kernel: RDX: 0000000000000000 RSI: 0000000000000002 RDI: ffff8add33842800
+Feb 16 19:56:51 rb1-fedora kernel: RBP: ffff8add33842800 R08: ffffcfd6400bfd50 R09: 0000000000100000
+Feb 16 19:56:51 rb1-fedora kernel: R10: ffff8add0fdc3748 R11: 0000000000000000 R12: 0000000000200000
+Feb 16 19:56:51 rb1-fedora kernel: R13: ffffcfd6400bfd50 R14: ffffcfd6400bfd50 R15: ffff8add02431028
+Feb 16 19:56:51 rb1-fedora kernel: FS:  0000000000000000(0000) GS:ffff8ae0e9226000(0000) knlGS:0000000000000000
+Feb 16 19:56:51 rb1-fedora kernel: CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+Feb 16 19:56:51 rb1-fedora kernel: CR2: 0000000000000018 CR3: 000000046f62e005 CR4: 00000000003706f0
+Feb 16 19:56:51 rb1-fedora kernel: note: kworker/u32:0[12] exited with irqs disabled
+Feb 16 19:56:51 rb1-fedora kernel: thunderbolt 0-1: new device found, vendor=0x127 device=0x218
+Feb 16 19:56:51 rb1-fedora kernel: thunderbolt 0-1: Razer Core
+Feb 16 19:56:52 rb1-fedora kernel: thunderbolt 0-101: new device found, vendor=0x127 device=0x217
+Feb 16 19:56:52 rb1-fedora kernel: thunderbolt 0-101: Razer Core
+2026-02-16 20:01:26 EST ERROR: reattach event not observed before timeout.

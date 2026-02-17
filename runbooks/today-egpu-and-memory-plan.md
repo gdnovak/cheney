@@ -4,7 +4,7 @@ Date anchor: 2026-02-16
 
 Purpose: make immediate progress on compute reliability (`rb1-fedora` eGPU) and assistant context quality (memory structure redesign).
 
-## Session Checkpoint (2026-02-16 19:49 EST)
+## Session Checkpoint (2026-02-16 20:11 EST)
 
 Track A progress:
 
@@ -20,9 +20,13 @@ Track A progress:
    - `notes/egpu-acceptance-artifacts/egpu-reboot_attached_persistence-20260216-193959.log`
    - `notes/egpu-acceptance-artifacts/egpu-cold_boot_attached-20260216-194611.log`
    - `notes/egpu-acceptance-artifacts/egpu-hot_attach_idle_soft_rescan_postcheck-20260216-194739.log`
+   - `notes/egpu-acceptance-artifacts/egpu-hot_attach_idle_physical_postcheck-20260216-200930.log`
 9. `DONE` Non-AI workload benchmark on external GPU captured:
    - `notes/egpu-acceptance-artifacts/egpu-benchmark-hashcat-external-20260216-195036.log`
-10. `OPEN` User-attended external-display-sink scenario still pending (external GPU currently reports `display_active=Disabled`).
+10. `ISSUE` Physical hot-attach cable cycle produced reattach instability (kernel ACPI/PCI hotplug warning/Oops) with recovery by reboot:
+   - `notes/egpu-acceptance-artifacts/egpu-hot_attach_idle-physical-20260216-195603.log`
+11. `BLOCKED` User-attended external-display-sink scenario could not be executed this session due no sink connected to eGPU outputs:
+   - `notes/egpu-acceptance-artifacts/egpu-display-sink-check-20260216-201014.log`
 
 Track B progress:
 

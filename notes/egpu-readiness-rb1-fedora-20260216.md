@@ -44,9 +44,15 @@ Purpose: record what is already in place for external eGPU work, what is still m
 ## Known Constraints
 
 1. `sshd -T` reports `PermitRootLogin yes` because installer file `/etc/ssh/sshd_config.d/01-permitrootlogin.conf` overrides hardening intent. Password auth remains disabled, so root is currently key-only.
-2. Physical hot-attach with manual cable remove/reinsert was not rerun in this pass; current "hot attach" evidence is a software PCI remove/rescan proxy cycle with post-check pass.
-3. External-display-sink scenario is still pending user-attended setup. Current state reports external GPU `display_active=Disabled`.
-4. Kernel reports reduced external link speed (`PCIe Gen2 x4` observed in latest checks). Benchmark impact captured below.
+2. User-attended physical hot-attach (real cable detach/reattach) produced a reattach instability event:
+   - external GPU did not re-enumerate immediately
+   - kernel logged ACPI/PCI hotplug warnings and Oops during reattach
+   - host required reboot to return to stable dual-GPU state
+3. External-display-sink validation is blocked by current lab hardware in this session:
+   - no display attached to eGPU outputs
+   - only dummy plug is on host-side path, not eGPU sink path
+   - external GPU currently reports all connectors `disconnected`
+4. Kernel/link state remains variable on external path (`x4` width, gen changes by workload/idle); benchmark impact captured below.
 
 ## Matrix Coverage (Current)
 
@@ -56,6 +62,7 @@ Purpose: record what is already in place for external eGPU work, what is still m
 2. `attached_no_external_display` (`PASS`)
 3. `cold_boot_attached` (`PASS`, reboot `44s`)
 4. `hot_attach_idle_soft_rescan_postcheck` (`PASS`)
+5. `hot_attach_idle_physical_postcheck` (`PASS`, after reboot recovery)
 
 All rows show pre/post success for:
 
@@ -66,6 +73,16 @@ All rows show pre/post success for:
 Supporting hot-attach proxy artifact:
 
 - `notes/egpu-acceptance-artifacts/egpu-hot_attach_idle-soft_rescan-20260216-194731.log`
+
+Physical hot-attach failure artifact (manual cable cycle):
+
+- `notes/egpu-acceptance-artifacts/egpu-hot_attach_idle-physical-20260216-195603.log`
+- Includes ACPI/PCI hotplug warning/Oops evidence and no-immediate-reattach behavior.
+
+Display sink check artifact:
+
+- `notes/egpu-acceptance-artifacts/egpu-display-sink-check-20260216-201014.log`
+- All eGPU connectors reported `disconnected`.
 
 ## Non-AI Workload Benchmark (External GPU)
 
@@ -78,16 +95,19 @@ Supporting hot-attach proxy artifact:
 
 Run these in order:
 
-1. User-attended physical hot-attach cycle (cable remove/reinsert on idle host), then rerun:
-   - `scripts/egpu_acceptance_matrix.sh --scenario hot_attach_idle_physical_postcheck --host rb1-admin --peer rb2`
-2. User-attended external-display-sink cycle, then rerun:
+1. Investigate/mitigate physical reattach instability before trusting hot-attach in unattended workflows:
+   - capture repeatability of ACPI/PCI hotplug warning/Oops path
+   - test whether firmware/kernel changes improve behavior
+2. When an actual display sink can be attached to eGPU outputs, run:
    - `scripts/egpu_acceptance_matrix.sh --scenario attached_with_external_display --host rb1-admin --peer rb2`
-3. Capture for each user-attended test:
+3. Validate sink state with:
+   - `scripts/egpu_display_sink_check.sh --host rb1-admin --bdf 0000:0f:00.0`
+4. Capture for each user-attended test:
    - `boltctl list`
    - `lspci -nnk | grep -EA3 'VGA|3D|Display'`
    - `nvidia-smi --query-gpu=index,pci.bus_id,name,display_active,pcie.link.gen.current,pcie.link.width.current --format=csv`
    - `journalctl -k --since "<test-start-time>"`
-4. Validate management SSH, fallback VLAN99, and WoL remain unaffected after each attempt.
+5. Validate management SSH, fallback VLAN99, and WoL remain unaffected after each attempt.
 
 ## Pass/Fail Definition
 

@@ -1,0 +1,7 @@
+2026-02-16 20:09:30 EST Scenario=hot_attach_idle_physical_postcheck reboot=0 host=rb1-admin peer=rb2
+2026-02-16 20:09:30 EST Expected external PCI ID=10de:1c03 BDF=00000000:0F:00.0
+2026-02-16 20:09:30 EST Collecting pre snapshot
+2026-02-16 20:09:33 EST Collecting post snapshot
+2026-02-16 20:09:38 EST Result=PASS notes=ok
+2026-02-16 20:09:38 EST Matrix row appended to notes/egpu-acceptance-matrix-20260216.md
+2026-02-16 20:09:38 EST Artifact log saved at notes/egpu-acceptance-artifacts/egpu-hot_attach_idle_physical_postcheck-20260216-200930.log
