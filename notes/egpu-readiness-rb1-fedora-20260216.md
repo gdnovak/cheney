@@ -27,6 +27,10 @@ Purpose: record what is already in place for external eGPU work, what is still m
    - `codex` removed from host
    - host-local `~/cheney` clone removed
    - environment baseline left intact for deferred AI bring-up later
+9. Scripted acceptance harness is now in-repo:
+   - Script: `scripts/egpu_acceptance_matrix.sh`
+   - Matrix output: `notes/egpu-acceptance-matrix-20260216.md`
+   - Artifact log (first scripted run): `notes/egpu-acceptance-artifacts/egpu-reboot_attached_persistence-20260216-193959.log`
 
 ## Why This Helps eGPU Work Later
 
@@ -41,6 +45,16 @@ Purpose: record what is already in place for external eGPU work, what is still m
 2. One reboot-survival pass (with eGPU attached and fallback active) succeeded; full multi-scenario matrix is not yet completed.
 3. Kernel reports external GPU link limitation at `2.5 GT/s PCIe x4` on current path; practical workload impact still needs benchmarking.
 4. External-GPU pinning behavior under real workloads has not yet been validated (AI runtime currently deferred).
+
+## Latest Scripted Matrix Result
+
+- Scenario: `reboot_attached_persistence`
+- Result: `PASS`
+- Reboot elapsed: `32s`
+- Pre/post external GPU checks:
+  - `lspci` external endpoint: pass
+  - `nvidia-smi` external BDF visibility: pass
+  - fallback ping and fallback interface persistence: pass
 
 ## Deferred Phase-5 eGPU Gates
 

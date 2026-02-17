@@ -14,6 +14,10 @@ Track A progress:
 4. `DONE` Fedora-side fallback VLAN99 restored and validated (`172.31.99.1/30` <-> `172.31.99.2/30`).
 5. `DONE` External eGPU hot-attach detection validated (`0f:00.0`, GTX 1060 6GB).
 6. `DONE` Reboot-survival validation passed for fallback+eGPU state (boot ID changed; fallback persisted; both GPUs still visible).
+7. `DONE` Acceptance harness script created: `scripts/egpu_acceptance_matrix.sh`.
+8. `DONE` First scripted matrix scenario executed and logged:
+   - `notes/egpu-acceptance-matrix-20260216.md`
+   - `notes/egpu-acceptance-artifacts/egpu-reboot_attached_persistence-20260216-193959.log`
 
 Track B progress:
 
@@ -39,6 +43,23 @@ ssh rb1 'lsusb'
 ```
 
 Record whether the Razer Core + GTX 1060 are visible before driver work.
+
+### A1.1 Matrix Harness (Saved Test Program)
+
+Use the reusable harness:
+
+```bash
+scripts/egpu_acceptance_matrix.sh \
+  --scenario reboot_attached_persistence \
+  --reboot \
+  --host rb1-admin \
+  --peer rb2
+```
+
+Outputs:
+
+- Matrix row file: `notes/egpu-acceptance-matrix-YYYYMMDD.md`
+- Per-run artifact log: `notes/egpu-acceptance-artifacts/egpu-<scenario>-<timestamp>.log`
 
 ### A2. Fedora/NVIDIA Bring-Up
 

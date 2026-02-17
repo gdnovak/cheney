@@ -1,0 +1,9 @@
+2026-02-16 19:39:59 EST Scenario=reboot_attached_persistence reboot=1 host=rb1-admin peer=rb2
+2026-02-16 19:39:59 EST Expected external PCI ID=10de:1c03 BDF=00000000:0F:00.0
+2026-02-16 19:39:59 EST Collecting pre snapshot
+2026-02-16 19:40:02 EST Triggering reboot on rb1-admin
+2026-02-16 19:40:36 EST Reboot confirmed after 32s (boot_id=9eb28679-84a8-460a-af1a-985aae396449)
+2026-02-16 19:40:36 EST Collecting post snapshot
+2026-02-16 19:40:40 EST Result=PASS notes=ok
+2026-02-16 19:40:40 EST Matrix row appended to notes/egpu-acceptance-matrix-20260216.md
+2026-02-16 19:40:40 EST Artifact log saved at notes/egpu-acceptance-artifacts/egpu-reboot_attached_persistence-20260216-193959.log
