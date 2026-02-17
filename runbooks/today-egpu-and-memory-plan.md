@@ -4,7 +4,7 @@ Date anchor: 2026-02-16
 
 Purpose: make immediate progress on compute reliability (`rb1-fedora` eGPU) and assistant context quality (memory structure redesign).
 
-## Session Checkpoint (2026-02-16 19:29 EST)
+## Session Checkpoint (2026-02-16 19:33 EST)
 
 Track A progress:
 
@@ -13,7 +13,7 @@ Track A progress:
 3. `DONE` WoL persistence configured and revalidated after reboot.
 4. `DONE` Fedora-side fallback VLAN99 restored and validated (`172.31.99.1/30` <-> `172.31.99.2/30`).
 5. `DONE` External eGPU hot-attach detection validated (`0f:00.0`, GTX 1060 6GB).
-6. `OPEN` Reboot-survival validation for fallback+eGPU state.
+6. `DONE` Reboot-survival validation passed for fallback+eGPU state (boot ID changed; fallback persisted; both GPUs still visible).
 
 Track B progress:
 

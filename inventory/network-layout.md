@@ -6,7 +6,7 @@
 - `switch-fast-unmanaged`: higher-throughput unmanaged switch for bulk data paths.
 - Rule: keep exactly one cable between switches unless loop protections are explicitly configured and validated.
 
-## Current Known IP Anchors (2026-02-16 19:06 EST)
+## Current Known IP Anchors (2026-02-16 19:33 EST)
 
 | system | ip | role | source |
 |---|---|---|---|
@@ -41,15 +41,16 @@ Current link checks (2026-02-16):
 - Current host interface state:
   - `rb2`: `vmbr0.99` -> `172.31.99.2/30` (present and routed)
   - `rb1-fedora`: `enp0s20f0u6.99` (`fallback99`) -> `172.31.99.1/30` (present and routed)
-- Validation status (2026-02-16 19:06 EST):
+- Validation status (2026-02-16 19:33 EST):
   - `rb1 -> 172.31.99.2` ping succeeds.
   - `rb2 -> 172.31.99.1` ping succeeds.
   - Fallback SSH path verified to both endpoints using jump-host tests.
+  - Reboot-survival on `rb1` confirmed with eGPU attached; fallback interface returned and remained reachable.
 
 ## Fallback Persistence Status (Current)
 
 - `rb2`: persistent fallback config is present in `/etc/network/interfaces` and active after reboot.
-- `rb1-fedora`: fallback config now present as NetworkManager connection `fallback99` (`autoconnect=yes`); reboot-survival confirmation still pending.
+- `rb1-fedora`: fallback config present as NetworkManager connection `fallback99` (`autoconnect=yes`) and reboot-survival confirmed.
 
 ## Security Controls (VLAN99)
 
@@ -73,7 +74,7 @@ Current link checks (2026-02-16):
 
 | host | current primary NIC path | current link | target near-term | target link | fallback path requirement |
 |---|---|---|---|---|---|
-| rb1-fedora | `enp0s20f0u6` (USB NIC) | 1GbE | keep management isolated from eGPU Ethernet; add 2.5Gb data path later | 2.5GbE target | keep `fallback99` active and confirm reboot persistence |
+| rb1-fedora | `enp0s20f0u6` (USB NIC) | 1GbE | keep management isolated from eGPU Ethernet; add 2.5Gb data path later | 2.5GbE target | keep `fallback99` active and revalidate after maintenance reboots |
 | rb2-pve | `enx00051bde7e6e` | 1GbE | prioritize power/cable strain relief, then 2.5Gb upgrade path | 2.5GbE target | keep `vmbr0.99` active and documented |
 | mba (`kabbalah`) | `nic0` | 1GbE | continuity node only | 1GbE | retain hub + direct TB/miniDP fallback notes |
 | workstation/mac mini | TBD | TBD | add to fast-switch data path if 2.5-capable NIC path exists | 2.5GbE target | keep Wi-Fi as secondary out-of-band access |

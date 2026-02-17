@@ -38,7 +38,7 @@ Purpose: record what is already in place for external eGPU work, what is still m
 ## Known Constraints
 
 1. `sshd -T` reports `PermitRootLogin yes` because installer file `/etc/ssh/sshd_config.d/01-permitrootlogin.conf` overrides hardening intent. Password auth remains disabled, so root is currently key-only.
-2. Full reboot-survival matrix (with eGPU attached and fallback active) is not yet completed.
+2. One reboot-survival pass (with eGPU attached and fallback active) succeeded; full multi-scenario matrix is not yet completed.
 3. Kernel reports external GPU link limitation at `2.5 GT/s PCIe x4` on current path; practical workload impact still needs benchmarking.
 4. External-GPU pinning behavior under real workloads has not yet been validated (AI runtime currently deferred).
 

@@ -15,14 +15,14 @@ This repository tracks infrastructure planning and execution for agent tooling, 
 
 If you are resuming work, start here:
 
-1. Run reboot-survival validation for `rb1` fallback VLAN99 + eGPU attachment.
-2. Execute external eGPU acceptance matrix (cold boot, hot attach, display/no-display) and capture evidence in `notes/egpu-readiness-rb1-fedora-20260216.md`.
-3. Reconfirm fallback persistence and management access after an `rb1` reboot (`rb1-admin`, `rb1`, VLAN99).
+1. Execute external eGPU acceptance matrix (cold boot, hot attach, display/no-display) and capture evidence in `notes/egpu-readiness-rb1-fedora-20260216.md`.
+2. Add one short workload benchmark for external eGPU path characterization.
+3. Reconfirm fallback persistence and management access after subsequent host maintenance reboots.
 4. Decide memory strategy (markdown graph only vs markdown+RAG), then scaffold `memory/`.
 
 Execution checklist: `runbooks/today-egpu-and-memory-plan.md`
 
-## Latest Implementation Checkpoint (2026-02-16 19:29 EST)
+## Latest Implementation Checkpoint (2026-02-16 19:33 EST)
 
 - `DONE` Added hardened admin access path `rb1-admin` (`tdj`) with key-only SSH and validated `sudo -n` access.
 - `DONE` Applied Fedora baseline updates on `rb1` (package refresh, core services active, reboot validated).
@@ -35,7 +35,11 @@ Execution checklist: `runbooks/today-egpu-and-memory-plan.md`
   - Codex CLI removed
   - host-local `~/cheney` clone removed
 - `DONE` Kept environment baseline intact (Node/npm retained; NVIDIA + fallback VLAN unchanged and verified).
-- `OPEN` Reboot-survival validation for fallback VLAN99 + eGPU remains pending.
+- `DONE` Reboot-survival validation passed with eGPU attached:
+  - `rb1` boot ID changed after reboot
+  - `fallback99` auto-returned (`172.31.99.1/30`)
+  - bidirectional fallback ping/SSH checks succeeded post-reboot
+  - internal+external NVIDIA GPUs remained visible.
 
 ## Naming Standard (`lcHL`)
 
@@ -62,14 +66,14 @@ Mandatory gate before phase 3:
 
 ## Blocker Tracker (as of 2026-02-16)
 
-1. `PARTIAL` Re-establish dual-sided fallback management path.
+1. `DONE` Re-establish dual-sided fallback management path.
 - Reserved fallback addressing remains:
   - `rb1` target fallback `172.31.99.1/30`
   - `rb2` active fallback `172.31.99.2/30`
 - `rb2` fallback interface (`vmbr0.99`) is present and routable.
 - `rb1` fallback interface is restored on Fedora (`enp0s20f0u6.99` / connection `fallback99`).
 - Current validation: bidirectional fallback ping succeeds; fallback SSH path validates.
-- Remaining check: reboot-survival validation on Fedora side.
+- Reboot-survival validation passed on Fedora side (fallback interface persisted and remained reachable).
 
 2. `DONE` Platform pivot execution.
 - `rb1` is now Fedora baremetal (`rb1-fedora`, `192.168.5.107`).
@@ -103,7 +107,7 @@ Current state:
 
 - `truenas` is running on `rb2-pve`.
 - `rb1` has been rebuilt as Fedora baremetal for direct GPU/NVIDIA stack control.
-- Fallback VLAN99 path is active on both `rb1` and `rb2`; reboot-survival validation is still pending on Fedora side.
+- Fallback VLAN99 path is active on both `rb1` and `rb2`; reboot-survival validation has passed on Fedora side.
 
 Execution sequencing is tracked in `runbooks/rb1-baremetal-fedora-pivot.md`.
 
@@ -125,7 +129,7 @@ Direction now in effect:
 - VLAN99 fallback is host-management only (`rb1` <-> `rb2`) and must not be used for guest transit.
 - Keep fallback interfaces ungated by default route (no fallback gateway).
 - Do not use fallback subnet for forwarding/NAT/routing policy.
-- Current compliance check: both fallback interfaces are active and unrouted; post-reboot reconfirmation is still required.
+- Current compliance check: both fallback interfaces are active and unrouted; reboot persistence is validated on both sides.
 
 ## Repository Map
 
@@ -171,12 +175,12 @@ Direction now in effect:
 
 ## Near-Term Milestones
 
-1. Confirm reboot survival for fallback VLAN99 and eGPU-attached state on `rb1-fedora`.
-2. Complete external eGPU acceptance on `rb1-fedora` with reboot-stability evidence.
+1. Complete external eGPU acceptance on `rb1-fedora` with multi-scenario evidence.
+2. Add external eGPU performance characterization (short benchmark pass).
 3. Keep AI bootstrap deferred until explicitly resumed.
 4. Refresh continuity validation suite for the current host-role layout.
 5. Continue phase-2 network optimization (port map + 2.5Gb path planning).
 
 ## Current Session Objective
 
-Resume from the 2026-02-16 19:29 checkpoint: run reboot validation, then continue external eGPU matrix with AI bootstrap deferred.
+Resume from the 2026-02-16 19:33 checkpoint: continue external eGPU matrix and benchmarking with AI bootstrap deferred.
