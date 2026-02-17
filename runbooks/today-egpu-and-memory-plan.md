@@ -28,6 +28,8 @@ Track A progress:
 11. `DONE` User-attended external-display-sink scenario completed:
    - sink detection artifact: `notes/egpu-acceptance-artifacts/egpu-display-sink-check-20260216-201756.log` (`card2-DP-3=connected`)
    - matrix scenario artifact: `notes/egpu-acceptance-artifacts/egpu-attached_with_external_display-20260216-201759.log` (`PASS`)
+12. `DONE` Decision recorded to defer further hotplug tuning for now and operate recovery-first.
+13. `OPEN` Next-phase planning runbook kickoff.
 
 Track B progress:
 

@@ -17,6 +17,7 @@ Purpose: durable, agent-friendly context graph for resumable work.
 
 - Project: [[proj-rb1-fedora-env-baseline]]
 - Decision: [[dec-rag-phase1-lexical-first]]
+- Decision: [[dec-egpu-hotplug-defer-recovery-first]]
 
 ## Collections
 

@@ -331,3 +331,9 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
 - Status: User connected a real display sink to eGPU output; sink-check now reports connected (`card2-DP-3`). Executed `attached_with_external_display` matrix scenario and recorded `PASS` while preserving management/fallback continuity checks.
 - Evidence: Sink artifact `notes/egpu-acceptance-artifacts/egpu-display-sink-check-20260216-201756.log` (`result=connected`); matrix artifact `notes/egpu-acceptance-artifacts/egpu-attached_with_external_display-20260216-201759.log` (`PASS`); matrix row appended in `notes/egpu-acceptance-matrix-20260216.md`.
 - Next action: Keep focus on physical hot-attach instability mitigation (ACPI/PCI warning path), then decide whether to run repeatability matrix across additional cable/device permutations.
+
+## 2026-02-16 20:41 EST (Codex)
+- Area: eGPU operating decision lock + next-phase planning kickoff
+- Status: Recorded operator decision to defer additional hotplug tuning for now and proceed with recovery-first operations, given known temperamental behavior and validated recovery path. Updated memory graph, readiness notes, and top-level README priorities to shift from eGPU acceptance execution to next-phase planning tracks.
+- Evidence: Added memory decision note `memory/decisions/dec-egpu-hotplug-defer-recovery-first.md`; updated project memory note `memory/projects/proj-rb1-fedora-env-baseline.md`; added planning runbook `runbooks/next-steps-planning-20260216.md`; updated `notes/egpu-readiness-rb1-fedora-20260216.md` with operating decision + recovery playbook; updated `README.md` routing/priorities.
+- Next action: Execute Track 1 + Track 2 from `runbooks/next-steps-planning-20260216.md` (Fedora operational polish and continuity/recovery hardening), while keeping AI bootstrap deferred.

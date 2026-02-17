@@ -19,16 +19,17 @@ Stabilize `rb1-fedora` for reliable experimentation while keeping management con
 
 1. SSH/WoL/fallback VLAN are operational.
 2. Internal and external NVIDIA GPUs are visible.
-3. Non-AI eGPU acceptance matrix has multiple passing scenarios.
-4. Remaining manual gates are physical hot-attach and external-display-sink scenario.
+3. Non-AI eGPU acceptance matrix is complete for current scope, including display-attached scenario.
+4. Physical hot-attach cable cycle is confirmed temperamental; recovery-by-reboot path is known and documented.
 
 ## Next Actions
 
-1. Run user-attended physical hot-attach and capture matrix evidence.
-2. Run user-attended external-display-sink scenario and capture matrix evidence.
-3. Keep AI runtime deferred until explicitly requested.
+1. Preserve current stable operating mode (avoid unnecessary hot-unplug/replug).
+2. Keep AI runtime deferred until explicitly requested.
+3. Shift to next-phase planning in `runbooks/next-steps-planning-20260216.md`.
 
 ## Links
 
 - Index: [[mem-index]]
 - Decision: [[dec-rag-phase1-lexical-first]]
+- Decision: [[dec-egpu-hotplug-defer-recovery-first]]

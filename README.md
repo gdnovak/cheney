@@ -15,12 +15,15 @@ This repository tracks infrastructure planning and execution for agent tooling, 
 
 If you are resuming work, start here:
 
-1. Execute external eGPU acceptance matrix (cold boot, hot attach, display/no-display) and capture evidence in `notes/egpu-readiness-rb1-fedora-20260216.md`.
-2. Add one short workload benchmark for external eGPU path characterization.
-3. Reconfirm fallback persistence and management access after subsequent host maintenance reboots.
-4. Decide memory strategy (markdown graph only vs markdown+RAG), then scaffold `memory/`.
+1. Keep eGPU in stable attached mode and avoid unnecessary hotplug cycles; use recovery-first posture if disconnect issues recur.
+2. Continue Fedora operational polish and continuity hardening from `runbooks/next-steps-planning-20260216.md`.
+3. Expand memory workflow usage (`memory/` notes + decisions) for resumable sessions.
+4. Keep AI bootstrap deferred until explicitly requested.
 
-Execution checklist: `runbooks/today-egpu-and-memory-plan.md`
+Execution checklists:
+
+- `runbooks/today-egpu-and-memory-plan.md`
+- `runbooks/next-steps-planning-20260216.md`
 
 ## Latest Implementation Checkpoint (2026-02-16 19:33 EST)
 
@@ -80,10 +83,11 @@ Mandatory gate before phase 3:
 - `rb2` is current Proxmox VM/storage anchor (`192.168.5.108`).
 - `truenas` is running on `rb2` and reachable at `192.168.5.100`.
 
-3. `PARTIAL` eGPU readiness on baremetal.
+3. `DONE` eGPU readiness baseline on baremetal (with hotplug caveat).
 - Proxmox passthrough path was retired due repeated guest-loss behavior.
 - Baremetal Fedora host now has validated NVIDIA driver stack (`nvidia-smi` pass, driver `580.119.02`).
-- External eGPU acceptance checks remain pending; preconditions/readiness findings are tracked in `notes/egpu-readiness-rb1-fedora-20260216.md`.
+- External eGPU acceptance matrix includes display-attached scenario pass; findings + caveats are tracked in `notes/egpu-readiness-rb1-fedora-20260216.md`.
+- Known caveat: physical hot-unplug/replug remains temperamental; operate recovery-first and defer active hotplug tuning for now.
 
 4. `DEFERRED` Assistant bootstrap readiness on new host layout.
 - `tsDeb` watchdog timer reports active from guest-exec check.
@@ -146,6 +150,7 @@ Direction now in effect:
 - `runbooks/rb1-fedora-baremetal-install.md`: concrete preflight + install checklist once `truenas` cutover to `rb2` is complete.
 - `runbooks/tomorrow-ai-bootstrap-rb1-fedora.md`: attended plan for first Ollama + Codex bootstrap on new Fedora baremetal `rb1`.
 - `runbooks/today-egpu-and-memory-plan.md`: current priority plan (eGPU on Fedora + memory structure optimization).
+- `runbooks/next-steps-planning-20260216.md`: post-eGPU-acceptance planning tracks and execution order.
 - `runbooks/rb2-fallback-management-path.md`: direct emergency management path between `rb1` and `rb2`.
 - `runbooks/rb2-hard-power-recovery-validation.md`: true no-power recovery checklist for batteryless `rb2`.
 - `runbooks/tailscale-node-staging-rb2-mba.md`: utility-VM tailscale setup for `rb2` and `mba` (`lchl-tsnode-rb2`, `lchl-tsnode-mba`) with approval flow.
@@ -175,12 +180,12 @@ Direction now in effect:
 
 ## Near-Term Milestones
 
-1. Complete external eGPU acceptance on `rb1-fedora` with multi-scenario evidence.
-2. Add external eGPU performance characterization (short benchmark pass).
+1. Execute next-phase planning tracks from `runbooks/next-steps-planning-20260216.md`.
+2. Keep eGPU in stable operating mode and document recovery-first handling for disconnect incidents.
 3. Keep AI bootstrap deferred until explicitly resumed.
 4. Refresh continuity validation suite for the current host-role layout.
 5. Continue phase-2 network optimization (port map + 2.5Gb path planning).
 
 ## Current Session Objective
 
-Resume from the 2026-02-16 19:33 checkpoint: continue external eGPU matrix and benchmarking with AI bootstrap deferred.
+Resume from the 2026-02-16 20:41 checkpoint: persist findings, follow recovery-first eGPU posture, and execute next-phase planning tracks.

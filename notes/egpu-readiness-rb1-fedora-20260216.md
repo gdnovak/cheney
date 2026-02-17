@@ -48,11 +48,7 @@ Purpose: record what is already in place for external eGPU work, what is still m
    - external GPU did not re-enumerate immediately
    - kernel logged ACPI/PCI hotplug warnings and Oops during reattach
    - host required reboot to return to stable dual-GPU state
-3. External-display-sink validation is blocked by current lab hardware in this session:
-   - no display attached to eGPU outputs
-   - only dummy plug is on host-side path, not eGPU sink path
-   - external GPU currently reports all connectors `disconnected`
-   - update (2026-02-16 20:17 EST): external display sink is now connected on `card2-DP-3`
+3. External-display-sink gate is now complete; current idle state may still show `disconnected` when DP is intentionally detached.
 4. Kernel/link state remains variable on external path (`x4` width, gen changes by workload/idle); benchmark impact captured below.
 
 ## Matrix Coverage (Current)
@@ -96,7 +92,23 @@ Display sink check artifact:
 - Observed speed: `1608.6 MH/s` (`SHA2-256`)
 - Post-run `nvidia-smi` for external GPU (`0F:00.0`): `utilization=61%`, `pstate=P0`, link `Gen3 x4` during workload window
 
-## Deferred Phase-5 eGPU Gates
+## Operating Decision (2026-02-16 20:41 EST)
+
+1. eGPU acceptance gates for current scope are complete (including display-attached scenario).
+2. Physical hot-unplug/replug path is acknowledged as temperamental.
+3. Project focus shifts away from hotplug tuning for now; use recovery-first operations and proceed with broader next-step planning.
+
+## Recovery Playbook (If eGPU Disconnect/Reattach Misbehaves)
+
+1. Do not loop hotplug attempts repeatedly.
+2. Perform controlled reboot on `rb1`.
+3. Verify post-boot:
+   - `nvidia-smi` shows internal + external GPUs
+   - `sshd` reachable via `rb1-admin`
+   - fallback VLAN99 ping works both ways (`rb1` <-> `rb2`)
+4. Return to stable attached mode and continue planned work.
+
+## Deferred Hotplug Mitigation Backlog (Intentional)
 
 Run these in order:
 
