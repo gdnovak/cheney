@@ -2,6 +2,8 @@
 
 Purpose: validate headless OpenClaw execution against OpenAI using API key auth, without relying on OAuth/browser flow.
 
+Status: paused. OpenClaw and local OpenClaw state were removed from `rb1` on 2026-02-16 per operator request to restart setup manually later.
+
 ## Current Checkpoint (2026-02-16 21:52 EST)
 
 Completed:

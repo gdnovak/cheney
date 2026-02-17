@@ -15,5 +15,5 @@
 - `rb1` external eGPU path is now detected and driver-bound in baremetal Fedora (`0f:00.0` / GTX 1060 6GB).
 - `rb1` reboot-survival validation passed with eGPU attached; fallback VLAN99 remained present/reachable post-boot.
 - AI bootstrap artifacts on `rb1` were intentionally rolled back (`ollama` and `codex` removed; host-local `~/cheney` clone removed) while keeping environment baseline intact.
-- OpenClaw CLI is installed on `rb1` for attended headless evaluation (`openclaw 2026.2.15`), with no gateway service installed/enabled and no persistent API-key config written.
+- OpenClaw CLI and OpenClaw host state were removed from `rb1` on request after evaluation attempts (`npm uninstall -g openclaw`; removed `/root/.openclaw*`); AI bootstrap remains deferred pending manual restart.
 - eGPU readiness findings and deferred acceptance gates are tracked in `notes/egpu-readiness-rb1-fedora-20260216.md`.

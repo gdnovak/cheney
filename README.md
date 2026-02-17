@@ -18,14 +18,14 @@ If you are resuming work, start here:
 1. Keep eGPU in stable attached mode and avoid unnecessary hotplug cycles; use recovery-first posture if disconnect issues recur.
 2. Continue Fedora operational polish and continuity hardening from `runbooks/next-steps-planning-20260216.md`.
 3. Expand memory workflow usage (`memory/` notes + decisions) for resumable sessions.
-4. Keep AI changes scoped: OpenClaw attended API-key smoke is in progress; broader bootstrap remains deferred.
+4. Keep AI bootstrap deferred; OpenClaw was removed from `rb1` and will be reintroduced manually later.
 
 Execution checklists:
 
 - `runbooks/today-egpu-and-memory-plan.md`
 - `runbooks/next-steps-planning-20260216.md`
 
-## Latest Implementation Checkpoint (2026-02-16 21:52 EST)
+## Latest Implementation Checkpoint (2026-02-16 22:30 EST)
 
 - `DONE` Added hardened admin access path `rb1-admin` (`tdj`) with key-only SSH and validated `sudo -n` access.
 - `DONE` Applied Fedora baseline updates on `rb1` (package refresh, core services active, reboot validated).
@@ -43,9 +43,9 @@ Execution checklists:
   - `fallback99` auto-returned (`172.31.99.1/30`)
   - bidirectional fallback ping/SSH checks succeeded post-reboot
   - internal+external NVIDIA GPUs remained visible.
-- `DONE` Installed OpenClaw CLI on `rb1-fedora` for attended headless API-key evaluation (`openclaw 2026.2.15`).
-- `DONE` Created isolated OpenClaw profile `rb1eval` and validated OpenAI provider wiring path with intentional invalid-key `401` response.
-- `IN PROGRESS` Real-key smoke attempts reached OpenAI but hit API rate limit on `gpt-5-mini` and `gpt-4.1-nano`; rerun required after quota reset to capture `OPENCLAW_SMOKE_OK`.
+- `DONE` Completed attended OpenClaw evaluation attempts and captured artifacts for API-path validation.
+- `DONE` Removed OpenClaw and related host state from `rb1` on request (`npm uninstall -g openclaw`; removed `/root/.openclaw*`).
+- `DONE` Returned AI stack posture to deferred/manual bootstrap.
 
 ## Naming Standard (`lcHL`)
 
@@ -92,10 +92,10 @@ Mandatory gate before phase 3:
 - External eGPU acceptance matrix includes display-attached scenario pass; findings + caveats are tracked in `notes/egpu-readiness-rb1-fedora-20260216.md`.
 - Known caveat: physical hot-unplug/replug remains temperamental; operate recovery-first and defer active hotplug tuning for now.
 
-4. `IN PROGRESS` Assistant bootstrap readiness on new host layout (limited OpenClaw eval scope).
+4. `DEFERRED` Assistant bootstrap readiness on new host layout.
 - `tsDeb` watchdog timer reports active from guest-exec check.
 - Utility VMs (`201`, `301`) are running.
-- AI runtime/tooling on `rb1` was rolled back intentionally; only attended OpenClaw API-key smoke is currently permitted.
+- AI runtime/tooling on `rb1` is currently removed; manual re-bootstrap will happen later.
 
 ## Current Hardware Context
 
@@ -189,10 +189,10 @@ Direction now in effect:
 
 1. Execute next-phase planning tracks from `runbooks/next-steps-planning-20260216.md`.
 2. Keep eGPU in stable operating mode and document recovery-first handling for disconnect incidents.
-3. Complete attended OpenClaw API-key smoke validation and then reassess OAuth path for steady-state usage.
+3. Keep AI/bootstrap tooling deferred until explicit manual restart.
 4. Refresh continuity validation suite for the current host-role layout.
 5. Continue phase-2 network optimization (port map + 2.5Gb path planning).
 
 ## Current Session Objective
 
-Resume from the 2026-02-16 21:52 checkpoint: maintain recovery-first eGPU operations, continue weekly memory workflow discipline, and complete attended OpenClaw real-key smoke artifact capture.
+Resume from the 2026-02-16 22:30 checkpoint: maintain recovery-first eGPU operations, continue weekly memory workflow discipline, and keep AI bootstrap deferred until manual re-enable.

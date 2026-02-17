@@ -373,3 +373,9 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
 - Status: Ran attended real-key smoke on `rb1-fedora` using ephemeral stdin key transfer. Provider/model path executed successfully, but both attempts returned OpenAI rate-limit responses before completion (`gpt-5-mini`, then `gpt-4.1-nano`). Performed full key cleanup and verified no residual local/remote temp key files or active auth env state.
 - Evidence: Artifacts `notes/openclaw-artifacts/openclaw-rb1-headless-smoke-realkey-20260216-222828.log` and `notes/openclaw-artifacts/openclaw-rb1-headless-smoke-realkey-retry-20260216-222853.log`; local staged key file removed (`/home/tdj/.openai_key_once` absent); remote temp file removed (`/tmp/openai_key_once` absent); post-cleanup agent probe on `rb1` returns `No API key found for provider "openai"`.
 - Next action: Re-run the same attended smoke command after OpenAI rate-limit window resets (or with a higher-quota key) to capture `OPENCLAW_SMOKE_OK` artifact, then close this track.
+
+## 2026-02-16 22:52 EST (Codex)
+- Area: OpenClaw rollback and host cleanup on `rb1-fedora`
+- Status: Removed OpenClaw tooling and related host state on request to reset AI bootstrap scope. Uninstalled global OpenClaw package and removed OpenClaw state directories; verified command/module/service absence and preserved non-AI baseline.
+- Evidence: `ssh rb1-fedora 'npm uninstall -g openclaw; rm -rf /root/.openclaw /root/.openclaw-*'`; post-checks show `command -v openclaw` absent, no `/usr/local/lib/node_modules/openclaw`, and no `openclaw` systemd unit installed/enabled.
+- Next action: Hold AI/bootstrap changes until explicit user restart; user will perform manual setup when ready.
