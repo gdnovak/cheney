@@ -26,8 +26,9 @@ Track A progress:
 
 Track B progress:
 
-1. `OPEN` Memory structure and RAG decision still pending.
-2. `OPEN` `memory/` scaffold not started.
+1. `DONE` Memory structure and RAG phase-1 decision captured in `memory/decisions/dec-rag-phase1-lexical-first.md`.
+2. `DONE` `memory/` scaffold created with linked index, templates, and starter notes.
+3. `DONE` Lexical retrieval helper added: `scripts/memory_index.sh`.
 
 Bootstrap progress:
 

@@ -313,3 +313,9 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
 - Status: Executed the new reusable benchmark script end-to-end and confirmed it correctly enumerates devices, runs external-GPU-only hashcat benchmark, and writes timestamped artifacts for resumable comparisons.
 - Evidence: `scripts/egpu_hashcat_benchmark.sh` executed with `--device-id 2 --hash-mode 1400`; artifact `notes/egpu-acceptance-artifacts/egpu-benchmark-hashcat-external-20260216-195036.log` shows speed `1608.6 MH/s` and post-run external GPU activity (`0F:00.0`, `utilization=61%`, `pstate=P0`).
 - Next action: Complete user-attended physical hot-attach/external-display scenarios, then move to Track B memory scaffolding.
+
+## 2026-02-16 19:51 EST (Codex)
+- Area: memory scaffold + phase-1 RAG decision implementation
+- Status: Implemented Track B baseline memory substrate under `memory/` with frontmatter templates, linked index, starter project/entity/rule notes, and a concrete RAG strategy decision note. Added lightweight lexical index helper script for resumable retrieval.
+- Evidence: Created `memory/index.md`, `memory/templates/*.md`, `memory/projects/proj-rb1-fedora-env-baseline.md`, `memory/decisions/dec-rag-phase1-lexical-first.md`, `memory/entities/entity-rb1-fedora.md`, and `memory/rules/rule-memory-frontmatter-schema.md`. Added `scripts/memory_index.sh`; test run produced expected table output with ids/types/links across all memory notes.
+- Next action: After user-attended eGPU physical tests, continue expanding memory with session summaries and decision notes using the new schema.
