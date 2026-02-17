@@ -52,6 +52,7 @@ Purpose: record what is already in place for external eGPU work, what is still m
    - no display attached to eGPU outputs
    - only dummy plug is on host-side path, not eGPU sink path
    - external GPU currently reports all connectors `disconnected`
+   - update (2026-02-16 20:17 EST): external display sink is now connected on `card2-DP-3`
 4. Kernel/link state remains variable on external path (`x4` width, gen changes by workload/idle); benchmark impact captured below.
 
 ## Matrix Coverage (Current)
@@ -63,6 +64,7 @@ Purpose: record what is already in place for external eGPU work, what is still m
 3. `cold_boot_attached` (`PASS`, reboot `44s`)
 4. `hot_attach_idle_soft_rescan_postcheck` (`PASS`)
 5. `hot_attach_idle_physical_postcheck` (`PASS`, after reboot recovery)
+6. `attached_with_external_display` (`PASS`)
 
 All rows show pre/post success for:
 
@@ -83,6 +85,9 @@ Display sink check artifact:
 
 - `notes/egpu-acceptance-artifacts/egpu-display-sink-check-20260216-201014.log`
 - All eGPU connectors reported `disconnected`.
+- Updated sink check artifact:
+  - `notes/egpu-acceptance-artifacts/egpu-display-sink-check-20260216-201756.log`
+  - `card2-DP-3=connected`; result `connected`.
 
 ## Non-AI Workload Benchmark (External GPU)
 
@@ -98,16 +103,14 @@ Run these in order:
 1. Investigate/mitigate physical reattach instability before trusting hot-attach in unattended workflows:
    - capture repeatability of ACPI/PCI hotplug warning/Oops path
    - test whether firmware/kernel changes improve behavior
-2. When an actual display sink can be attached to eGPU outputs, run:
-   - `scripts/egpu_acceptance_matrix.sh --scenario attached_with_external_display --host rb1-admin --peer rb2`
-3. Validate sink state with:
+2. Validate sink state with:
    - `scripts/egpu_display_sink_check.sh --host rb1-admin --bdf 0000:0f:00.0`
-4. Capture for each user-attended test:
+3. Capture for each user-attended test:
    - `boltctl list`
    - `lspci -nnk | grep -EA3 'VGA|3D|Display'`
    - `nvidia-smi --query-gpu=index,pci.bus_id,name,display_active,pcie.link.gen.current,pcie.link.width.current --format=csv`
    - `journalctl -k --since "<test-start-time>"`
-5. Validate management SSH, fallback VLAN99, and WoL remain unaffected after each attempt.
+4. Validate management SSH, fallback VLAN99, and WoL remain unaffected after each attempt.
 
 ## Pass/Fail Definition
 

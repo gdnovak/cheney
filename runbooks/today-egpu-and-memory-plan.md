@@ -25,8 +25,9 @@ Track A progress:
    - `notes/egpu-acceptance-artifacts/egpu-benchmark-hashcat-external-20260216-195036.log`
 10. `ISSUE` Physical hot-attach cable cycle produced reattach instability (kernel ACPI/PCI hotplug warning/Oops) with recovery by reboot:
    - `notes/egpu-acceptance-artifacts/egpu-hot_attach_idle-physical-20260216-195603.log`
-11. `BLOCKED` User-attended external-display-sink scenario could not be executed this session due no sink connected to eGPU outputs:
-   - `notes/egpu-acceptance-artifacts/egpu-display-sink-check-20260216-201014.log`
+11. `DONE` User-attended external-display-sink scenario completed:
+   - sink detection artifact: `notes/egpu-acceptance-artifacts/egpu-display-sink-check-20260216-201756.log` (`card2-DP-3=connected`)
+   - matrix scenario artifact: `notes/egpu-acceptance-artifacts/egpu-attached_with_external_display-20260216-201759.log` (`PASS`)
 
 Track B progress:
 

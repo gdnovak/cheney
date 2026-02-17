@@ -325,3 +325,9 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
 - Status: Executed user-attended physical detach/reattach cycle and captured a hotplug instability event (external GPU did not immediately re-enumerate; kernel ACPI/PCI hotplug warning/Oops observed). Recovered by reboot; post-recovery dual-GPU state and fallback path returned healthy. Ran matrix postcheck (`hot_attach_idle_physical_postcheck`) as `PASS`. Added display-sink detection helper and verified eGPU connectors are all disconnected in current hardware setup.
 - Evidence: Failure artifact `notes/egpu-acceptance-artifacts/egpu-hot_attach_idle-physical-20260216-195603.log`; post-recovery matrix artifact `notes/egpu-acceptance-artifacts/egpu-hot_attach_idle_physical_postcheck-20260216-200930.log`; display check artifact `notes/egpu-acceptance-artifacts/egpu-display-sink-check-20260216-201014.log` (`result=not_connected` on all eGPU connectors).
 - Next action: Keep external-display scenario blocked until a real sink is connected to eGPU outputs; investigate repeatability/mitigation path for physical hot-attach kernel warnings before treating hot-attach as stable.
+
+## 2026-02-16 20:18 EST (Codex)
+- Area: external-display-sink gate completion
+- Status: User connected a real display sink to eGPU output; sink-check now reports connected (`card2-DP-3`). Executed `attached_with_external_display` matrix scenario and recorded `PASS` while preserving management/fallback continuity checks.
+- Evidence: Sink artifact `notes/egpu-acceptance-artifacts/egpu-display-sink-check-20260216-201756.log` (`result=connected`); matrix artifact `notes/egpu-acceptance-artifacts/egpu-attached_with_external_display-20260216-201759.log` (`PASS`); matrix row appended in `notes/egpu-acceptance-matrix-20260216.md`.
+- Next action: Keep focus on physical hot-attach instability mitigation (ACPI/PCI warning path), then decide whether to run repeatability matrix across additional cable/device permutations.

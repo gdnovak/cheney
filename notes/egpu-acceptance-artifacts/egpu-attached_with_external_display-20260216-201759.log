@@ -1,0 +1,7 @@
+2026-02-16 20:17:59 EST Scenario=attached_with_external_display reboot=0 host=rb1-admin peer=rb2
+2026-02-16 20:17:59 EST Expected external PCI ID=10de:1c03 BDF=00000000:0F:00.0
+2026-02-16 20:17:59 EST Collecting pre snapshot
+2026-02-16 20:18:02 EST Collecting post snapshot
+2026-02-16 20:18:07 EST Result=PASS notes=ok
+2026-02-16 20:18:07 EST Matrix row appended to notes/egpu-acceptance-matrix-20260216.md
+2026-02-16 20:18:07 EST Artifact log saved at notes/egpu-acceptance-artifacts/egpu-attached_with_external_display-20260216-201759.log

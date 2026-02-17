@@ -5,3 +5,4 @@
 | 2026-02-17T00:46:11Z | cold_boot_attached | 1 | PASS | `9eb28679-84a8-460a-af1a-985aae396449` | `260c7006-8334-4a1c-ad0e-32cf800a41a8` | 44 | 1 | 1 | 1 | 1 | 0 | 0 | 1 | 1 | `active,active,active,active` |
 | 2026-02-17T00:47:39Z | hot_attach_idle_soft_rescan_postcheck | 0 | PASS | `260c7006-8334-4a1c-ad0e-32cf800a41a8` | `260c7006-8334-4a1c-ad0e-32cf800a41a8` | 0 | 1 | 1 | 1 | 1 | 0 | 0 | 1 | 1 | `active,active,active,active` |
 | 2026-02-17T01:09:30Z | hot_attach_idle_physical_postcheck | 0 | PASS | `54381a9d-eca7-40e6-8b2e-9052e1ce52d4` | `54381a9d-eca7-40e6-8b2e-9052e1ce52d4` | 0 | 1 | 1 | 1 | 1 | 0 | 0 | 1 | 1 | `active,active,active,active` |
+| 2026-02-17T01:17:59Z | attached_with_external_display | 0 | PASS | `54381a9d-eca7-40e6-8b2e-9052e1ce52d4` | `54381a9d-eca7-40e6-8b2e-9052e1ce52d4` | 0 | 1 | 1 | 1 | 1 | 0 | 0 | 1 | 1 | `active,active,active,active` |
