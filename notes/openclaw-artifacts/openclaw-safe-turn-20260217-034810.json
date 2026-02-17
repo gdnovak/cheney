@@ -1,0 +1,33 @@
+{
+  "timestampUtc": "2026-02-17T08:48:19Z",
+  "host": "rb1-admin",
+  "mode": "gateway",
+  "agent": "main",
+  "backstopUsed": 1,
+  "originalModel": "ollama/qwen2.5:7b",
+  "fallbackModel": "openai-codex/gpt-5.3-codex",
+  "attempt1": {
+    "provider": "ollama",
+    "model": "ollama/qwen2.5:7b",
+    "durationMs": 0,
+    "totalTokens": 0,
+    "text": "local_precheck_unavailable",
+    "rc": 0
+  },
+  "attempt2": {
+    "provider": "openai-codex",
+    "model": "gpt-5.3-codex",
+    "durationMs": 1747,
+    "totalTokens": 9083,
+    "text": "BENCH_OK_07",
+    "rc": 0
+  },
+  "final": {
+    "provider": "openai-codex",
+    "model": "gpt-5.3-codex",
+    "durationMs": 1747,
+    "totalTokens": 9083,
+    "text": "BENCH_OK_07",
+    "rc": 0
+  }
+}

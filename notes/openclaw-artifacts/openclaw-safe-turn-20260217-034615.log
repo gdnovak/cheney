@@ -1,0 +1,9 @@
+2026-02-17 03:46:15 EST Host=rb1-admin mode=gateway agent=main
+2026-02-17 03:46:15 EST Artifacts: /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-20260217-034615.log / /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-20260217-034615.json
+2026-02-17 03:46:17 EST Original model: ollama/qwen2.5:7b
+2026-02-17 03:46:18 EST Precheck: local provider unavailable; skipping attempt 1 and using backstop
+2026-02-17 03:46:18 EST Switching model to backstop openai-codex/gpt-5.3-codex
+Config overwrite: /home/tdj/.openclaw/openclaw.json (sha256 9e1694dc6fe174b1da2298ace93256a767e95d5d9e2c31a4a3b50d42ec45b50b -> 7e65673eca796db4a09a61ab8f59c9a64badafc4d02c5ba74078860d35ad2e9f, backup=/home/tdj/.openclaw/openclaw.json.bak)
+2026-02-17 03:46:20 EST Attempt 2: backstop path
+2026-02-17 03:46:23 EST Cleanup: restoring model to ollama/qwen2.5:7b
+Config overwrite: /home/tdj/.openclaw/openclaw.json (sha256 7e65673eca796db4a09a61ab8f59c9a64badafc4d02c5ba74078860d35ad2e9f -> 8647248b316ad89af095eb7e95c244570cf66e329acd7f706b1b358ed6ad7f7a, backup=/home/tdj/.openclaw/openclaw.json.bak)

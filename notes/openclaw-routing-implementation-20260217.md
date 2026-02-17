@@ -97,6 +97,37 @@ Machine-readable output:
 scripts/openclaw_agent_safe_turn.sh --message "Your prompt here" --json
 ```
 
+## Benchmark + Tuning (Run #5)
+
+Added benchmark runner:
+
+- `scripts/openclaw_safe_turn_benchmark.sh`
+- Runs a short case set and writes markdown + jsonl + log artifacts.
+
+Baseline benchmark run:
+
+- Markdown: `notes/openclaw-safe-turn-benchmark-20260217-034221.md`
+- JSONL: `notes/openclaw-artifacts/openclaw-safe-turn-benchmark-20260217-034221.jsonl`
+- Result highlights:
+  - `count=7`, `success=7`, `backstop=1`
+  - `final_provider_ollama=6`, `final_provider_openai_codex=1`
+
+Tuning applied to wrapper:
+
+1. Added local-runtime precheck (default enabled):
+- If default model is `ollama/*` and local runtime is unavailable, skip attempt-1 and go straight to Codex backstop.
+2. Added opt-out flag:
+- `--no-precheck`
+
+Post-tuning benchmark run:
+
+- Markdown: `notes/openclaw-safe-turn-benchmark-20260217-034700.md`
+- JSONL: `notes/openclaw-artifacts/openclaw-safe-turn-benchmark-20260217-034700.jsonl`
+- Result highlights:
+  - `count=7`, `success=7`, `backstop=1`
+  - `avg_wrapper_elapsed_ms=11106`
+  - forced-outage case `wrapper_elapsed_ms=12219`, with precheck marker `local_precheck_unavailable` and successful Codex final.
+
 ## Key Findings
 
 1. Local-first routing is operational and stable for routine prompts.
@@ -106,13 +137,16 @@ scripts/openclaw_agent_safe_turn.sh --message "Your prompt here" --json
 - `/usr/local/lib/node_modules/openclaw/docs/concepts/model-failover.md`
 5. `tools.profile=coding` emits warning about unknown allowlist entries (`group:memory`, `image`) in this environment; execution still succeeds.
 6. Practical mitigation is now codified in `scripts/openclaw_routing_validation.sh`: if native fallback does not advance for local provider transport errors, force a one-shot Codex backstop and restore local-first state.
+7. Operational wrapper + benchmark tooling are in place; precheck tuning improves outage-path behavior by avoiding a wasted local transport attempt when Ollama is known unavailable.
 
 ## Current State
 
 - `ollama` service: active/enabled
 - OpenClaw default model: `ollama/qwen2.5:7b`
 - OpenClaw fallback configured: `openai-codex/gpt-5.3-codex`
+- Safe-turn wrapper: `scripts/openclaw_agent_safe_turn.sh` (precheck enabled by default)
+- Benchmark runner: `scripts/openclaw_safe_turn_benchmark.sh`
 
 ## Next Action
 
-Benchmark token/cost deltas for wrapper-driven turns across a short real-task sample, then tune escalation thresholds if needed.
+Use benchmark runner on real task mixes (not only control prompts), then adjust wrapper trigger policy if backstop rate or token spend exceeds target.

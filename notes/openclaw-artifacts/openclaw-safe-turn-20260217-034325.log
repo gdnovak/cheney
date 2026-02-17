@@ -1,0 +1,10 @@
+2026-02-17 03:43:25 EST Host=rb1-admin mode=gateway agent=main
+2026-02-17 03:43:25 EST Artifacts: /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-20260217-034325.log / /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-20260217-034325.json
+2026-02-17 03:43:28 EST Original model: ollama/qwen2.5:7b
+2026-02-17 03:43:28 EST Attempt 1: primary path
+2026-02-17 03:43:44 EST Backstop condition met (rc=0, provider=ollama, text='fetch failed')
+2026-02-17 03:43:44 EST Switching model to backstop openai-codex/gpt-5.3-codex
+Config overwrite: /home/tdj/.openclaw/openclaw.json (sha256 79e146709f948a63d0978a8bc85dab5c6e9408114504c5f5560d23513c4a9c0c -> 8ecca72baa685344cb1f19f52332cf3abb62990f8fb4410e3bd03bc2536c092e, backup=/home/tdj/.openclaw/openclaw.json.bak)
+2026-02-17 03:43:47 EST Attempt 2: backstop path
+2026-02-17 03:43:50 EST Cleanup: restoring model to ollama/qwen2.5:7b
+Config overwrite: /home/tdj/.openclaw/openclaw.json (sha256 8ecca72baa685344cb1f19f52332cf3abb62990f8fb4410e3bd03bc2536c092e -> 22450a2d5319b5a503f87bfe21bd275ca5021a8e3f2a7738504a5581be5d5a4f, backup=/home/tdj/.openclaw/openclaw.json.bak)

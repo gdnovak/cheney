@@ -87,4 +87,6 @@ Escalate from local to Codex when any of the following occur:
 - Validation artifacts and outcomes: `notes/openclaw-routing-implementation-20260217.md`.
 - Remediation pass completed: session-reset validation + manual Codex backstop path added for non-failover transport errors.
 - Operational day-to-day wrapper implemented: `scripts/openclaw_agent_safe_turn.sh`.
-- Current open item: benchmark wrapper-driven token/cost behavior and tune thresholds.
+- Benchmark harness implemented and executed: `scripts/openclaw_safe_turn_benchmark.sh`.
+- Tuning applied: local-runtime precheck (default enabled) skips wasted local attempt when Ollama is unavailable.
+- Current open item: run benchmark sets with real task prompts and tune trigger policy to target backstop-rate/token budget.

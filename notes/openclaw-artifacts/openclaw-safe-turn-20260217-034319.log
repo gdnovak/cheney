@@ -1,0 +1,4 @@
+2026-02-17 03:43:19 EST Host=rb1-admin mode=gateway agent=main
+2026-02-17 03:43:19 EST Artifacts: /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-20260217-034319.log / /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-20260217-034319.json
+2026-02-17 03:43:21 EST Original model: ollama/qwen2.5:7b
+2026-02-17 03:43:21 EST Attempt 1: primary path

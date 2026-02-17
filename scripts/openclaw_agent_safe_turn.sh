@@ -17,6 +17,7 @@ Options:
   --thinking <level>        Thinking level (default: off)
   --fallback-model <id>     Backstop model (default: openai-codex/gpt-5.3-codex)
   --no-backstop             Disable automatic backstop and run single attempt only
+  --no-precheck             Disable local-runtime precheck before first attempt
   --json                    Print wrapper JSON summary instead of plain response
   -h, --help                Show help
 
@@ -33,6 +34,7 @@ THINKING="off"
 MESSAGE=""
 FALLBACK_MODEL="openai-codex/gpt-5.3-codex"
 ENABLE_BACKSTOP=1
+ENABLE_PRECHECK=1
 OUTPUT_JSON=0
 
 while [[ $# -gt 0 ]]; do
@@ -63,6 +65,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     --no-backstop)
       ENABLE_BACKSTOP=0
+      shift
+      ;;
+    --no-precheck)
+      ENABLE_PRECHECK=0
       shift
       ;;
     --json)
@@ -176,16 +182,65 @@ needs_backstop() {
   return 1
 }
 
+local_provider_unavailable() {
+  # Fast path: only relevant when default model is local Ollama.
+  if [[ "$ORIG_MODEL" != ollama/* ]]; then
+    return 1
+  fi
+
+  if ! ssh_host "systemctl is-active --quiet ollama"; then
+    return 0
+  fi
+
+  if ! ssh_host "curl -fsS --max-time 2 http://127.0.0.1:11434/api/tags >/dev/null"; then
+    return 0
+  fi
+
+  return 1
+}
+
 log "Host=${HOST_ALIAS} mode=${MODE} agent=${AGENT_ID}"
 log "Artifacts: ${RUN_LOG} / ${RUN_JSON}"
 ORIG_MODEL="$(ssh_host "openclaw models status --json | jq -r '.defaultModel'")"
 log "Original model: ${ORIG_MODEL}"
 
-log "Attempt 1: primary path"
-if run_attempt "$ATTEMPT1_JSON"; then
+if [[ "$ENABLE_BACKSTOP" -eq 1 && "$ENABLE_PRECHECK" -eq 1 ]] && local_provider_unavailable; then
+  log "Precheck: local provider unavailable; skipping attempt 1 and using backstop"
+  jq -n \
+    --arg provider "ollama" \
+    --arg model "$ORIG_MODEL" \
+    --arg text "local_precheck_unavailable" \
+    '{
+      payloads: [{text: $text, mediaUrl: null}],
+      meta: {
+        durationMs: 0,
+        agentMeta: {
+          provider: $provider,
+          model: $model,
+          usage: { input: 0, output: 0, total: 0 }
+        }
+      }
+    }' >"$ATTEMPT1_JSON"
   ATTEMPT1_RC=0
+  BACKSTOP_USED=1
+  if [[ "$ORIG_MODEL" != "$FALLBACK_MODEL" ]]; then
+    log "Switching model to backstop ${FALLBACK_MODEL}"
+    ssh_host "openclaw models set $(printf '%q' "$FALLBACK_MODEL") >/dev/null" >>"$RUN_LOG" 2>&1
+    RESTORE_MODEL=1
+  fi
+  log "Attempt 2: backstop path"
+  if run_attempt "$ATTEMPT2_JSON"; then
+    ATTEMPT2_RC=0
+  else
+    ATTEMPT2_RC=$?
+  fi
 else
-  ATTEMPT1_RC=$?
+  log "Attempt 1: primary path"
+  if run_attempt "$ATTEMPT1_JSON"; then
+    ATTEMPT1_RC=0
+  else
+    ATTEMPT1_RC=$?
+  fi
 fi
 
 ATTEMPT1_TEXT="$(extract_field "$ATTEMPT1_JSON" '.payloads[0].text // ""' "")"
@@ -193,7 +248,7 @@ ATTEMPT1_PROVIDER="$(extract_field "$ATTEMPT1_JSON" '.meta.agentMeta.provider //
 ATTEMPT1_MODEL="$(extract_field "$ATTEMPT1_JSON" '.meta.agentMeta.model // "unknown"' "unknown")"
 ATTEMPT1_TOTAL="$(extract_field "$ATTEMPT1_JSON" '.meta.agentMeta.usage.total // 0' "0")"
 
-if [[ "$ENABLE_BACKSTOP" -eq 1 ]] && needs_backstop "$ATTEMPT1_RC" "$ATTEMPT1_TEXT" "$ATTEMPT1_PROVIDER" "$ATTEMPT1_TOTAL"; then
+if [[ "$ENABLE_BACKSTOP" -eq 1 && "$BACKSTOP_USED" -eq 0 ]] && needs_backstop "$ATTEMPT1_RC" "$ATTEMPT1_TEXT" "$ATTEMPT1_PROVIDER" "$ATTEMPT1_TOTAL"; then
   BACKSTOP_USED=1
   log "Backstop condition met (rc=${ATTEMPT1_RC}, provider=${ATTEMPT1_PROVIDER}, text='${ATTEMPT1_TEXT}')"
   if [[ "$ORIG_MODEL" != "$FALLBACK_MODEL" ]]; then
