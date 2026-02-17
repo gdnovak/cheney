@@ -59,7 +59,7 @@ Use recovery-first policy for eGPU operations:
 5. `DONE` Reboot-mode validation executed:
    - `notes/rb1-recovery-matrix-20260216.md` (`track2_reboot_validation` => `PASS`, reboot elapsed `32s`)
    - `notes/rb1-recovery-artifacts/rb1-recovery-track2_reboot_validation-20260216-205806.log`
-6. `NEXT` Continue Track 4 memory workflow maturation.
+6. `DONE` Track 4 implementation phase completed; maintain cadence going forward.
 
 ### Track 3: Assistant Bootstrap Readiness (Still Deferred)
 
@@ -72,6 +72,18 @@ Use recovery-first policy for eGPU operations:
 1. Start logging each major decision in `memory/decisions/`.
 2. Add weekly summary note pattern in `memory/projects/` for fast resume.
 3. Keep lexical retrieval as default; revisit vector layer only on trigger conditions from `dec-rag-phase1-lexical-first`.
+
+### Track 4 Checkpoint (2026-02-16 21:04 EST)
+
+1. `DONE` Weekly summary template added:
+   - `memory/templates/weekly-summary-template.md`
+2. `DONE` First weekly summary note added:
+   - `memory/projects/week-2026-W08-summary.md`
+3. `DONE` Weekly memory workflow runbook added:
+   - `runbooks/memory-workflow-weekly.md`
+4. `DONE` Memory index updated with weekly summary + workflow link:
+   - `memory/index.md`
+5. `NEXT` Keep weekly cadence and continue decision-note discipline; defer full semantic layer until existing trigger criteria are met.
 
 ## Suggested Immediate Order
 

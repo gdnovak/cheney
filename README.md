@@ -152,6 +152,7 @@ Direction now in effect:
 - `runbooks/today-egpu-and-memory-plan.md`: current priority plan (eGPU on Fedora + memory structure optimization).
 - `runbooks/next-steps-planning-20260216.md`: post-eGPU-acceptance planning tracks and execution order.
 - `runbooks/rb1-egpu-incident-recovery.md`: primary incident-response workflow for `rb1` eGPU/TB faults.
+- `runbooks/memory-workflow-weekly.md`: weekly memory/decision cadence for fast resume and context continuity.
 - `runbooks/rb2-fallback-management-path.md`: direct emergency management path between `rb1` and `rb2`.
 - `runbooks/rb2-hard-power-recovery-validation.md`: true no-power recovery checklist for batteryless `rb2`.
 - `runbooks/tailscale-node-staging-rb2-mba.md`: utility-VM tailscale setup for `rb2` and `mba` (`lchl-tsnode-rb2`, `lchl-tsnode-mba`) with approval flow.
@@ -189,4 +190,4 @@ Direction now in effect:
 
 ## Current Session Objective
 
-Resume from the 2026-02-16 20:41 checkpoint: persist findings, follow recovery-first eGPU posture, and execute next-phase planning tracks.
+Resume from the 2026-02-16 21:04 checkpoint: maintain recovery-first eGPU operations and continue weekly memory workflow discipline while AI bootstrap remains deferred.

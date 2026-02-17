@@ -355,3 +355,9 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
 - Status: Executed reboot-mode recovery validation (`--reboot`) to confirm post-reboot continuity against the new standard validator. Run completed `PASS` with boot-id change and full policy/network/GPU checks intact.
 - Evidence: Matrix row `track2_reboot_validation` in `notes/rb1-recovery-matrix-20260216.md` (`reboot_elapsed=32s`, result `PASS`); artifact `notes/rb1-recovery-artifacts/rb1-recovery-track2_reboot_validation-20260216-205806.log`.
 - Next action: Proceed with Track 4 memory workflow maturation.
+
+## 2026-02-16 21:04 EST (Codex)
+- Area: Track 4 memory workflow maturation implementation
+- Status: Implemented weekly memory workflow pattern for fast session resume: added weekly-summary template, created first weekly summary note, added weekly memory operations runbook, and linked these in memory index/project notes. Verified lexical index output includes all new notes and link graph references.
+- Evidence: Added `memory/templates/weekly-summary-template.md`, `memory/projects/week-2026-W08-summary.md`, `runbooks/memory-workflow-weekly.md`; updated `memory/index.md`, `memory/projects/proj-rb1-fedora-env-baseline.md`, `README.md`, and `runbooks/next-steps-planning-20260216.md`. `scripts/memory_index.sh memory` reports the new weekly summary/template entries with link counts.
+- Next action: Maintain weekly summary + decision-note cadence; keep semantic/RAG layer deferred until trigger criteria in `memory/decisions/dec-rag-phase1-lexical-first.md` are met.

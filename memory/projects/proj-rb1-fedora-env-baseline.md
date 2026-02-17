@@ -25,13 +25,17 @@ Stabilize `rb1-fedora` for reliable experimentation while keeping management con
    - SSH effective root policy now `without-password` (key-only break-glass)
    - `bluetooth` and `ModemManager` disabled
    - clean baseline snapshot captured in `notes/rb1-operational-baseline-20260216-204915.md`
+6. Memory workflow maturation baseline is now in place:
+   - weekly template: `memory/templates/weekly-summary-template.md`
+   - first weekly summary: `memory/projects/week-2026-W08-summary.md`
+   - weekly cadence runbook: `runbooks/memory-workflow-weekly.md`
 
 ## Next Actions
 
 1. Preserve current stable operating mode (avoid unnecessary hot-unplug/replug).
 2. Track 2 continuity/recovery hardening is now implemented with reusable validator + incident runbook.
 3. Keep AI runtime deferred until explicitly requested.
-4. Proceed with Track 4 memory workflow maturation.
+4. Maintain weekly memory cadence via `runbooks/memory-workflow-weekly.md`.
 
 ## Links
 
