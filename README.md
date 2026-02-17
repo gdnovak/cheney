@@ -15,10 +15,21 @@ This repository tracks infrastructure planning and execution for agent tooling, 
 
 If you are resuming work, start here:
 
-1. Configure and validate eGPU on `rb1-fedora` (baremetal).
-2. Design and scaffold memory optimization based on markdown graph structures (Obsidian-style data model, without Obsidian dependency).
+1. Reintroduce Fedora-side fallback interface on `rb1` (`172.31.99.1/30`) and validate bidirectional fallback ping/SSH with `rb2`.
+2. Run external eGPU attach matrix on `rb1-fedora` and capture evidence in `notes/egpu-readiness-rb1-fedora-20260216.md`.
+3. Execute attended Ollama + Codex bootstrap on `rb1-fedora`.
+4. Decide memory strategy (markdown graph only vs markdown+RAG), then scaffold `memory/`.
 
 Execution checklist: `runbooks/today-egpu-and-memory-plan.md`
+
+## Latest Implementation Checkpoint (2026-02-16 18:55 EST)
+
+- `DONE` Added hardened admin access path `rb1-admin` (`tdj`) with key-only SSH and validated `sudo -n` access.
+- `DONE` Applied Fedora baseline updates on `rb1` (package refresh, core services active, reboot validated).
+- `DONE` Set Wake-on-LAN persistence on `rb1` (`nmcli ... wake-on-lan=magic`, `ethtool Wake-on: g`) and validated packet-send path from `tsDeb`.
+- `DONE` Installed/validated NVIDIA stack on `rb1` internal GPU (`nvidia-smi` shows GTX 1060, driver `580.119.02`, CUDA `13.0`).
+- `OPEN` Fedora-side VLAN99 fallback remains absent; fallback ping currently fails in both directions.
+- `OPEN` External eGPU acceptance tests remain pending by design; see `notes/egpu-readiness-rb1-fedora-20260216.md`.
 
 ## Naming Standard (`lcHL`)
 
@@ -60,8 +71,8 @@ Mandatory gate before phase 3:
 
 3. `PARTIAL` eGPU readiness on baremetal.
 - Proxmox passthrough path was retired due repeated guest-loss behavior.
-- Baremetal Fedora host is online with internal NVIDIA GPU visible.
-- External eGPU acceptance checks remain pending.
+- Baremetal Fedora host now has validated NVIDIA driver stack (`nvidia-smi` pass, driver `580.119.02`).
+- External eGPU acceptance checks remain pending; preconditions/readiness findings are tracked in `notes/egpu-readiness-rb1-fedora-20260216.md`.
 
 4. `IN PROGRESS` Assistant bootstrap readiness on new host layout.
 - `tsDeb` watchdog timer reports active from guest-exec check.
@@ -140,6 +151,7 @@ Direction now in effect:
 - `notes/skill-registry.md`: starter skill inventory with validation/rollback hooks.
 - `notes/assistant-watchdog-policy.md`: guardrails for cost, safety, and runaway prevention.
 - `notes/assistant-runbook-smoke-test.md`: attended smoke-test flow before unattended mode.
+- `notes/egpu-readiness-rb1-fedora-20260216.md`: current eGPU readiness findings and deferred phase-5 test gates.
 - `coordination/`: cross-device task/state/event bus for orchestrator <-> VM subagent workflow.
 - `log.md`: detailed project-local execution history.
 
@@ -153,11 +165,11 @@ Direction now in effect:
 ## Near-Term Milestones
 
 1. Restore dual-sided fallback VLAN99 and validate bidirectional management reachability.
-2. Complete `rb1-fedora` eGPU/NVIDIA acceptance with reboot-stability evidence.
+2. Complete external eGPU acceptance on `rb1-fedora` with reboot-stability evidence.
 3. Run attended Ollama + Codex bootstrap on `rb1-fedora` and record smoke-test evidence.
 4. Refresh continuity validation suite for the current host-role layout.
 5. Continue phase-2 network optimization (port map + 2.5Gb path planning).
 
 ## Current Session Objective
 
-Close documentation drift to match live host/VM/network state, then execute Track A/Track B from `runbooks/today-egpu-and-memory-plan.md`.
+Resume from the 2026-02-16 implementation checkpoint: restore dual-sided fallback first, then execute external eGPU validation and attended AI bootstrap on `rb1-fedora`.

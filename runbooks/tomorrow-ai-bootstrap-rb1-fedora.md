@@ -20,27 +20,36 @@ Out of scope:
 
 ## Preconditions
 
-1. `rb1-fedora` reachable over SSH as `root`.
-2. `rb2` remains subnet-router/Tailscale continuity anchor.
-3. `truenas` and migrated helper VMs remain stable on `rb2`.
+1. `rb1-fedora` reachable over SSH as `rb1-admin` (`tdj`) with key auth.
+2. `rb1` root SSH alias remains available as key-only break-glass path.
+3. `rb2` remains subnet-router/Tailscale continuity anchor.
+4. `truenas` and migrated helper VMs remain stable on `rb2`.
 
 ## Phase A: Host Baseline
 
-1. System update and base packages:
+1. Validate current baseline:
+
+```bash
+ssh rb1-admin 'hostnamectl --static; uname -r; systemctl is-active sshd firewalld chronyd cockpit.socket'
+ssh rb1-admin 'nmcli -g 802-3-ethernet.wake-on-lan connection show enp0s20f0u6; sudo ethtool enp0s20f0u6 | grep -E "Wake-on|Supports Wake-on"'
+ssh rb1-admin 'nvidia-smi'
+```
+
+2. System update and base packages:
 
 ```bash
 sudo dnf -y update
 sudo dnf -y install git tmux jq curl wget htop python3 python3-pip pciutils
 ```
 
-2. Confirm network identity:
+3. Confirm network identity:
 
 ```bash
 hostnamectl
 ip -4 -br addr
 ```
 
-3. Confirm GPU visibility (internal + eGPU if attached):
+4. Confirm GPU visibility (internal + eGPU if attached):
 
 ```bash
 lspci -nnk | grep -EA3 'VGA|3D|Display'
@@ -96,9 +105,9 @@ Acceptance:
 
 ## Optional Phase E: First GPU Sanity Check
 
-1. If eGPU is attached and stable, install NVIDIA stack on Fedora.
-2. Validate with `nvidia-smi`.
-3. Re-test one local model inference.
+1. If eGPU is attached and stable, collect attach/detection evidence (`boltctl`, `lspci`, `nvidia-smi`) and compare against `notes/egpu-readiness-rb1-fedora-20260216.md`.
+2. Re-test one local model inference under GPU mode.
+3. If external eGPU does not enumerate cleanly, keep internal NVIDIA path as baseline and continue with CPU-safe bootstrap tasks.
 
 If unstable, fall back to CPU-only validation and continue architecture work.
 

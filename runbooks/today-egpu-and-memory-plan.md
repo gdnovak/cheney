@@ -1,8 +1,22 @@
 # Runbook: Today Plan - eGPU + Memory Optimization
 
-Date anchor: 2026-02-15
+Date anchor: 2026-02-16
 
 Purpose: make immediate progress on compute reliability (`rb1-fedora` eGPU) and assistant context quality (memory structure redesign).
+
+## Session Checkpoint (2026-02-16 18:55 EST)
+
+Track A progress:
+
+1. `DONE` Host baseline and updates applied.
+2. `DONE` Internal NVIDIA stack validated (`nvidia-smi` pass, driver `580.119.02`, CUDA `13.0`).
+3. `DONE` WoL persistence configured and revalidated after reboot.
+4. `OPEN` External eGPU attach/detection acceptance.
+
+Track B progress:
+
+1. `OPEN` Memory structure and RAG decision still pending.
+2. `OPEN` `memory/` scaffold not started.
 
 ## Track A: eGPU on `rb1-fedora`
 
@@ -22,7 +36,7 @@ Record whether the Razer Core + GTX 1060 are visible before driver work.
 
 1. Update host packages.
 2. Enable RPM Fusion repositories (free + nonfree).
-3. Install NVIDIA stack (`akmod-nvidia`, CUDA libs as needed).
+3. Install NVIDIA stack (`xorg-x11-drv-nvidia`, CUDA libs, akmods/kernel headers as needed).
 4. Reboot and validate:
 
 ```bash
@@ -33,7 +47,7 @@ ssh rb1 'modinfo nvidia | head -n 10'
 ### A3. Acceptance
 
 - `nvidia-smi` reports GTX 1060.
-- Host survives reboot with eGPU attached.
+- External eGPU (Razer Core path) is detected consistently across reboot/reattach tests.
 - Management SSH remains stable on non-eGPU NIC.
 
 ### A4. If Unstable
@@ -83,7 +97,7 @@ Each note should include consistent frontmatter schema.
 
 ## End-of-Day Deliverables
 
-1. `rb1` eGPU status documented as pass/fail with evidence.
+1. `rb1` eGPU status documented as pass/fail with evidence (`notes/egpu-readiness-rb1-fedora-20260216.md`).
 2. `memory/` scaffold committed.
 3. One sample decision note and one sample project note linked from `memory/index.md`.
 4. Updated `log.md` checkpoint for both tracks.

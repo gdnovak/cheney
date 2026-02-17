@@ -10,20 +10,34 @@ Ensure at least one reliable remote-control path remains available while away, e
 - Current node Ethernet may traverse docks/eGPU enclosures and should be treated as potential failure points.
 - `rb1` management is intentionally on a dedicated USB Ethernet NIC, not on the Razer Core network path.
 
-## Current Methods (Verified 2026-02-16)
+## Current Methods (Verified 2026-02-16 18:55 EST)
 
 | node_id | primary_remote_method | secondary_remote_method | wake_capability | known_issues | last_tested |
 |---|---|---|---|---|---|
-| rb14-2017 (`rb1-fedora`) | SSH alias `rb1` (`192.168.5.107`) | none (no Proxmox UI on baremetal Fedora) | `Wake-on: g` on `enp0s20f0u6` | VLAN99 fallback path is not currently configured on Fedora side | 2026-02-16 18:05 EST |
-| rb14-2015 (`rb2-pve`) | SSH alias `rb2` + Proxmox UI `https://192.168.5.108:8006` | VLAN99 fallback endpoint `172.31.99.2` | `Wake-on: g` on `enx00051bde7e6e` | No-battery power risk; no-power AC restore still requires manual button press | 2026-02-16 18:05 EST |
-| mba-2011 (`kabbalah`) | SSH alias `mba` + Proxmox UI `https://192.168.5.66:8006` | utility VM path via `301` | `Wake-on: g` on `nic0` | Aging hardware and slower reboot profile | 2026-02-16 18:05 EST |
-| truenas VM (`100` on `rb2`) | LAN service endpoint `192.168.5.100` | Proxmox console from `rb2` | n/a (VM) | VM guest agent unavailable; manage via LAN and host-level controls | 2026-02-16 18:05 EST |
+| rb14-2017 (`rb1-fedora`) | SSH alias `rb1-admin` (`tdj@192.168.5.107`) | SSH alias `rb1` (`root`, break-glass key path) | `Wake-on: g` on `enp0s20f0u6` | VLAN99 fallback path is not currently configured on Fedora side; installer drop-in still sets `PermitRootLogin yes` (password auth disabled) | 2026-02-16 18:55 EST |
+| rb14-2015 (`rb2-pve`) | SSH alias `rb2` + Proxmox UI `https://192.168.5.108:8006` | VLAN99 fallback endpoint `172.31.99.2` | `Wake-on: g` on `enx00051bde7e6e` | No-battery power risk; no-power AC restore still requires manual button press | 2026-02-16 18:55 EST |
+| mba-2011 (`kabbalah`) | SSH alias `mba` + Proxmox UI `https://192.168.5.66:8006` | utility VM path via `301` | `Wake-on: g` on `nic0` | Aging hardware and slower reboot profile | 2026-02-16 18:55 EST |
+| truenas VM (`100` on `rb2`) | LAN service endpoint `192.168.5.100` | Proxmox console from `rb2` | n/a (VM) | VM guest agent unavailable; manage via LAN and host-level controls | 2026-02-16 18:55 EST |
+
+## `rb1-fedora` Access Baseline (Applied 2026-02-16)
+
+- Added admin user `tdj` with key auth and `wheel`/passwordless sudo for managed operations.
+- Added local SSH alias `rb1-admin` to prefer non-root admin path.
+- Added sshd hardening drop-in:
+  - `PubkeyAuthentication yes`
+  - `PasswordAuthentication no`
+  - `PermitRootLogin prohibit-password`
+  - `KbdInteractiveAuthentication no`
+- Validation:
+  - `ssh rb1-admin` works and `sudo -n true` passes.
+  - Password-only SSH attempt fails (`Permission denied (publickey,...)`).
+  - Root remains key-only reachable as break-glass (`rb1`) due installer file `/etc/ssh/sshd_config.d/01-permitrootlogin.conf`.
 
 ## WoL / Wake Feasibility Matrix
 
 | node_id | supports_wol | tested_result | blockers | fallback |
 |---|---|---|---|---|
-| rb14-2017 (`rb1-fedora`) | Yes | `ethtool` reports `Wake-on: g` | Still need unattended validation through full dock/adapter chain | Smart plug + BIOS power-on + watchdog path |
+| rb14-2017 (`rb1-fedora`) | Yes | NM profile set to `wake-on-lan=magic` and `ethtool` reports `Wake-on: g` after reboot; magic-packet send path verified from `tsDeb` | Still need unattended validation through full dock/adapter chain | Smart plug + BIOS power-on + watchdog path |
 | rb14-2015 (`rb2-pve`) | Yes (limited by no-power behavior) | `ethtool` reports `Wake-on: g`; prior no-power recovery test showed manual power-on required | WoL does not recover node from fully unpowered state | Smart plug cycle + manual power contingency |
 | mba-2011 (`kabbalah`) | Yes | `ethtool` reports `Wake-on: g` | True wake-from-off behavior should be periodically revalidated | Scheduled power window/manual recovery |
 
@@ -47,7 +61,7 @@ Ensure at least one reliable remote-control path remains available while away, e
 
 | node | install_state | tailscaled | tailnet_state | notes |
 |---|---|---|---|---|
-| tsDeb (`101`) | installed | active (verified via `qm guest exec 101 -- tailscale status`) | running | continuity anchor VM on `rb2` |
+| tsDeb (`101`) | installed | active (verified via `qm guest exec 101 -- tailscale status`) | running | continuity anchor VM on `rb2`; currently appears as `tsdeb-rb1` on tailnet (`100.81.158.2`) |
 | rb2 host | disabled by policy | inactive/disabled | n/a | host-level tailscale intentionally disabled |
 | mba host | disabled by policy | inactive/disabled | n/a | host-level tailscale intentionally disabled |
 | lchl-tsnode-rb2 (`201`) | installed | unknown in this session (`qga` unavailable) | last known running | utility tailscale node |
@@ -66,7 +80,7 @@ Runbook:
 
 ## Away-Safe Validation Checklist
 
-1. Confirm SSH path works for `rb1`, `rb2`, `mba` using current keys.
+1. Confirm SSH paths work for `rb1-admin`, `rb1` (break-glass), `rb2`, and `mba` using current keys.
 2. Confirm Proxmox UI access remains available on `rb2` and `mba`.
 3. Re-establish dual-sided VLAN99 fallback before unattended windows.
 4. Record test timestamps and failures before any migration/cutover work.
