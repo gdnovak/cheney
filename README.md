@@ -45,6 +45,9 @@ Execution checklists:
   - baseline benchmark artifacts: `notes/openclaw-safe-turn-benchmark-20260217-034221.md` + matching jsonl/log
   - tuned wrapper with local-runtime precheck (default enabled) to skip wasted local attempt when Ollama is unavailable
   - post-tuning benchmark artifacts: `notes/openclaw-safe-turn-benchmark-20260217-034700.md` + matching jsonl/log
+- `DONE` Ran real-prompt benchmark profile and recorded operational thresholds:
+  - real profile benchmark artifact: `notes/openclaw-safe-turn-benchmark-20260217-035520.md`
+  - threshold policy: `notes/openclaw-safe-turn-thresholds-20260217.md`
 - `OPEN` Native fallback behavior remains limited for local-provider transport failures (`fetch failed` path); current mitigation is controlled manual backstop, tracked in `notes/openclaw-routing-implementation-20260217.md`.
 
 ## Prior Implementation Checkpoint (2026-02-16 22:30 EST)
@@ -199,6 +202,7 @@ Direction now in effect:
 - `notes/assistant-runbook-smoke-test.md`: attended smoke-test flow before unattended mode.
 - `notes/egpu-readiness-rb1-fedora-20260216.md`: current eGPU readiness findings and deferred phase-5 test gates.
 - `notes/openclaw-cli-feature-findings-20260216.md`: OpenClaw CLI reconnaissance findings and headless caveats.
+- `notes/openclaw-safe-turn-thresholds-20260217.md`: benchmark-derived reliability/latency/cloud-usage targets for safe-turn operations.
 - `coordination/`: cross-device task/state/event bus for orchestrator <-> VM subagent workflow.
 - `log.md`: detailed project-local execution history.
 
@@ -213,10 +217,10 @@ Direction now in effect:
 
 1. Execute next-phase planning tracks from `runbooks/next-steps-planning-20260216.md`.
 2. Keep eGPU in stable operating mode and document recovery-first handling for disconnect incidents.
-3. Run benchmark sets with real workload prompts and tune wrapper trigger policy against target backstop rate/token budget.
+3. Continue periodic real-prompt benchmark runs and adjust wrapper triggers only when thresholds are breached.
 4. Refresh continuity validation suite for the current host-role layout.
 5. Continue phase-2 network optimization (port map + 2.5Gb path planning).
 
 ## Current Session Objective
 
-Resume from the 2026-02-17 03:48 checkpoint: keep recovery-first eGPU operations, maintain weekly memory workflow discipline, and tune OpenClaw safe-turn policy on real workload prompt sets.
+Resume from the 2026-02-17 03:56 checkpoint: keep recovery-first eGPU operations, maintain weekly memory workflow discipline, and monitor safe-turn metrics against threshold policy.

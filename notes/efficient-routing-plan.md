@@ -89,4 +89,6 @@ Escalate from local to Codex when any of the following occur:
 - Operational day-to-day wrapper implemented: `scripts/openclaw_agent_safe_turn.sh`.
 - Benchmark harness implemented and executed: `scripts/openclaw_safe_turn_benchmark.sh`.
 - Tuning applied: local-runtime precheck (default enabled) skips wasted local attempt when Ollama is unavailable.
-- Current open item: run benchmark sets with real task prompts and tune trigger policy to target backstop-rate/token budget.
+- Real-prompt benchmark run completed (`notes/openclaw-safe-turn-benchmark-20260217-035520.md`).
+- Threshold policy recorded: `notes/openclaw-safe-turn-thresholds-20260217.md`.
+- Current open item: monitor rolling metrics and tune only on threshold breach.

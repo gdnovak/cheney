@@ -128,6 +128,20 @@ Post-tuning benchmark run:
   - `avg_wrapper_elapsed_ms=11106`
   - forced-outage case `wrapper_elapsed_ms=12219`, with precheck marker `local_precheck_unavailable` and successful Codex final.
 
+Real-profile benchmark run:
+
+- Markdown: `notes/openclaw-safe-turn-benchmark-20260217-035520.md`
+- JSONL: `notes/openclaw-artifacts/openclaw-safe-turn-benchmark-20260217-035520.jsonl`
+- Result highlights:
+  - `count=7`, `success=7`, `backstop=1`
+  - healthy backstop rate in sample: `0/6`
+  - `forced_outage_wrapper_elapsed_ms=11635`
+  - `cloud_final_tokens_total=9926` (single forced-outage backstop case)
+
+Threshold policy recorded:
+
+- `notes/openclaw-safe-turn-thresholds-20260217.md`
+
 ## Key Findings
 
 1. Local-first routing is operational and stable for routine prompts.
@@ -149,4 +163,4 @@ Post-tuning benchmark run:
 
 ## Next Action
 
-Use benchmark runner on real task mixes (not only control prompts), then adjust wrapper trigger policy if backstop rate or token spend exceeds target.
+Run additional real-prompt samples over time and tune wrapper trigger policy when measured metrics breach thresholds in `notes/openclaw-safe-turn-thresholds-20260217.md`.

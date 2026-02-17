@@ -1,0 +1,18 @@
+2026-02-17 03:55:20 EST Preflight checks
+2026.2.15
+ollama/qwen2.5:7b
+openai-codex/gpt-5.3-codex
+active
+2026-02-17 03:55:24 EST Case real_01_risk_summary: running safe turn
+2026-02-17 03:56:00 EST Case real_02_checklist: running safe turn
+2026-02-17 03:56:07 EST Case real_03_command: running safe turn
+2026-02-17 03:56:14 EST Case real_04_transform: running safe turn
+2026-02-17 03:56:22 EST Case real_05_changelog: running safe turn
+2026-02-17 03:56:29 EST Case real_06_recovery: running safe turn
+2026-02-17 03:56:35 EST Case real_07_forced_outage: forcing ollama outage
+2026-02-17 03:56:36 EST Case real_07_forced_outage: running safe turn
+2026-02-17 03:56:47 EST Case real_07_forced_outage: restoring ollama
+2026-02-17 03:56:47 EST Benchmark complete
+2026-02-17 03:56:47 EST Markdown: /home/tdj/cheney/notes/openclaw-safe-turn-benchmark-20260217-035520.md
+2026-02-17 03:56:47 EST JSONL: /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-benchmark-20260217-035520.jsonl
+2026-02-17 03:56:47 EST Log: /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-benchmark-20260217-035520.log

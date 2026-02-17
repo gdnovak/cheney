@@ -13,6 +13,7 @@ Options:
   --mode <gateway|local>     Wrapper mode (default: gateway)
   --agent <id>               Agent id (default: main)
   --thinking <level>         Thinking level (default: off)
+  --profile <control|real>   Prompt profile (default: control)
   --skip-outage              Skip forced-outage scenario
   -h, --help                 Show help
 
@@ -28,6 +29,7 @@ MODE="gateway"
 AGENT_ID="main"
 THINKING="off"
 INCLUDE_OUTAGE=1
+PROFILE="control"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -45,6 +47,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     --thinking)
       THINKING="${2:-}"
+      shift 2
+      ;;
+    --profile)
+      PROFILE="${2:-}"
       shift 2
       ;;
     --skip-outage)
@@ -65,6 +71,10 @@ done
 
 if [[ "$MODE" != "gateway" && "$MODE" != "local" ]]; then
   echo "--mode must be gateway or local" >&2
+  exit 2
+fi
+if [[ "$PROFILE" != "control" && "$PROFILE" != "real" ]]; then
+  echo "--profile must be control or real" >&2
   exit 2
 fi
 
@@ -103,7 +113,8 @@ timestamp_local: $(date '+%Y-%m-%d %H:%M:%S %Z')
 host_alias: ${HOST_ALIAS}  
 mode: ${MODE}  
 agent: ${AGENT_ID}  
-thinking: ${THINKING}
+thinking: ${THINKING}  
+profile: ${PROFILE}
 
 | case | forced_outage | backstop_used | final_provider | final_model | final_rc | tokens | duration_ms | wrapper_elapsed_ms | response_excerpt |
 |---|---:|---:|---|---|---:|---:|---:|---:|---|
@@ -172,24 +183,42 @@ run_case() {
   rm -f "$tmp_json"
 }
 
+run_profile_cases() {
+  if [[ "$PROFILE" == "control" ]]; then
+    run_case "bench_01_marker" "Respond with exactly: BENCH_OK_01" 0
+    run_case "bench_02_math" "Compute 19*21. Respond with digits only." 0
+    run_case "bench_03_extract" "Given JSON {\"host\":\"rb1\",\"ip\":\"192.168.5.107\"}, respond with only the ip value." 0
+    run_case "bench_04_wol" "In one short sentence, define Wake-on-LAN." 0
+    run_case "bench_05_cmd" "Output one bash command only: ping host 172.31.99.2 twice with timeout 1 second." 0
+    run_case "bench_06_status" "Respond with exactly: BENCH_OK_06" 0
+    if [[ "$INCLUDE_OUTAGE" -eq 1 ]]; then
+      run_case "bench_07_forced_outage" "Respond with exactly: BENCH_OK_07" 1
+    fi
+    return
+  fi
+
+  # Real workload profile: homelab/operator-oriented prompts.
+  run_case "real_01_risk_summary" "In one sentence, summarize the highest current operational risk on rb1/rb2 based on fallback and eGPU facts." 0
+  run_case "real_02_checklist" "Provide a 3-item checklist to validate fallback VLAN99 after reboot. Keep each item under 10 words." 0
+  run_case "real_03_command" "Output one bash command only to verify ollama service is active." 0
+  run_case "real_04_transform" "Convert this YAML to compact JSON only: host: rb1-fedora, status: active, ip: 192.168.5.107" 0
+  run_case "real_05_changelog" "Write one concise changelog line for enabling Wake-on-LAN on rb1-fedora." 0
+  run_case "real_06_recovery" "Give one rollback step if eGPU disconnect causes instability. One sentence only." 0
+  if [[ "$INCLUDE_OUTAGE" -eq 1 ]]; then
+    run_case "real_07_forced_outage" "Respond with exactly: REAL_OUTAGE_RECOVERED" 1
+  fi
+}
+
 log "Preflight checks"
 ssh_host "openclaw --version; openclaw models status --json | jq -r '.defaultModel, (.fallbacks|join(\",\"))'; systemctl is-active ollama" >>"$RUN_LOG" 2>&1
 
-run_case "bench_01_marker" "Respond with exactly: BENCH_OK_01" 0
-run_case "bench_02_math" "Compute 19*21. Respond with digits only." 0
-run_case "bench_03_extract" "Given JSON {\"host\":\"rb1\",\"ip\":\"192.168.5.107\"}, respond with only the ip value." 0
-run_case "bench_04_wol" "In one short sentence, define Wake-on-LAN." 0
-run_case "bench_05_cmd" "Output one bash command only: ping host 172.31.99.2 twice with timeout 1 second." 0
-run_case "bench_06_status" "Respond with exactly: BENCH_OK_06" 0
-
-if [[ "$INCLUDE_OUTAGE" -eq 1 ]]; then
-  run_case "bench_07_forced_outage" "Respond with exactly: BENCH_OK_07" 1
-fi
+run_profile_cases
 
 {
   echo ""
   echo "## Summary"
   jq -s -r '
+    (map(select(.final.provider=="openai-codex"))) as $cloud |
     "count=" + (length|tostring),
     "success_count=" + (map(select(.final.rc==0))|length|tostring),
     "backstop_count=" + (map(select(.backstopUsed==1))|length|tostring),
@@ -198,6 +227,8 @@ fi
     "avg_tokens=" + ((map(.final.totalTokens // 0)|add/length|floor)|tostring),
     "avg_duration_ms=" + ((map(.final.durationMs // 0)|add/length|floor)|tostring),
     "avg_wrapper_elapsed_ms=" + ((map(.wrapperElapsedMs // 0)|add/length|floor)|tostring),
+    "cloud_final_tokens_total=" + ((($cloud|map(.final.totalTokens // 0)|add) // 0)|tostring),
+    "cloud_final_tokens_avg=" + ((if ($cloud|length) == 0 then 0 else ((($cloud|map(.final.totalTokens // 0)|add) // 0) / ($cloud|length) | floor) end)|tostring),
     "forced_outage_wrapper_elapsed_ms=" + ((map(select(.forcedOutage==1))|.[0].wrapperElapsedMs|tostring))
   ' "$OUT_JSONL"
   echo ""
