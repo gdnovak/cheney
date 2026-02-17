@@ -452,3 +452,9 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
 - Status: Pushed commit `edf8d2b` and deployed repo to `/home/tdj/cheney` on `rb1`; started detached probe on-host (`--host local`, 30-minute interval) so local client sleep does not interrupt runs. Initial cycle completed successfully.
 - Evidence: `rb1` process `pid=119319` (`bash scripts/openclaw_overnight_probe.sh --host local --interval-sec 1800 --cycles 0 --mode gateway`); launch log `notes/openclaw-artifacts/overnight-probe-launch-20260217-041629.out`; active artifact pointer `notes/openclaw-artifacts/overnight-probe.latest_jsonl` => `/home/tdj/cheney/notes/openclaw-artifacts/overnight-probe-20260217-041629.jsonl`; cycle-1 summary `ok=1 provider=ollama backstop=0 wrapper_elapsed_ms=7247`; summary command on rb1 passes.
 - Next action: Leave probe unmanaged overnight, then run `scripts/openclaw_overnight_probe_summary.sh` on `rb1` in the morning and commit resulting artifact pointers/findings.
+
+## 2026-02-17 14:55 EST (Codex)
+- Area: overnight probe stop + human-readable report
+- Status: Stopped unmanaged overnight probe on `rb1` and generated a detailed human-readable report with per-cycle metrics/excerpts, interval behavior, and outlier analysis.
+- Evidence: Probe run artifact `notes/openclaw-artifacts/overnight-probe-20260217-041629.jsonl` (`21/21` success, no errors/backstops, all `ollama/qwen2.5:7b`); supporting logs `notes/openclaw-artifacts/overnight-probe-20260217-041629.log` and `notes/openclaw-artifacts/overnight-probe-launch-20260217-041629.out`; report `notes/openclaw-overnight-reliability-report-20260217.md`.
+- Next action: Decide whether to keep persistent-session probe behavior (context growth) or add periodic agent/session reset for flatter latency/token usage in future unattended runs.

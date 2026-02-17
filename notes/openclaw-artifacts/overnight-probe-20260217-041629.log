@@ -1,0 +1,108 @@
+2026-02-17 04:16:29 EST Starting overnight probe
+2026-02-17 04:16:29 EST Artifacts: jsonl=/home/tdj/cheney/notes/openclaw-artifacts/overnight-probe-20260217-041629.jsonl log=/home/tdj/cheney/notes/openclaw-artifacts/overnight-probe-20260217-041629.log pid=/home/tdj/cheney/notes/openclaw-artifacts/overnight-probe-20260217-041629.pid
+2026-02-17 04:16:29 EST Settings: host=local mode=gateway agent=main thinking=off interval_sec=1800 cycles=0 timeout_sec=240
+2026-02-17 04:16:29 EST Host=local mode=gateway agent=main
+2026-02-17 04:16:29 EST Artifacts: /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-20260217-041629.log / /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-20260217-041629.json
+2026-02-17 04:16:31 EST Original model: ollama/qwen2.5:7b
+2026-02-17 04:16:31 EST Attempt 1: primary path
+2026-02-17 04:16:36 EST cycle=1 ok=1 backstop=0 provider=ollama model=qwen2.5:7b rc=0 tokens=11144 duration_ms=2846 wrapper_elapsed_ms=7247
+2026-02-17 04:46:36 EST Host=local mode=gateway agent=main
+2026-02-17 04:46:36 EST Artifacts: /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-20260217-044636.log / /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-20260217-044636.json
+2026-02-17 04:46:39 EST Original model: ollama/qwen2.5:7b
+2026-02-17 04:46:39 EST Attempt 1: primary path
+2026-02-17 04:47:14 EST cycle=2 ok=1 backstop=0 provider=ollama model=qwen2.5:7b rc=0 tokens=11244 duration_ms=32942 wrapper_elapsed_ms=37450
+2026-02-17 05:17:14 EST Host=local mode=gateway agent=main
+2026-02-17 05:17:14 EST Artifacts: /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-20260217-051714.log / /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-20260217-051714.json
+2026-02-17 05:17:16 EST Original model: ollama/qwen2.5:7b
+2026-02-17 05:17:16 EST Attempt 1: primary path
+2026-02-17 05:17:52 EST cycle=3 ok=1 backstop=0 provider=ollama model=qwen2.5:7b rc=0 tokens=11345 duration_ms=33353 wrapper_elapsed_ms=37982
+2026-02-17 05:47:52 EST Host=local mode=gateway agent=main
+2026-02-17 05:47:52 EST Artifacts: /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-20260217-054752.log / /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-20260217-054752.json
+2026-02-17 05:47:54 EST Original model: ollama/qwen2.5:7b
+2026-02-17 05:47:54 EST Attempt 1: primary path
+2026-02-17 05:48:30 EST cycle=4 ok=1 backstop=0 provider=ollama model=qwen2.5:7b rc=0 tokens=11447 duration_ms=33719 wrapper_elapsed_ms=38261
+2026-02-17 06:18:30 EST Host=local mode=gateway agent=main
+2026-02-17 06:18:30 EST Artifacts: /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-20260217-061830.log / /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-20260217-061830.json
+2026-02-17 06:18:32 EST Original model: ollama/qwen2.5:7b
+2026-02-17 06:18:32 EST Attempt 1: primary path
+2026-02-17 06:19:08 EST cycle=5 ok=1 backstop=0 provider=ollama model=qwen2.5:7b rc=0 tokens=11548 duration_ms=33895 wrapper_elapsed_ms=38245
+2026-02-17 06:49:08 EST Host=local mode=gateway agent=main
+2026-02-17 06:49:08 EST Artifacts: /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-20260217-064908.log / /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-20260217-064908.json
+2026-02-17 06:49:11 EST Original model: ollama/qwen2.5:7b
+2026-02-17 06:49:11 EST Attempt 1: primary path
+2026-02-17 06:49:47 EST cycle=6 ok=1 backstop=0 provider=ollama model=qwen2.5:7b rc=0 tokens=11649 duration_ms=33902 wrapper_elapsed_ms=38375
+2026-02-17 07:19:47 EST Host=local mode=gateway agent=main
+2026-02-17 07:19:47 EST Artifacts: /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-20260217-071947.log / /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-20260217-071947.json
+2026-02-17 07:19:49 EST Original model: ollama/qwen2.5:7b
+2026-02-17 07:19:49 EST Attempt 1: primary path
+2026-02-17 07:20:26 EST cycle=7 ok=1 backstop=0 provider=ollama model=qwen2.5:7b rc=0 tokens=11751 duration_ms=34704 wrapper_elapsed_ms=39339
+2026-02-17 07:50:26 EST Host=local mode=gateway agent=main
+2026-02-17 07:50:26 EST Artifacts: /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-20260217-075026.log / /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-20260217-075026.json
+2026-02-17 07:50:29 EST Original model: ollama/qwen2.5:7b
+2026-02-17 07:50:29 EST Attempt 1: primary path
+2026-02-17 07:51:06 EST cycle=8 ok=1 backstop=0 provider=ollama model=qwen2.5:7b rc=0 tokens=11851 duration_ms=34812 wrapper_elapsed_ms=39480
+2026-02-17 08:21:06 EST Host=local mode=gateway agent=main
+2026-02-17 08:21:06 EST Artifacts: /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-20260217-082106.log / /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-20260217-082106.json
+2026-02-17 08:21:08 EST Original model: ollama/qwen2.5:7b
+2026-02-17 08:21:08 EST Attempt 1: primary path
+2026-02-17 08:21:46 EST cycle=9 ok=1 backstop=0 provider=ollama model=qwen2.5:7b rc=0 tokens=11952 duration_ms=35097 wrapper_elapsed_ms=39790
+2026-02-17 08:51:46 EST Host=local mode=gateway agent=main
+2026-02-17 08:51:46 EST Artifacts: /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-20260217-085146.log / /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-20260217-085146.json
+2026-02-17 08:51:48 EST Original model: ollama/qwen2.5:7b
+2026-02-17 08:51:48 EST Attempt 1: primary path
+2026-02-17 08:52:26 EST cycle=10 ok=1 backstop=0 provider=ollama model=qwen2.5:7b rc=0 tokens=12053 duration_ms=35218 wrapper_elapsed_ms=39849
+2026-02-17 09:22:26 EST Host=local mode=gateway agent=main
+2026-02-17 09:22:26 EST Artifacts: /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-20260217-092226.log / /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-20260217-092226.json
+2026-02-17 09:22:28 EST Original model: ollama/qwen2.5:7b
+2026-02-17 09:22:28 EST Attempt 1: primary path
+2026-02-17 09:23:06 EST cycle=11 ok=1 backstop=0 provider=ollama model=qwen2.5:7b rc=0 tokens=12153 duration_ms=35602 wrapper_elapsed_ms=40268
+2026-02-17 09:53:06 EST Host=local mode=gateway agent=main
+2026-02-17 09:53:06 EST Artifacts: /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-20260217-095306.log / /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-20260217-095306.json
+2026-02-17 09:53:08 EST Original model: ollama/qwen2.5:7b
+2026-02-17 09:53:08 EST Attempt 1: primary path
+2026-02-17 09:53:47 EST cycle=12 ok=1 backstop=0 provider=ollama model=qwen2.5:7b rc=0 tokens=12255 duration_ms=36028 wrapper_elapsed_ms=40769
+2026-02-17 10:23:47 EST Host=local mode=gateway agent=main
+2026-02-17 10:23:47 EST Artifacts: /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-20260217-102347.log / /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-20260217-102347.json
+2026-02-17 10:23:49 EST Original model: ollama/qwen2.5:7b
+2026-02-17 10:23:49 EST Attempt 1: primary path
+2026-02-17 10:24:28 EST cycle=13 ok=1 backstop=0 provider=ollama model=qwen2.5:7b rc=0 tokens=12355 duration_ms=36456 wrapper_elapsed_ms=41008
+2026-02-17 10:54:28 EST Host=local mode=gateway agent=main
+2026-02-17 10:54:28 EST Artifacts: /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-20260217-105428.log / /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-20260217-105428.json
+2026-02-17 10:54:30 EST Original model: ollama/qwen2.5:7b
+2026-02-17 10:54:30 EST Attempt 1: primary path
+2026-02-17 10:55:09 EST cycle=14 ok=1 backstop=0 provider=ollama model=qwen2.5:7b rc=0 tokens=12455 duration_ms=36996 wrapper_elapsed_ms=41383
+2026-02-17 11:25:09 EST Host=local mode=gateway agent=main
+2026-02-17 11:25:09 EST Artifacts: /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-20260217-112509.log / /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-20260217-112509.json
+2026-02-17 11:25:11 EST Original model: ollama/qwen2.5:7b
+2026-02-17 11:25:11 EST Attempt 1: primary path
+2026-02-17 11:25:51 EST cycle=15 ok=1 backstop=0 provider=ollama model=qwen2.5:7b rc=0 tokens=12557 duration_ms=37389 wrapper_elapsed_ms=41771
+2026-02-17 11:55:51 EST Host=local mode=gateway agent=main
+2026-02-17 11:55:51 EST Artifacts: /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-20260217-115551.log / /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-20260217-115551.json
+2026-02-17 11:55:53 EST Original model: ollama/qwen2.5:7b
+2026-02-17 11:55:53 EST Attempt 1: primary path
+2026-02-17 11:56:33 EST cycle=16 ok=1 backstop=0 provider=ollama model=qwen2.5:7b rc=0 tokens=12657 duration_ms=37351 wrapper_elapsed_ms=41928
+2026-02-17 12:26:33 EST Host=local mode=gateway agent=main
+2026-02-17 12:26:33 EST Artifacts: /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-20260217-122633.log / /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-20260217-122633.json
+2026-02-17 12:26:35 EST Original model: ollama/qwen2.5:7b
+2026-02-17 12:26:35 EST Attempt 1: primary path
+2026-02-17 12:27:15 EST cycle=17 ok=1 backstop=0 provider=ollama model=qwen2.5:7b rc=0 tokens=12757 duration_ms=37817 wrapper_elapsed_ms=42497
+2026-02-17 12:57:16 EST Host=local mode=gateway agent=main
+2026-02-17 12:57:16 EST Artifacts: /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-20260217-125716.log / /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-20260217-125716.json
+2026-02-17 12:57:18 EST Original model: ollama/qwen2.5:7b
+2026-02-17 12:57:18 EST Attempt 1: primary path
+2026-02-17 12:57:58 EST cycle=18 ok=1 backstop=0 provider=ollama model=qwen2.5:7b rc=0 tokens=12859 duration_ms=38635 wrapper_elapsed_ms=42976
+2026-02-17 13:27:59 EST Host=local mode=gateway agent=main
+2026-02-17 13:27:59 EST Artifacts: /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-20260217-132759.log / /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-20260217-132759.json
+2026-02-17 13:28:01 EST Original model: ollama/qwen2.5:7b
+2026-02-17 13:28:01 EST Attempt 1: primary path
+2026-02-17 13:28:42 EST cycle=19 ok=1 backstop=0 provider=ollama model=qwen2.5:7b rc=0 tokens=12959 duration_ms=38488 wrapper_elapsed_ms=43151
+2026-02-17 13:58:42 EST Host=local mode=gateway agent=main
+2026-02-17 13:58:42 EST Artifacts: /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-20260217-135842.log / /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-20260217-135842.json
+2026-02-17 13:58:44 EST Original model: ollama/qwen2.5:7b
+2026-02-17 13:58:44 EST Attempt 1: primary path
+2026-02-17 13:59:25 EST cycle=20 ok=1 backstop=0 provider=ollama model=qwen2.5:7b rc=0 tokens=13059 duration_ms=38810 wrapper_elapsed_ms=43262
+2026-02-17 14:29:25 EST Host=local mode=gateway agent=main
+2026-02-17 14:29:25 EST Artifacts: /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-20260217-142925.log / /home/tdj/cheney/notes/openclaw-artifacts/openclaw-safe-turn-20260217-142925.json
+2026-02-17 14:29:27 EST Original model: ollama/qwen2.5:7b
+2026-02-17 14:29:27 EST Attempt 1: primary path
+2026-02-17 14:30:09 EST cycle=21 ok=1 backstop=0 provider=ollama model=qwen2.5:7b rc=0 tokens=13161 duration_ms=39256 wrapper_elapsed_ms=43777
