@@ -1,0 +1,264 @@
+# OpenClaw Routing Baseline
+timestamp_local: 2026-02-17 02:37:46 EST
+host: rb1-fedora
+
+## openclaw version
+2026.2.15
+
+## models status (pre-change)
+{
+  "configPath": "/home/tdj/.openclaw/openclaw.json",
+  "agentDir": "/home/tdj/.openclaw/agents/main/agent",
+  "defaultModel": "openai-codex/gpt-5.3-codex",
+  "resolvedDefault": "openai-codex/gpt-5.3-codex",
+  "fallbacks": [],
+  "imageModel": null,
+  "imageFallbacks": [],
+  "aliases": {},
+  "allowed": [],
+  "auth": {
+    "storePath": "/home/tdj/.openclaw/agents/main/agent/auth-profiles.json",
+    "shellEnvFallback": {
+      "enabled": false,
+      "appliedKeys": []
+    },
+    "providersWithOAuth": [
+      "openai-codex (1)"
+    ],
+    "missingProvidersInUse": [],
+    "providers": [
+      {
+        "provider": "openai-codex",
+        "effective": {
+          "kind": "profiles",
+          "detail": "~/.openclaw/agents/main/agent/auth-profiles.json"
+        },
+        "profiles": {
+          "count": 1,
+          "oauth": 1,
+          "token": 0,
+          "apiKey": 0,
+          "labels": [
+            "openai-codex:default=OAuth"
+          ]
+        }
+      }
+    ],
+    "unusableProfiles": [],
+    "oauth": {
+      "warnAfterMs": 86400000,
+      "profiles": [
+        {
+          "profileId": "openai-codex:default",
+          "provider": "openai-codex",
+          "type": "oauth",
+          "status": "ok",
+          "expiresAt": 1772167778284,
+          "remainingMs": 853907541,
+          "source": "store",
+          "label": "openai-codex:default"
+        }
+      ],
+      "providers": [
+        {
+          "provider": "openai-codex",
+          "status": "ok",
+          "profiles": [
+            {
+              "profileId": "openai-codex:default",
+              "provider": "openai-codex",
+              "type": "oauth",
+              "status": "ok",
+              "expiresAt": 1772167778284,
+              "remainingMs": 853907541,
+              "source": "store",
+              "label": "openai-codex:default"
+            }
+          ],
+          "expiresAt": 1772167778284,
+          "remainingMs": 853907541
+        }
+      ]
+    }
+  }
+}
+
+## status summary (pre-change)
+{
+  "heartbeat": {
+    "defaultAgentId": "main",
+    "agents": [
+      {
+        "agentId": "main",
+        "enabled": true,
+        "every": "30m",
+        "everyMs": 1800000
+      }
+    ]
+  },
+  "channelSummary": [],
+  "queuedSystemEvents": [],
+  "sessions": {
+    "paths": [
+      "/home/tdj/.openclaw/agents/main/sessions/sessions.json"
+    ],
+    "count": 1,
+    "defaults": {
+      "model": "gpt-5.3-codex",
+      "contextTokens": 272000
+    },
+    "recent": [
+      {
+        "agentId": "main",
+        "key": "agent:main:main",
+        "kind": "direct",
+        "sessionId": "39737a3f-a761-4a17-93b6-a7eac90a48a5",
+        "updatedAt": 1771312846219,
+        "age": 1046702,
+        "systemSent": true,
+        "abortedLastRun": false,
+        "inputTokens": 26500,
+        "outputTokens": 151,
+        "totalTokens": 31108,
+        "totalTokensFresh": true,
+        "remainingTokens": 240892,
+        "percentUsed": 11,
+        "model": "gpt-5.3-codex",
+        "contextTokens": 272000,
+        "flags": [
+          "system",
+          "id:39737a3f-a761-4a17-93b6-a7eac90a48a5"
+        ]
+      }
+    ],
+    "byAgent": [
+      {
+        "agentId": "main",
+        "path": "/home/tdj/.openclaw/agents/main/sessions/sessions.json",
+        "count": 1,
+        "recent": [
+          {
+            "agentId": "main",
+            "key": "agent:main:main",
+            "kind": "direct",
+            "sessionId": "39737a3f-a761-4a17-93b6-a7eac90a48a5",
+            "updatedAt": 1771312846219,
+            "age": 1046702,
+            "systemSent": true,
+            "abortedLastRun": false,
+            "inputTokens": 26500,
+            "outputTokens": 151,
+            "totalTokens": 31108,
+            "totalTokensFresh": true,
+            "remainingTokens": 240892,
+            "percentUsed": 11,
+            "model": "gpt-5.3-codex",
+            "contextTokens": 272000,
+            "flags": [
+              "system",
+              "id:39737a3f-a761-4a17-93b6-a7eac90a48a5"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "os": {
+    "platform": "linux",
+    "arch": "x64",
+    "release": "6.18.9-200.fc43.x86_64",
+    "label": "linux 6.18.9-200.fc43.x86_64 (x64)"
+  },
+  "update": {
+    "root": "/usr/local/lib/node_modules/openclaw",
+    "installKind": "package",
+    "packageManager": "pnpm",
+    "deps": {
+      "manager": "pnpm",
+      "status": "unknown",
+      "lockfilePath": "/usr/local/lib/node_modules/openclaw/pnpm-lock.yaml",
+      "markerPath": "/usr/local/lib/node_modules/openclaw/node_modules/.modules.yaml",
+      "reason": "lockfile missing"
+    },
+    "registry": {
+      "latestVersion": "2026.2.15"
+    }
+  },
+  "updateChannel": "stable",
+  "updateChannelSource": "default",
+  "memory": null,
+  "memoryPlugin": {
+    "enabled": true,
+    "slot": "memory-core"
+  },
+  "gateway": {
+    "mode": "local",
+    "url": "ws://192.168.5.107:18789",
+    "urlSource": "local lan 192.168.5.107",
+    "misconfigured": false,
+    "reachable": true,
+    "connectLatencyMs": 27,
+    "self": {
+      "host": "rb1-fedora",
+      "ip": "192.168.5.107",
+      "version": "unknown",
+      "platform": "linux 6.18.9-200.fc43.x86_64"
+    },
+    "error": null
+  },
+  "gatewayService": {
+    "label": "systemd",
+    "installed": true,
+    "loadedText": "enabled",
+    "runtimeShort": "running (pid 77638, state active)"
+  },
+  "nodeService": {
+    "label": "systemd",
+    "installed": false,
+    "loadedText": "disabled",
+    "runtimeShort": "stopped (state inactive)"
+  },
+  "agents": {
+    "defaultId": "main",
+    "agents": [
+      {
+        "id": "main",
+        "workspaceDir": "/home/tdj/.openclaw/workspace",
+        "bootstrapPending": false,
+        "sessionsPath": "/home/tdj/.openclaw/agents/main/sessions/sessions.json",
+        "sessionsCount": 1,
+        "lastUpdatedAt": 1771312846219,
+        "lastActiveAgeMs": 1046597
+      }
+    ],
+    "totalSessions": 1,
+    "bootstrapPendingCount": 0
+  },
+  "securityAudit": {
+    "ts": 1771313892934,
+    "summary": {
+      "critical": 0,
+      "warn": 0,
+      "info": 1
+    },
+    "findings": [
+      {
+        "checkId": "summary.attack_surface",
+        "severity": "info",
+        "title": "Attack surface summary",
+        "detail": "groups: open=0, allowlist=0\ntools.elevated: enabled\nhooks.webhooks: disabled\nhooks.internal: enabled\nbrowser control: enabled"
+      }
+    ]
+  }
+}
+
+## gpu inventory
+GPU 0: NVIDIA GeForce GTX 1060 (UUID: GPU-2af20137-f450-9a51-468e-fabda8f88212)
+GPU 1: NVIDIA GeForce GTX 1060 6GB (UUID: GPU-4c3e6a0f-0006-5c80-ab64-8198541fc1c6)
+NVIDIA GeForce GTX 1060, 6144 MiB, 6.1, 580.119.02, P8
+NVIDIA GeForce GTX 1060 6GB, 6144 MiB, 6.1, 580.119.02, P8
+
+## ollama list
+NAME                ID              SIZE      MODIFIED           
+qwen2.5-coder:7b    dae161e27b0e    4.7 GB    46 seconds ago        
+qwen2.5:7b          845dbda0ea48    4.7 GB    About a minute ago    

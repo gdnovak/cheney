@@ -11,21 +11,35 @@ Project workspace for building a resilient homelab foundation for a multi-agent 
 This repository tracks infrastructure planning and execution for agent tooling, MCP services, and homelab continuity. The current strategy is **tool-bus-first**: establish reliable infrastructure, inventory, and workflows before model hosting optimization.
 <!-- note: assistant-level governance stack pending "Dick Cheney spirit API" availability. -->
 
-## Today Priority (2026-02-16)
+## Today Priority (2026-02-17)
 
 If you are resuming work, start here:
 
 1. Keep eGPU in stable attached mode and avoid unnecessary hotplug cycles; use recovery-first posture if disconnect issues recur.
 2. Continue Fedora operational polish and continuity hardening from `runbooks/next-steps-planning-20260216.md`.
 3. Expand memory workflow usage (`memory/` notes + decisions) for resumable sessions.
-4. Keep AI bootstrap deferred; OpenClaw was removed from `rb1` and will be reintroduced manually later.
+4. Complete OpenClaw routing hardening on `rb1` (local-first stable path is up; fallback/error handling needs follow-up).
 
 Execution checklists:
 
 - `runbooks/today-egpu-and-memory-plan.md`
 - `runbooks/next-steps-planning-20260216.md`
 
-## Latest Implementation Checkpoint (2026-02-16 22:30 EST)
+## Latest Implementation Checkpoint (2026-02-17 03:09 EST)
+
+- `DONE` Implemented phase-1 efficient routing stack on `rb1-fedora` (`tdj`):
+  - Ollama installed as system service and enabled.
+  - Local models pulled: `qwen2.5:7b`, `qwen2.5-coder:7b`.
+  - OpenClaw routing set to local-first (`ollama/qwen2.5:7b`) with Codex fallback (`openai-codex/gpt-5.3-codex`).
+- `DONE` Added reusable routing validation harness: `scripts/openclaw_routing_validation.sh`.
+- `DONE` Captured baseline + validation artifacts:
+  - `notes/openclaw-artifacts/openclaw-routing-baseline-20260217-023746.log`
+  - `notes/openclaw-routing-validation-20260217.md`
+  - `notes/openclaw-artifacts/openclaw-routing-validation-20260217-030356.{log,jsonl}`
+- `DONE` Verified coder-path routing (`qwen2.5-coder:7b`) under controlled primary-model switch.
+- `OPEN` Forced fallback test currently fails with `fetch failed` when Ollama is unavailable; remediation tracked in `notes/openclaw-routing-implementation-20260217.md`.
+
+## Prior Implementation Checkpoint (2026-02-16 22:30 EST)
 
 - `DONE` Added hardened admin access path `rb1-admin` (`tdj`) with key-only SSH and validated `sudo -n` access.
 - `DONE` Applied Fedora baseline updates on `rb1` (package refresh, core services active, reboot validated).
@@ -189,10 +203,10 @@ Direction now in effect:
 
 1. Execute next-phase planning tracks from `runbooks/next-steps-planning-20260216.md`.
 2. Keep eGPU in stable operating mode and document recovery-first handling for disconnect incidents.
-3. Keep AI/bootstrap tooling deferred until explicit manual restart.
+3. Fix OpenClaw fallback-path behavior and session hygiene, then re-run routing validation matrix.
 4. Refresh continuity validation suite for the current host-role layout.
 5. Continue phase-2 network optimization (port map + 2.5Gb path planning).
 
 ## Current Session Objective
 
-Resume from the 2026-02-16 22:30 checkpoint: maintain recovery-first eGPU operations, continue weekly memory workflow discipline, and keep AI bootstrap deferred until manual re-enable.
+Resume from the 2026-02-17 03:09 checkpoint: keep recovery-first eGPU operations, maintain weekly memory workflow discipline, and complete OpenClaw fallback remediation + rerun.

@@ -392,3 +392,27 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
 - Evidence: `openclaw status --json` now reports gateway URL `ws://192.168.5.107:18789`, `reachable=true`, `error=null`; listener present on `0.0.0.0:18789` (`openclaw-gateway`, pid `66817`).
 - Note: A pending device scope-upgrade request was present (`operator.approvals`, `operator.pairing`) and was reconciled in local device state (`~/.openclaw/devices/{paired,pending}.json`) to clear pairing deadlock during CLI access.
 - Next action: Continue manual OpenClaw setup on default profile; if remote clients still fail, re-validate client token/url and approve any new device pairing requests.
+
+## 2026-02-17 00:58 EST (Codex)
+- Area: OpenClaw token-usage optimization research (`rb1-fedora`, user `tdj`)
+- Status: Completed docs + live-config audit to identify why setup consumed high tokens. Key findings: current profile is effectively `tools.profile=full` (unset), bootstrap/context caps are unset (defaults apply), and bootstrap workspace files total ~11.7k chars before any conversation/tool schemas. Produced a concrete low-token operating profile for setup mode (tight bootstrap caps, reduced tool profile, lower reasoning/output budget).
+- Evidence: Read-only checks only (no runtime config edits): `~/.openclaw/openclaw.json` shows `bootstrapMaxChars=null`, `bootstrapTotalMaxChars=null`, `tools.profile=null`, `commands.native=auto`, internal hooks enabled including `bootstrap-extra-files`; workspace file sizes (`AGENTS.md=7869`, `SOUL.md=1673`, `TOOLS.md=860`, `IDENTITY.md=629`, `USER.md=460`, `HEARTBEAT.md=168`). Doc references: OpenClaw context/configuration/pruning pages (`docs.openclaw.ai`).
+- Next action: When user confirms, apply a temporary "setup-low-token" config profile and validate with one controlled command + usage check, then keep that profile until AI bootstrap design is finalized.
+
+## 2026-02-17 01:13 EST (Codex)
+- Area: OpenClaw auth remediation checkpoint (`rb1-fedora`, user `tdj`)
+- Status: Confirmed security items #1 and #2 remain fixed (`gateway.auth.rateLimit` present; ineffective `gateway.nodes.denyCommands` entries removed). Ran supported device-token rotation + gateway restarts for item #3 and validated CLI agent path works (`openclaw agent --local` -> `HEALTH_OK`). User decision: defer LAN URL/probe-path perfection for now and proceed in CLI-first mode.
+- Evidence: `openclaw devices rotate` completed (`ok=true`), gateway service active on `0.0.0.0:18789`, `openclaw health --json` returns `ok=true`, `openclaw agent --local --agent main --message "Respond with exactly: HEALTH_OK"` returns `HEALTH_OK`. Local token secret synced to `/home/tdj/.config/openclaw/gateway.token` (`600` perms, 49 bytes).
+- Next action: Keep OpenClaw in CLI-first mode while user finalizes preferred remote/LAN access method; avoid further gateway URL/probe churn unless requested.
+
+## 2026-02-17 01:35 EST (Codex)
+- Area: OpenClaw efficient routing plan documentation
+- Status: Added a dedicated hybrid routing plan as requested: local-first assistant path using `qwen2.5` on `Ollama` with Codex escalation for high-complexity/high-risk tasks. Plan explicitly prioritizes assistant quality over pure efficiency and records hardware-fit assumptions for dual GTX 1060 cards.
+- Evidence: Added `notes/efficient-routing-plan.md` with routing policy, escalation triggers, no-training requirement, hardware-fit notes, implementation steps, and acceptance criteria.
+- Next action: User will perform additional research; when ready, execute phase-1 implementation (install `Ollama`, pull local model, wire OpenClaw primary+fallback routing, run A/B validation).
+
+## 2026-02-17 03:09 EST (Codex)
+- Area: OpenClaw phase-1 routing implementation + validation (`rb1-fedora`, user `tdj`)
+- Status: Implemented the hybrid local-first routing plan on `rb1` (`ollama/qwen2.5:7b` primary, `openai-codex/gpt-5.3-codex` fallback), added reusable validation harness, and executed full validation matrix with artifacts. Local routing and coder-path checks pass; forced fallback test currently fails with `fetch failed` when Ollama is unavailable.
+- Evidence: Added `scripts/openclaw_routing_validation.sh`; captured baseline `notes/openclaw-artifacts/openclaw-routing-baseline-20260217-023746.log`; captured clean validation artifacts `notes/openclaw-artifacts/openclaw-routing-validation-20260217-030356.log` + `.jsonl`; updated matrix `notes/openclaw-routing-validation-20260217.md`; implementation summary note `notes/openclaw-routing-implementation-20260217.md`. Post-run host checks: `systemctl is-active/is-enabled ollama` => `active/enabled`; `openclaw models status` shows default `ollama/qwen2.5:7b` and fallback `openai-codex/gpt-5.3-codex`.
+- Next action: Run fallback remediation pass (error-class behavior + session hygiene), then rerun `scripts/openclaw_routing_validation.sh` and compare against the 2026-02-17 baseline.
