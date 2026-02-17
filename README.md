@@ -37,7 +37,8 @@ Execution checklists:
   - `notes/openclaw-routing-validation-20260217.md`
   - `notes/openclaw-artifacts/openclaw-routing-validation-20260217-030356.{log,jsonl}`
 - `DONE` Verified coder-path routing (`qwen2.5-coder:7b`) under controlled primary-model switch.
-- `OPEN` Forced fallback test currently fails with `fetch failed` when Ollama is unavailable; remediation tracked in `notes/openclaw-routing-implementation-20260217.md`.
+- `DONE` Added remediation pass and reran validation with session-reset hygiene + explicit manual Codex backstop when native fallback does not advance.
+- `OPEN` Native fallback behavior remains limited for local-provider transport failures (`fetch failed` path); current mitigation is controlled manual backstop, tracked in `notes/openclaw-routing-implementation-20260217.md`.
 
 ## Prior Implementation Checkpoint (2026-02-16 22:30 EST)
 

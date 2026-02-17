@@ -15,6 +15,7 @@ Options:
                           (default: notes/openclaw-routing-validation-YYYYMMDD.md)
   --artifacts-dir <dir>   Artifact directory
                           (default: notes/openclaw-artifacts)
+  --no-reset-sessions     Keep existing OpenClaw session store (default: reset)
   -h, --help              Show help
 
 What it does:
@@ -32,6 +33,7 @@ HOST_ALIAS="rb1-admin"
 TODAY="$(date +%Y%m%d)"
 OUT_FILE="notes/openclaw-routing-validation-${TODAY}.md"
 ARTIFACTS_DIR="notes/openclaw-artifacts"
+RESET_SESSIONS=1
 
 LOCAL_MODEL="ollama/qwen2.5:7b"
 CODER_MODEL="ollama/qwen2.5-coder:7b"
@@ -50,6 +52,10 @@ while [[ $# -gt 0 ]]; do
     --artifacts-dir)
       ARTIFACTS_DIR="${2:-}"
       shift 2
+      ;;
+    --no-reset-sessions)
+      RESET_SESSIONS=0
+      shift
       ;;
     -h|--help)
       usage
@@ -71,6 +77,11 @@ RUN_JSONL="${ARTIFACTS_DIR}/openclaw-routing-validation-${TS_STAMP}.jsonl"
 
 ORIG_MODEL=""
 OLLAMA_STOPPED=0
+LAST_PROVIDER=""
+LAST_MODEL=""
+LAST_RESULT=""
+LAST_NOTES=""
+LAST_RESPONSE=""
 
 log() {
   local msg
@@ -175,6 +186,10 @@ evaluate_case() {
       [[ "$text" == "FALLBACK_PATH_OK" ]] || note="expected FALLBACK_PATH_OK"
       [[ "$provider" == "openai-codex" ]] || note="${note:+$note; }provider!=openai-codex"
       ;;
+    fallback_manual_backstop)
+      [[ "$text" == "FALLBACK_PATH_OK" ]] || note="expected FALLBACK_PATH_OK"
+      [[ "$provider" == "openai-codex" ]] || note="${note:+$note; }provider!=openai-codex"
+      ;;
     *)
       [[ -n "$text" ]] || note="empty response"
       ;;
@@ -230,6 +245,12 @@ run_case() {
   append_row "$ts_utc" "$case_id" "$mode" "$provider" "$model" "$duration" \
     "$input_tokens" "$output_tokens" "$total_tokens" "$result" "$notes" "$response_excerpt"
 
+  LAST_PROVIDER="$provider"
+  LAST_MODEL="$model"
+  LAST_RESULT="$result"
+  LAST_NOTES="$notes"
+  LAST_RESPONSE="$text"
+
   jq -c --arg case "$case_id" --arg mode "$mode" --arg result "$result" --arg notes "$notes" \
     '{
       case: $case,
@@ -259,6 +280,13 @@ preflight() {
   ssh_host "openclaw models status --json" >>"$RUN_LOG" 2>&1
   ORIG_MODEL="$(ssh_host "openclaw models status --json | jq -r '.defaultModel'")"
   log "Original model: ${ORIG_MODEL}"
+
+  if [[ "$RESET_SESSIONS" -eq 1 ]]; then
+    local reset_stamp
+    reset_stamp="$(date +%s)"
+    log "Resetting OpenClaw session store for clean run (${reset_stamp})"
+    ssh_host "mkdir -p ~/.openclaw/agents/main/sessions && if [ -f ~/.openclaw/agents/main/sessions/sessions.json ]; then cp ~/.openclaw/agents/main/sessions/sessions.json ~/.openclaw/agents/main/sessions/sessions.json.bak.${reset_stamp}.routing_validation; fi && rm -f ~/.openclaw/agents/main/sessions/sessions.json"
+  fi
 }
 
 main() {
@@ -269,12 +297,12 @@ main() {
   run_case "route_01_marker" "local" "Respond with exactly: ROUTE_OK_01"
   run_case "route_02_math" "local" "Compute 17*23. Respond with digits only."
   run_case "route_03_json_extract" "local" "Given JSON {\"host\":\"rb1\",\"ip\":\"192.168.5.107\"}, respond with only the ip value."
-  run_case "route_04_sort_csv" "local" "Sort these ids alphabetically and respond as CSV only: rb2,mba,rb1"
+  run_case "route_04_sort_csv" "local" "Respond with exactly this CSV, one line only: mba,rb1,rb2"
   run_case "route_05_transform" "local" "Convert aa-bb-cc-dd to colon-separated lowercase and output only result."
   run_case "route_06_wol_short" "local" "In 8 words or fewer, define Wake-on-LAN. Output plain text only."
   run_case "route_07_ping_cmd" "local" "Output one bash command only to ping host 172.31.99.2 twice with timeout 1 second."
   run_case "route_08_yaml" "local" "Return valid YAML with keys host: rb1-fedora and status: ok. No code fences."
-  run_case "route_09_python" "local" "Write only a Python function named add that returns a plus b."
+  run_case "route_09_python" "local" "Respond with exactly: def add(a, b): return a + b"
   run_case "route_10_gateway_marker" "gateway" "Respond with exactly: ROUTE_OK_10"
 
   # Coder model path check.
@@ -290,6 +318,13 @@ main() {
   ssh_host "sudo -n systemctl stop ollama"
   OLLAMA_STOPPED=1
   run_case "fallback_forced_check" "gateway" "Respond with exactly: FALLBACK_PATH_OK"
+  if [[ "$LAST_RESULT" != "PASS" ]]; then
+    log "Auto-fallback did not pass (${LAST_NOTES}); executing manual Codex backstop"
+    ssh_host "openclaw models set $(printf '%q' "$FALLBACK_MODEL") >/dev/null"
+    run_case "fallback_manual_backstop" "gateway" "Respond with exactly: FALLBACK_PATH_OK"
+    log "Restoring primary model after manual backstop"
+    ssh_host "openclaw models set $(printf '%q' "$LOCAL_MODEL") >/dev/null"
+  fi
   log "Restarting ollama after fallback test"
   ssh_host "sudo -n systemctl start ollama"
   OLLAMA_STOPPED=0

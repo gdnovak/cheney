@@ -85,4 +85,5 @@ Escalate from local to Codex when any of the following occur:
 
 - Phase-1 implementation executed on `rb1-fedora`.
 - Validation artifacts and outcomes: `notes/openclaw-routing-implementation-20260217.md`.
-- Current open item: fallback behavior under Ollama outage/error handling.
+- Remediation pass completed: session-reset validation + manual Codex backstop path added for non-failover transport errors.
+- Current open item: package an operational day-to-day wrapper using the same backstop logic.
