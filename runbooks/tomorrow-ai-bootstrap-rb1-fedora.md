@@ -8,6 +8,7 @@ Purpose: bring up a first attended AI stack on the new Fedora baremetal host wit
 - Phase B/C temporary setup was intentionally rolled back on request (`ollama` and `codex` removed from `rb1`).
 - Environment prerequisites remain valid (NVIDIA + fallback VLAN + management access).
 - This runbook is now paused until explicit re-enable of AI bootstrap scope.
+- Limited OpenClaw API-key smoke evaluation is tracked separately in `runbooks/openclaw-api-key-smoke-rb1-fedora.md`.
 
 ## Scope
 

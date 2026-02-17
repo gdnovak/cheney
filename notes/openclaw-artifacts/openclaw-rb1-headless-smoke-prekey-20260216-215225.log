@@ -1,0 +1,21 @@
+2026-02-16 21:52:25 EST host=rb1-fedora profile=rb1eval
+== host baseline ==
+rb1-fedora
+v22.22.0
+10.9.4
+2026.2.15
+== model status ==
+openai/gpt-5-mini
+Aliases (3):
+- low -> openai-codex/gpt-5.3-codex-spark
+- high -> openai-codex/gpt-5.3-codex
+- gpt-mini -> openai/gpt-5-mini
+== gateway+service snapshot ==
+ws://127.0.0.1:18789
+false
+false
+stopped (state inactive)
+== api key wiring check (intentional invalid key) ==
+401 Incorrect API key provided: sk-test_*****************moke. You can find your API key at https://platform.openai.com/account/api-keys.
+openai
+gpt-5-mini

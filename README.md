@@ -18,14 +18,14 @@ If you are resuming work, start here:
 1. Keep eGPU in stable attached mode and avoid unnecessary hotplug cycles; use recovery-first posture if disconnect issues recur.
 2. Continue Fedora operational polish and continuity hardening from `runbooks/next-steps-planning-20260216.md`.
 3. Expand memory workflow usage (`memory/` notes + decisions) for resumable sessions.
-4. Keep AI bootstrap deferred until explicitly requested.
+4. Keep AI changes scoped: OpenClaw attended API-key smoke is in progress; broader bootstrap remains deferred.
 
 Execution checklists:
 
 - `runbooks/today-egpu-and-memory-plan.md`
 - `runbooks/next-steps-planning-20260216.md`
 
-## Latest Implementation Checkpoint (2026-02-16 19:33 EST)
+## Latest Implementation Checkpoint (2026-02-16 21:52 EST)
 
 - `DONE` Added hardened admin access path `rb1-admin` (`tdj`) with key-only SSH and validated `sudo -n` access.
 - `DONE` Applied Fedora baseline updates on `rb1` (package refresh, core services active, reboot validated).
@@ -43,6 +43,9 @@ Execution checklists:
   - `fallback99` auto-returned (`172.31.99.1/30`)
   - bidirectional fallback ping/SSH checks succeeded post-reboot
   - internal+external NVIDIA GPUs remained visible.
+- `DONE` Installed OpenClaw CLI on `rb1-fedora` for attended headless API-key evaluation (`openclaw 2026.2.15`).
+- `DONE` Created isolated OpenClaw profile `rb1eval` and validated OpenAI provider wiring path with intentional invalid-key `401` response.
+- `PENDING` Execute one real-key smoke prompt and capture artifact; keep daemon install disabled in this phase.
 
 ## Naming Standard (`lcHL`)
 
@@ -89,10 +92,10 @@ Mandatory gate before phase 3:
 - External eGPU acceptance matrix includes display-attached scenario pass; findings + caveats are tracked in `notes/egpu-readiness-rb1-fedora-20260216.md`.
 - Known caveat: physical hot-unplug/replug remains temperamental; operate recovery-first and defer active hotplug tuning for now.
 
-4. `DEFERRED` Assistant bootstrap readiness on new host layout.
+4. `IN PROGRESS` Assistant bootstrap readiness on new host layout (limited OpenClaw eval scope).
 - `tsDeb` watchdog timer reports active from guest-exec check.
 - Utility VMs (`201`, `301`) are running.
-- AI runtime/tooling on `rb1` was rolled back intentionally and will not be reintroduced until explicitly requested.
+- AI runtime/tooling on `rb1` was rolled back intentionally; only attended OpenClaw API-key smoke is currently permitted.
 
 ## Current Hardware Context
 
@@ -151,6 +154,7 @@ Direction now in effect:
 - `runbooks/tomorrow-ai-bootstrap-rb1-fedora.md`: attended plan for first Ollama + Codex bootstrap on new Fedora baremetal `rb1`.
 - `runbooks/today-egpu-and-memory-plan.md`: current priority plan (eGPU on Fedora + memory structure optimization).
 - `runbooks/next-steps-planning-20260216.md`: post-eGPU-acceptance planning tracks and execution order.
+- `runbooks/openclaw-api-key-smoke-rb1-fedora.md`: attended OpenClaw API-key validation flow on `rb1`.
 - `runbooks/rb1-egpu-incident-recovery.md`: primary incident-response workflow for `rb1` eGPU/TB faults.
 - `runbooks/memory-workflow-weekly.md`: weekly memory/decision cadence for fast resume and context continuity.
 - `runbooks/rb2-fallback-management-path.md`: direct emergency management path between `rb1` and `rb2`.
@@ -170,6 +174,7 @@ Direction now in effect:
 - `notes/assistant-watchdog-policy.md`: guardrails for cost, safety, and runaway prevention.
 - `notes/assistant-runbook-smoke-test.md`: attended smoke-test flow before unattended mode.
 - `notes/egpu-readiness-rb1-fedora-20260216.md`: current eGPU readiness findings and deferred phase-5 test gates.
+- `notes/openclaw-cli-feature-findings-20260216.md`: OpenClaw CLI reconnaissance findings and headless caveats.
 - `coordination/`: cross-device task/state/event bus for orchestrator <-> VM subagent workflow.
 - `log.md`: detailed project-local execution history.
 
@@ -184,10 +189,10 @@ Direction now in effect:
 
 1. Execute next-phase planning tracks from `runbooks/next-steps-planning-20260216.md`.
 2. Keep eGPU in stable operating mode and document recovery-first handling for disconnect incidents.
-3. Keep AI bootstrap deferred until explicitly resumed.
+3. Complete attended OpenClaw API-key smoke validation and then reassess OAuth path for steady-state usage.
 4. Refresh continuity validation suite for the current host-role layout.
 5. Continue phase-2 network optimization (port map + 2.5Gb path planning).
 
 ## Current Session Objective
 
-Resume from the 2026-02-16 21:04 checkpoint: maintain recovery-first eGPU operations and continue weekly memory workflow discipline while AI bootstrap remains deferred.
+Resume from the 2026-02-16 21:52 checkpoint: maintain recovery-first eGPU operations, continue weekly memory workflow discipline, and complete attended OpenClaw real-key smoke artifact capture.
