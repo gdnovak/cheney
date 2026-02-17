@@ -385,3 +385,10 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
 - Status: Diagnosed Fedora installer default LVM sizing issue (`/` at `15G`, 100% full) and expanded root LV online to consume free VG space.
 - Evidence: `pvs/vgs` showed `fedora` VG free `459.35g`; executed `lvextend -r -l +100%FREE /dev/fedora/root`; post-check `lvs` => `root 474.35g`; `df -h /` => `475G size`, `451G avail`, `6%` used.
 - Next action: Continue normal host setup with adequate disk headroom; keep AI/bootstrap changes deferred until explicitly resumed.
+
+## 2026-02-17 00:23 EST (Codex)
+- Area: OpenClaw LAN gateway troubleshooting (`rb1-fedora`, user `tdj`)
+- Status: Resolved primary gateway target misconfiguration and brought LAN listener online. Root cause for the initial failure was `gateway.port=22` (SSH) in `/home/tdj/.openclaw/openclaw.json`, which caused WebSocket handshake failures against SSH. Updated config to `gateway.port=18789`, `gateway.bind=lan`, and restarted user gateway service.
+- Evidence: `openclaw status --json` now reports gateway URL `ws://192.168.5.107:18789`, `reachable=true`, `error=null`; listener present on `0.0.0.0:18789` (`openclaw-gateway`, pid `66817`).
+- Note: A pending device scope-upgrade request was present (`operator.approvals`, `operator.pairing`) and was reconciled in local device state (`~/.openclaw/devices/{paired,pending}.json`) to clear pairing deadlock during CLI access.
+- Next action: Continue manual OpenClaw setup on default profile; if remote clients still fail, re-validate client token/url and approve any new device pairing requests.
