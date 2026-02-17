@@ -337,3 +337,9 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
 - Status: Recorded operator decision to defer additional hotplug tuning for now and proceed with recovery-first operations, given known temperamental behavior and validated recovery path. Updated memory graph, readiness notes, and top-level README priorities to shift from eGPU acceptance execution to next-phase planning tracks.
 - Evidence: Added memory decision note `memory/decisions/dec-egpu-hotplug-defer-recovery-first.md`; updated project memory note `memory/projects/proj-rb1-fedora-env-baseline.md`; added planning runbook `runbooks/next-steps-planning-20260216.md`; updated `notes/egpu-readiness-rb1-fedora-20260216.md` with operating decision + recovery playbook; updated `README.md` routing/priorities.
 - Next action: Execute Track 1 + Track 2 from `runbooks/next-steps-planning-20260216.md` (Fedora operational polish and continuity/recovery hardening), while keeping AI bootstrap deferred.
+
+## 2026-02-16 20:49 EST (Codex)
+- Area: Track 1 operational polish execution (`rb1-fedora`)
+- Status: Implemented Track 1 host polish: resolved SSH root-login precedence issue with explicit early access-policy include, captured clean post-acceptance baseline snapshot, and reduced nonessential service surface by disabling `bluetooth` and `ModemManager`.
+- Evidence: On host, `sshd -T` now reports `permitrootlogin without-password` + `passwordauthentication no`; baseline snapshot saved at `notes/rb1-operational-baseline-20260216-204915.md`; `systemctl is-enabled/is-active bluetooth ModemManager` now returns `disabled`/`inactive`.
+- Next action: Execute Track 2 continuity/recovery hardening (reusable recovery script + post-incident checklist runbook section).

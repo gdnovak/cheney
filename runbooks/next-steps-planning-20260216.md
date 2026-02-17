@@ -27,6 +27,18 @@ Use recovery-first policy for eGPU operations:
 2. Capture a clean post-acceptance baseline snapshot (`ip`, `nvidia-smi`, `boltctl`, fallback VLAN status).
 3. Confirm service/autostart posture remains minimal and intentional.
 
+### Track 1 Checkpoint (2026-02-16 20:49 EST)
+
+1. `DONE` SSH root-login override resolved with explicit early include:
+   - `/etc/ssh/sshd_config.d/00-lchl-access-policy.conf`
+   - effective: `permitrootlogin without-password`, `passwordauthentication no`
+2. `DONE` Baseline snapshot captured:
+   - `notes/rb1-operational-baseline-20260216-204915.md`
+3. `DONE` Service posture trimmed for headless host intent:
+   - `bluetooth` disabled/inactive
+   - `ModemManager` disabled/inactive
+4. `NEXT` Proceed to Track 2 (continuity/recovery hardening).
+
 ### Track 2: Continuity and Recovery Hardening
 
 1. Convert ad hoc recovery commands into one reusable validation/recovery script for `rb1`.

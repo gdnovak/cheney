@@ -108,6 +108,17 @@ Display sink check artifact:
    - fallback VLAN99 ping works both ways (`rb1` <-> `rb2`)
 4. Return to stable attached mode and continue planned work.
 
+## Post-Polish Baseline (2026-02-16 20:49 EST)
+
+1. SSH effective policy on `rb1` now reports:
+   - `permitrootlogin without-password`
+   - `passwordauthentication no`
+2. Service surface trimmed for headless operation:
+   - `bluetooth` disabled/inactive
+   - `ModemManager` disabled/inactive
+3. Baseline evidence snapshot:
+   - `notes/rb1-operational-baseline-20260216-204915.md`
+
 ## Deferred Hotplug Mitigation Backlog (Intentional)
 
 Run these in order:
