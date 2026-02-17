@@ -1,0 +1,23 @@
+2026-02-16 20:58:06 EST Scenario=track2_reboot_validation reboot=1 host=rb1-admin peer=rb2
+2026-02-16 20:58:06 EST Collecting pre snapshot
+2026-02-16 20:58:11 EST Triggering reboot on rb1-admin
+2026-02-16 20:58:45 EST Reboot confirmed after 32s (boot_id=a6ba4922-1afc-437b-a9d9-88509074a64d)
+2026-02-16 20:58:45 EST Collecting post snapshot
+
+## Host snapshot
+rb1-fedora
+a6ba4922-1afc-437b-a9d9-88509074a64d
+lo               UNKNOWN        127.0.0.1/8 
+enp0s20f0u6      UP             192.168.5.107/22 
+enp0s20f0u6.99@enp0s20f0u6 UP             172.31.99.1/30 
+index, pci.bus_id, name, display_active, pstate, pcie.link.gen.current, pcie.link.width.current
+0, 00000000:01:00.0, NVIDIA GeForce GTX 1060, Enabled, P0, 3, 16
+1, 00000000:0F:00.0, NVIDIA GeForce GTX 1060 6GB, Disabled, P0, 3, 4
+
+## Peer fallback check
+rb2-pve
+vmbr0.99@vmbr0   UP             172.31.99.2/30 
+peer_to_host_fallback=ok
+2026-02-16 20:58:52 EST Result=PASS notes=ok
+2026-02-16 20:58:52 EST Matrix row appended to notes/rb1-recovery-matrix-20260216.md
+2026-02-16 20:58:52 EST Artifact log saved at notes/rb1-recovery-artifacts/rb1-recovery-track2_reboot_validation-20260216-205806.log

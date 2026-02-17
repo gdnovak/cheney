@@ -56,7 +56,10 @@ Use recovery-first policy for eGPU operations:
 4. `DONE` Live smoke validation executed:
    - `notes/rb1-recovery-matrix-20260216.md` (`track2_smoketest_rerun` => `PASS`)
    - `notes/rb1-recovery-artifacts/rb1-recovery-track2_smoketest_rerun-20260216-205545.log`
-5. `NEXT` Continue Track 4 memory workflow maturation (or run reboot-mode validator during next maintenance window).
+5. `DONE` Reboot-mode validation executed:
+   - `notes/rb1-recovery-matrix-20260216.md` (`track2_reboot_validation` => `PASS`, reboot elapsed `32s`)
+   - `notes/rb1-recovery-artifacts/rb1-recovery-track2_reboot_validation-20260216-205806.log`
+6. `NEXT` Continue Track 4 memory workflow maturation.
 
 ### Track 3: Assistant Bootstrap Readiness (Still Deferred)
 

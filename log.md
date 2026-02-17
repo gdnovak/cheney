@@ -349,3 +349,9 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
 - Status: Added reusable `rb1` recovery validator script and dedicated incident-recovery runbook, then executed a live smoke validation. Initial strict service policy produced one expected FAIL row (`nvidia-powerd inactive`), validator policy was corrected to accept expected inactive state on this hardware, and rerun passed.
 - Evidence: Added `scripts/rb1_recovery_validate.sh`; added `runbooks/rb1-egpu-incident-recovery.md`; matrix `notes/rb1-recovery-matrix-20260216.md` now includes `track2_smoketest` (`FAIL`, policy tuning) and `track2_smoketest_rerun` (`PASS`); PASS artifact at `notes/rb1-recovery-artifacts/rb1-recovery-track2_smoketest_rerun-20260216-205545.log`.
 - Next action: Continue Track 4 memory workflow maturation while keeping this recovery validator as the standard post-incident/post-maintenance gate.
+
+## 2026-02-16 20:58 EST (Codex)
+- Area: Track 2 reboot-mode validation
+- Status: Executed reboot-mode recovery validation (`--reboot`) to confirm post-reboot continuity against the new standard validator. Run completed `PASS` with boot-id change and full policy/network/GPU checks intact.
+- Evidence: Matrix row `track2_reboot_validation` in `notes/rb1-recovery-matrix-20260216.md` (`reboot_elapsed=32s`, result `PASS`); artifact `notes/rb1-recovery-artifacts/rb1-recovery-track2_reboot_validation-20260216-205806.log`.
+- Next action: Proceed with Track 4 memory workflow maturation.
