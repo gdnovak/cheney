@@ -55,6 +55,17 @@ ip -4 -br addr
 2. Reboot once and verify host returns on same management interface/IP.
 3. Only after network stability is confirmed, connect eGPU path and proceed with NVIDIA stack work.
 4. Confirm Tailscale subnet routing remains served by `rb2` utility path (example advertised LAN route: `192.168.4.0/22`).
+5. Validate root filesystem sizing and correct if installer left the default small LV:
+
+```bash
+df -h /
+pvs
+vgs
+lvs -o lv_name,vg_name,lv_size,lv_attr
+# If / is ~15G and VG has large free space:
+sudo lvextend -r -l +100%FREE /dev/fedora/root
+df -h /
+```
 
 ## Rollback
 

@@ -379,3 +379,9 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
 - Status: Removed OpenClaw tooling and related host state on request to reset AI bootstrap scope. Uninstalled global OpenClaw package and removed OpenClaw state directories; verified command/module/service absence and preserved non-AI baseline.
 - Evidence: `ssh rb1-fedora 'npm uninstall -g openclaw; rm -rf /root/.openclaw /root/.openclaw-*'`; post-checks show `command -v openclaw` absent, no `/usr/local/lib/node_modules/openclaw`, and no `openclaw` systemd unit installed/enabled.
 - Next action: Hold AI/bootstrap changes until explicit user restart; user will perform manual setup when ready.
+
+## 2026-02-16 22:52 EST (Codex)
+- Area: `rb1-fedora` root filesystem capacity correction
+- Status: Diagnosed Fedora installer default LVM sizing issue (`/` at `15G`, 100% full) and expanded root LV online to consume free VG space.
+- Evidence: `pvs/vgs` showed `fedora` VG free `459.35g`; executed `lvextend -r -l +100%FREE /dev/fedora/root`; post-check `lvs` => `root 474.35g`; `df -h /` => `475G size`, `451G avail`, `6%` used.
+- Next action: Continue normal host setup with adequate disk headroom; keep AI/bootstrap changes deferred until explicitly resumed.
