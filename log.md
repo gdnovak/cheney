@@ -488,3 +488,14 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
 - Status: Re-ran the prior routing validation and both safe-turn benchmark profiles (real + control) after several days. Setup remains operational with model state/service state restored post-run (`default=ollama/qwen2.5:7b`, fallback=`openai-codex/gpt-5.3-codex`, `ollama` and user `openclaw-gateway` active).
 - Evidence: Routing artifacts `notes/openclaw-routing-validation-20260220.md` and `notes/openclaw-artifacts/openclaw-routing-validation-20260220-144405.{jsonl,log}`; real benchmark artifacts `notes/openclaw-safe-turn-benchmark-20260220-144657.md` and `notes/openclaw-artifacts/openclaw-safe-turn-benchmark-20260220-144657.{jsonl,log}`; control benchmark artifacts `notes/openclaw-safe-turn-benchmark-20260220-144833.md` and `notes/openclaw-artifacts/openclaw-safe-turn-benchmark-20260220-144833.{jsonl,log}`. Key results: real and control both `7/7` success with `backstop_count=1`; native forced fallback still fails with `fetch failed` but manual/precheck backstop path passes; routing improved vs prior run (`route_05_transform` and `route_09_python` now pass), with one remaining routine prompt miss (`route_07_ping_cmd`).
 - Next action: Keep current wrapper/backstop policy as primary reliability guard; if desired, tighten `route_07_ping_cmd` prompt assertion to avoid process-tool side responses.
+
+## 2026-02-20 16:16 EST (Codex)
+- Area: `rb1` manual backup infrastructure on TrueNAS HDD
+- Status: Implemented manual-only backup path from `rb1` to a new TrueNAS HDD dataset, aligned to operator policy of keeping only `2-3` snapshots and avoiding timer-driven rotation.
+- Evidence:
+  - Created dataset `oyPool/rb1AssistantBackups` on TrueNAS (`/mnt/oyPool/rb1AssistantBackups`, `quota=30G`).
+  - Added dedicated `rb1` SSH key and alias (`~/.ssh/id_ed25519_truenas_rb1`, host alias `truenas-rb1`) and authorized it for `macmini_bu`.
+  - Installed script on host: `/home/tdj/bin/rb1_truenas_backup.sh` (`create/list/prune`).
+  - Validation run: created snapshots `initial-rb1-assistant-3` and `baseline-2026-02-20`; prune test kept 2 snapshots and removed older test snapshots.
+  - Repo docs/scripts updated: `scripts/rb1_truenas_backup.sh`, `runbooks/rb1-manual-truenas-backup.md`, `inventory/network-remote-access.md`.
+- Next action: Keep manual cadence before risky changes; run `prune 2` or `prune 3` after each verified snapshot.

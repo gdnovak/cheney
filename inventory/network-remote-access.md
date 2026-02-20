@@ -80,6 +80,20 @@ Runbook:
 - `tsdeb-watchdog.timer` check from guest-exec reports `active`; `tsdeb-watchdog.service` idle between timer runs (`inactive`).
 - Watcher policy still expects ping checks for `rb1`, `rb2`, and `mba` with WoL attempt on failure.
 
+## Manual Backup Path (`rb1` -> TrueNAS HDD)
+
+- Destination dataset: `oyPool/rb1AssistantBackups` (`/mnt/oyPool/rb1AssistantBackups`, quota `30G`).
+- Backup mode: manual snapshots only (no timer/rotation automation).
+- Script on `rb1`: `/home/tdj/bin/rb1_truenas_backup.sh`
+- Core commands:
+  - create: `/home/tdj/bin/rb1_truenas_backup.sh create <label>`
+  - list: `/home/tdj/bin/rb1_truenas_backup.sh list`
+  - prune: `/home/tdj/bin/rb1_truenas_backup.sh prune <keep_count>`
+- Access method:
+  - TrueNAS user `macmini_bu`
+  - key `~/.ssh/id_ed25519_truenas_rb1`
+  - alias `truenas-rb1`
+
 ## Away-Safe Validation Checklist
 
 1. Confirm SSH paths work for `rb1-admin`, `rb1` (break-glass), `rb2`, and `mba` using current keys.
