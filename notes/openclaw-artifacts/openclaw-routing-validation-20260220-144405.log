@@ -1,0 +1,144 @@
+2026-02-20 14:44:06 EST Host=rb1-admin
+2026-02-20 14:44:06 EST Artifacts: notes/openclaw-artifacts/openclaw-routing-validation-20260220-144405.log / notes/openclaw-artifacts/openclaw-routing-validation-20260220-144405.jsonl
+rb1-fedora
+tdj
+2026.2.15
+{
+  "configPath": "/home/tdj/.openclaw/openclaw.json",
+  "agentDir": "/home/tdj/.openclaw/agents/main/agent",
+  "defaultModel": "ollama/qwen2.5:7b",
+  "resolvedDefault": "ollama/qwen2.5:7b",
+  "fallbacks": [
+    "openai-codex/gpt-5.3-codex"
+  ],
+  "imageModel": null,
+  "imageFallbacks": [],
+  "aliases": {},
+  "allowed": [
+    "ollama/qwen2.5:7b",
+    "openai-codex/gpt-5.3-codex",
+    "ollama/qwen2.5-coder:7b"
+  ],
+  "auth": {
+    "storePath": "/home/tdj/.openclaw/agents/main/agent/auth-profiles.json",
+    "shellEnvFallback": {
+      "enabled": false,
+      "appliedKeys": []
+    },
+    "providersWithOAuth": [
+      "openai-codex (1)"
+    ],
+    "missingProvidersInUse": [],
+    "providers": [
+      {
+        "provider": "ollama",
+        "effective": {
+          "kind": "models.json",
+          "detail": "ollama-local"
+        },
+        "profiles": {
+          "count": 0,
+          "oauth": 0,
+          "token": 0,
+          "apiKey": 0,
+          "labels": []
+        },
+        "modelsJson": {
+          "value": "ollama-local",
+          "source": "models.json: ~/.openclaw/agents/main/agent/models.json"
+        }
+      },
+      {
+        "provider": "openai-codex",
+        "effective": {
+          "kind": "profiles",
+          "detail": "~/.openclaw/agents/main/agent/auth-profiles.json"
+        },
+        "profiles": {
+          "count": 1,
+          "oauth": 1,
+          "token": 0,
+          "apiKey": 0,
+          "labels": [
+            "openai-codex:default=OAuth"
+          ]
+        }
+      }
+    ],
+    "unusableProfiles": [],
+    "oauth": {
+      "warnAfterMs": 86400000,
+      "profiles": [
+        {
+          "profileId": "openai-codex:default",
+          "provider": "openai-codex",
+          "type": "oauth",
+          "status": "ok",
+          "expiresAt": 1772167778284,
+          "remainingMs": 551126846,
+          "source": "store",
+          "label": "openai-codex:default"
+        }
+      ],
+      "providers": [
+        {
+          "provider": "ollama",
+          "status": "missing",
+          "profiles": []
+        },
+        {
+          "provider": "openai-codex",
+          "status": "ok",
+          "profiles": [
+            {
+              "profileId": "openai-codex:default",
+              "provider": "openai-codex",
+              "type": "oauth",
+              "status": "ok",
+              "expiresAt": 1772167778284,
+              "remainingMs": 551126846,
+              "source": "store",
+              "label": "openai-codex:default"
+            }
+          ],
+          "expiresAt": 1772167778284,
+          "remainingMs": 551126846
+        }
+      ]
+    }
+  }
+}
+2026-02-20 14:44:14 EST Original model: ollama/qwen2.5:7b
+2026-02-20 14:44:14 EST Resetting OpenClaw session store for clean run (1771616654)
+2026-02-20 14:44:14 EST Running route_01_marker (local)
+[34m[tools][39m [33mtools.profile (coding) allowlist contains unknown entries (group:memory, image). These entries won't match any tool unless the plugin is enabled.[39m
+2026-02-20 14:44:40 EST Running route_02_math (local)
+[34m[tools][39m [33mtools.profile (coding) allowlist contains unknown entries (group:memory, image). These entries won't match any tool unless the plugin is enabled.[39m
+2026-02-20 14:44:45 EST Running route_03_json_extract (local)
+[34m[tools][39m [33mtools.profile (coding) allowlist contains unknown entries (group:memory, image). These entries won't match any tool unless the plugin is enabled.[39m
+2026-02-20 14:44:51 EST Running route_04_sort_csv (local)
+[34m[tools][39m [33mtools.profile (coding) allowlist contains unknown entries (group:memory, image). These entries won't match any tool unless the plugin is enabled.[39m
+2026-02-20 14:44:57 EST Running route_05_transform (local)
+[34m[tools][39m [33mtools.profile (coding) allowlist contains unknown entries (group:memory, image). These entries won't match any tool unless the plugin is enabled.[39m
+2026-02-20 14:45:02 EST Running route_06_wol_short (local)
+[34m[tools][39m [33mtools.profile (coding) allowlist contains unknown entries (group:memory, image). These entries won't match any tool unless the plugin is enabled.[39m
+2026-02-20 14:45:07 EST Running route_07_ping_cmd (local)
+[34m[tools][39m [33mtools.profile (coding) allowlist contains unknown entries (group:memory, image). These entries won't match any tool unless the plugin is enabled.[39m
+2026-02-20 14:45:17 EST Running route_08_yaml (local)
+[34m[tools][39m [33mtools.profile (coding) allowlist contains unknown entries (group:memory, image). These entries won't match any tool unless the plugin is enabled.[39m
+2026-02-20 14:45:23 EST Running route_09_python (local)
+[34m[tools][39m [33mtools.profile (coding) allowlist contains unknown entries (group:memory, image). These entries won't match any tool unless the plugin is enabled.[39m
+2026-02-20 14:45:33 EST Running route_10_gateway_marker (gateway)
+2026-02-20 14:45:43 EST Switching primary model to ollama/qwen2.5-coder:7b for coder-path check
+2026-02-20 14:45:45 EST Running coder_path_check (local)
+[34m[tools][39m [33mtools.profile (coding) allowlist contains unknown entries (group:memory, image). These entries won't match any tool unless the plugin is enabled.[39m
+2026-02-20 14:46:18 EST Restoring primary model to ollama/qwen2.5:7b
+2026-02-20 14:46:21 EST Stopping ollama to force fallback
+2026-02-20 14:46:21 EST Running fallback_forced_check (gateway)
+2026-02-20 14:46:38 EST Auto-fallback did not pass (expected FALLBACK_PATH_OK; provider!=openai-codex); executing manual Codex backstop
+2026-02-20 14:46:41 EST Running fallback_manual_backstop (gateway)
+2026-02-20 14:46:47 EST Restoring primary model after manual backstop
+2026-02-20 14:46:50 EST Restarting ollama after fallback test
+2026-02-20 14:46:50 EST Completed routing validation
+2026-02-20 14:46:50 EST Matrix: notes/openclaw-routing-validation-20260220.md
+2026-02-20 14:46:50 EST Artifacts: notes/openclaw-artifacts/openclaw-routing-validation-20260220-144405.log, notes/openclaw-artifacts/openclaw-routing-validation-20260220-144405.jsonl
