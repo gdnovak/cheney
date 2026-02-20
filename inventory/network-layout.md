@@ -6,11 +6,12 @@
 - `switch-fast-unmanaged`: higher-throughput unmanaged switch for bulk data paths.
 - Rule: keep exactly one cable between switches unless loop protections are explicitly configured and validated.
 
-## Current Known IP Anchors (2026-02-20 16:55 EST)
+## Current Known IP Anchors (2026-02-20 17:26 EST)
 
 | system | ip | role | source |
 |---|---|---|---|
-| rb1-fedora host (`rb14-2017`) | 192.168.5.114/22 | Fedora baremetal agent host | live SSH check |
+| rb1-fedora host primary route (`rb14-2017`) | 192.168.5.115/22 | Fedora baremetal agent host (eGPU NIC preferred) | live SSH check |
+| rb1-fedora host fallback mgmt (`rb14-2017`) | 192.168.5.114/22 | Fedora baremetal fallback management path (USB3 adapter) | live SSH check |
 | rb1 fallback VLAN | 172.31.99.1/30 | fallback management endpoint | live host route/addr + ping/SSH-path check |
 | rb2-pve host (`rb14-2015`) | 192.168.5.108/22 | primary Proxmox host | live SSH check |
 | rb2 fallback VLAN | 172.31.99.2/30 | fallback management endpoint | live host route/addr + ping/SSH-path check |
@@ -31,7 +32,8 @@ Historical baseline (2026-02-14):
 
 Current link checks (2026-02-20):
 
-- `rb1-fedora` `enp0s20f0u1c2` -> `1000/unknown`
+- `rb1-fedora` `enp20s0u1` (eGPU NIC) -> `1000/full`
+- `rb1-fedora` `enp0s20f0u1c2` (USB3 fallback NIC) -> `1000/unknown`
 - `rb2-pve` `enx00051bde7e6e` -> `1000/full`
 - `mba` `nic0` -> `1000/full`
 
@@ -74,7 +76,7 @@ Current link checks (2026-02-20):
 
 | host | current primary NIC path | current link | target near-term | target link | fallback path requirement |
 |---|---|---|---|---|---|
-| rb1-fedora | `enp0s20f0u1c2` (USB3 AX88179A path) | 1GbE | keep management isolated from eGPU Ethernet; evaluate replacement if hardware WoL is mandatory | 2.5GbE target | keep `fallback99-new` active and revalidate after maintenance reboots |
+| rb1-fedora | `enp20s0u1` (eGPU Ethernet) primary + `enp0s20f0u1c2` fallback | 1GbE | keep eGPU path preferred for WoL-capable operation while preserving USB fallback route (`metric 103`) and VLAN99 continuity | 2.5GbE target | keep `fallback99-new` active and revalidate after maintenance reboots |
 | rb2-pve | `enx00051bde7e6e` | 1GbE | prioritize power/cable strain relief, then 2.5Gb upgrade path | 2.5GbE target | keep `vmbr0.99` active and documented |
 | mba (`kabbalah`) | `nic0` | 1GbE | continuity node only | 1GbE | retain hub + direct TB/miniDP fallback notes |
 | workstation/mac mini | TBD | TBD | add to fast-switch data path if 2.5-capable NIC path exists | 2.5GbE target | keep Wi-Fi as secondary out-of-band access |

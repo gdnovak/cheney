@@ -10,11 +10,11 @@ Ensure at least one reliable remote-control path remains available while away, e
 - Current node Ethernet may traverse docks/eGPU enclosures and should be treated as potential failure points.
 - `rb1` management is intentionally on a dedicated USB Ethernet NIC, not on the Razer Core network path.
 
-## Current Methods (Verified 2026-02-20 16:55 EST)
+## Current Methods (Verified 2026-02-20 17:26 EST)
 
 | node_id | primary_remote_method | secondary_remote_method | wake_capability | known_issues | last_tested |
 |---|---|---|---|---|---|
-| rb14-2017 (`rb1-fedora`) | SSH alias `rb1-admin` (`tdj@192.168.5.114`) | SSH alias `rb1` (`root`, break-glass key path) | No hardware WoL support on active NIC (`enp0s20f0u1c2`) | Active adapter uses `cdc_ncm` path; `ethtool -s enp0s20f0u1c2 wol g` is unsupported. Forcing USB config to `ax88179_178a` exposes WoL flags but loses carrier on this host (not production-usable). | 2026-02-20 17:13 EST |
+| rb14-2017 (`rb1-fedora`) | SSH alias `rb1-admin` (`tdj@192.168.5.114`, stable fallback mgmt) | direct primary-route path `tdj@192.168.5.115` (`egpu-primary`) | Hardware WoL available on eGPU NIC (`enp20s0u1`: `Supports Wake-on: pg`, `Wake-on: g`) | Primary route depends on eGPU/TB path stability; USB fallback NIC remains no-hardware-WoL | 2026-02-20 17:26 EST |
 | rb14-2015 (`rb2-pve`) | SSH alias `rb2` + Proxmox UI `https://192.168.5.108:8006` | VLAN99 fallback endpoint `172.31.99.2` | `Wake-on: g` on `enx00051bde7e6e` | No-battery power risk; no-power AC restore still requires manual button press | 2026-02-16 19:33 EST |
 | mba-2011 (`kabbalah`) | SSH alias `mba` + Proxmox UI `https://192.168.5.66:8006` | utility VM path via `301` | `Wake-on: g` on `nic0` | Aging hardware and slower reboot profile | 2026-02-16 19:33 EST |
 | truenas VM (`100` on `rb2`) | LAN service endpoint `192.168.5.100` | Proxmox console from `rb2` | n/a (VM) | VM guest agent unavailable; manage via LAN and host-level controls | 2026-02-16 19:33 EST |
@@ -32,13 +32,13 @@ Ensure at least one reliable remote-control path remains available while away, e
   - `ssh rb1-admin` works and `sudo -n true` passes.
   - Password-only SSH attempt fails (`Permission denied (publickey,...)`).
   - Root remains key-only reachable as break-glass (`rb1`) due installer file `/etc/ssh/sshd_config.d/01-permitrootlogin.conf`.
-  - Current management path is now `enp0s20f0u1c2` at `192.168.5.114` (`Wired connection 2`), with fallback VLAN on `fb99` (`fallback99-new`).
+  - Current dual-path setup: preferred route on eGPU NIC `enp20s0u1` (`192.168.5.115`, `egpu-primary`, metric `80`) and stable fallback management on USB NIC `enp0s20f0u1c2` (`192.168.5.114`, `Wired connection 2`, metric `103`), with fallback VLAN on `fb99` (`fallback99-new`).
 
 ## WoL / Wake Feasibility Matrix
 
 | node_id | supports_wol | tested_result | blockers | fallback |
 |---|---|---|---|---|
-| rb14-2017 (`rb1-fedora`) | No (on current stable NIC path) | `nmcli` can set `wake-on-lan=magic`, but active adapter (`enp0s20f0u1c2`, `cdc_ncm`) does not expose WoL in `ethtool`; `ethtool -s ... wol g` returns `Operation not supported`. Magic packet traffic to new MAC was captured on-wire from `rb2`. Retest forcing USB config to vendor mode (`ax88179_178a`) exposes `Supports Wake-on: pg` and accepts `wol g`, but link/carrier drops (`Link status: 0`) with kernel register-read errors. | Hardware WoL regression versus prior Realtek path under stable mode; vendor-mode WoL not usable due no-link condition | Keep smart plug/manual wake path; if WoL is required, use a WoL-capable NIC/driver path (e.g., prior Realtek adapter) |
+| rb14-2017 (`rb1-fedora`) | Yes (via eGPU NIC path) | `enp20s0u1` now runs as preferred route (`egpu-primary`, metric `80`) with `Supports Wake-on: pg` and `Wake-on: g`. Magic packet traffic to eGPU MAC was captured on-wire from `rb2`. USB fallback NIC (`enp0s20f0u1c2`, `cdc_ncm`) still does not expose hardware WoL. | WoL depends on eGPU Ethernet cable/link being present | Keep USB fallback route for continuity; keep smart plug/manual wake as tertiary path |
 | rb14-2015 (`rb2-pve`) | Yes (limited by no-power behavior) | `ethtool` reports `Wake-on: g`; prior no-power recovery test showed manual power-on required | WoL does not recover node from fully unpowered state | Smart plug cycle + manual power contingency |
 | mba-2011 (`kabbalah`) | Yes | `ethtool` reports `Wake-on: g` | True wake-from-off behavior should be periodically revalidated | Scheduled power window/manual recovery |
 
@@ -80,7 +80,7 @@ Runbook:
 - VM boot behavior: running on `rb2` (`qm list`).
 - `tsdeb-watchdog.timer` check from guest-exec reports `active`; `tsdeb-watchdog.service` idle between timer runs (`inactive`).
 - Watcher policy expects ping checks for `rb1`, `rb2`, and `mba` with WoL attempt on failure.
-- Current watcher host mapping (updated 2026-02-20): `rb1=192.168.5.114/6c:6e:07:21:02:3e`, `rb2=192.168.5.108/00:05:1b:de:7e:6e`, `mba=192.168.5.66/00:24:32:16:8e:d3`.
+- Current watcher host mapping (updated 2026-02-20): `rb1=192.168.5.114/90:20:3a:1b:e8:d6` (ping on stable fallback IP, WoL to eGPU NIC MAC), `rb2=192.168.5.108/00:05:1b:de:7e:6e`, `mba=192.168.5.66/00:24:32:16:8e:d3`.
 
 ## Manual Backup Path (`rb1` -> TrueNAS HDD)
 

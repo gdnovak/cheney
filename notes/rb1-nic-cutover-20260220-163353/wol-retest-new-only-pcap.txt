@@ -1,0 +1,7 @@
+dropped privs to tcpdump
+tcpdump: listening on enp0s20f0u1c2, link-type EN10MB (Ethernet), snapshot length 262144 bytes
+17:21:54.307438 IP (tos 0x0, ttl 64, id 28304, offset 0, flags [DF], proto UDP (17), length 130)
+    192.168.5.108.45758 > 192.168.7.255.discard: [udp sum ok] UDP, length 102
+1 packet captured
+2 packets received by filter
+0 packets dropped by kernel
