@@ -476,3 +476,9 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
 - Status: Collected current service/process state on `rb1` for requested suspension step; no stop/disable actions applied yet due checkpoint hold.
 - Evidence: `ollama.service` is `enabled/active` (system); `openclaw-gateway.service` is `enabled/active` (user). No distinct `clawdbot` unit found in systemd listings. Live processes include `ollama serve` and `openclaw-gateway`.
 - Next action: On instruction, stop+disable `ollama.service` and stop+disable user `openclaw-gateway.service` (or target explicit `clawdbot` unit name if provided), then verify zero running processes.
+
+## 2026-02-17 16:56 EST (Codex)
+- Area: external infra note (`rb2`/TrueNAS) impacting current lab continuity
+- Status: Investigated temporary TrueNAS inaccessibility on `rb2` and restored VM `100` memory back to fixed `8192` (`balloon: 0`). Guest came back healthy after warm-up; this is recorded as an operational checkpoint only (no cheney project baseline/planning changes).
+- Evidence: `qm config 100` shows `memory: 8192`; `kvm -id 100` launch arg includes `-m 8192`; post-boot probes on `192.168.5.100` show `80/443/22/445/2049` open; `curl -k -I https://192.168.5.100` returned `HTTP/2 302`; serial-console checks show `midclt call system.state => READY`, `middlewared` active, and `nginx` active.
+- Next action: For future outages, allow a short middleware/web warm-up window after restart before declaring failure; if steady-state failures recur, capture service logs before tuning.
