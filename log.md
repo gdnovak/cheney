@@ -524,3 +524,10 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
 - Evidence: Failover/run-state artifact `notes/rb1-nic-cutover-20260220-163353/egpu-primary-failover-validation.txt` shows default route on `192.168.5.115` when primary is up and automatic fallback to `192.168.5.114` when `egpu-primary` is brought down; `rb2` pings to fallback/VLAN99 remained `0%` loss. Throughput comparison artifact `notes/rb1-nic-cutover-20260220-163353/egpu-vs-fallback-throughput.txt`: eGPU path `929 Mbps` sender (P1, 20s) vs fallback path `933 Mbps` sender (P1, 20s), both 1Gb-class.
 - Evidence: eGPU WoL capture artifacts `notes/rb1-nic-cutover-20260220-163353/egpu-primary-wol-send.txt` and `.../egpu-primary-wol-pcap.txt`; `enp20s0u1` reports `Supports Wake-on: pg`, `Wake-on: g`. Updated watcher mapping in VM `101` to ping stable IP `192.168.5.114` while sending WoL to eGPU MAC `90:20:3a:1b:e8:d6`.
 - Next action: Optional reboot-survival validation with both NICs present to confirm route-metric preference and WoL setting persistence across boot.
+
+## 2026-02-20 17:31 EST (Codex)
+- Area: `rb1` eGPU-primary reboot-survival validation
+- Status: Reboot validation passed for the new dual-path network design. `rb1` returned in ~`26s`, boot ID changed as expected, and route/WoL persistence matched design (`egpu-primary` metric `80`, USB fallback metric `300`, eGPU `Wake-on: g`).
+- Evidence: `notes/rb1-nic-cutover-20260220-163353/reboot-validation-20260220-172904.log` and summary `notes/rb1-nic-cutover-20260220-163353/reboot-validation-summary-20260220.md`; `rb2` pings post-boot were `0%` loss to `192.168.5.115`, `192.168.5.114`, and `172.31.99.1`.
+- Evidence: Post-reboot failover sanity also passed: disabling `egpu-primary` moved default route to `192.168.5.114` with `0%` loss to fallback IP/VLAN; restoring `egpu-primary` returned default route to `192.168.5.115`.
+- Next action: Keep this topology and periodically re-check eGPU link stability; if TB/eGPU path destabilizes, fallback route remains immediate recovery path.

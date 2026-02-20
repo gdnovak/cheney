@@ -76,7 +76,7 @@ Current link checks (2026-02-20):
 
 | host | current primary NIC path | current link | target near-term | target link | fallback path requirement |
 |---|---|---|---|---|---|
-| rb1-fedora | `enp20s0u1` (eGPU Ethernet) primary + `enp0s20f0u1c2` fallback | 1GbE | keep eGPU path preferred for WoL-capable operation while preserving USB fallback route (`metric 103`) and VLAN99 continuity | 2.5GbE target | keep `fallback99-new` active and revalidate after maintenance reboots |
+| rb1-fedora | `enp20s0u1` (eGPU Ethernet) primary + `enp0s20f0u1c2` fallback | 1GbE | keep eGPU path preferred for WoL-capable operation while preserving USB fallback route (`metric 300`) and VLAN99 continuity | 2.5GbE target | keep `fallback99-new` active and revalidate after maintenance reboots |
 | rb2-pve | `enx00051bde7e6e` | 1GbE | prioritize power/cable strain relief, then 2.5Gb upgrade path | 2.5GbE target | keep `vmbr0.99` active and documented |
 | mba (`kabbalah`) | `nic0` | 1GbE | continuity node only | 1GbE | retain hub + direct TB/miniDP fallback notes |
 | workstation/mac mini | TBD | TBD | add to fast-switch data path if 2.5-capable NIC path exists | 2.5GbE target | keep Wi-Fi as secondary out-of-band access |

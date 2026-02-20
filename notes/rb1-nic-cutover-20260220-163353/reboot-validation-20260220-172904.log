@@ -1,0 +1,90 @@
+timestamp=2026-02-20T17:29:04-05:00
+=== pre-state ===
+rb1-fedora
+dc0ee06b-7cda-423e-9a09-6fb4d5cd766b
+egpu-primary:enp20s0u1:802-3-ethernet:activated:yes
+Wired connection 2:enp0s20f0u1c2:802-3-ethernet:activated:yes
+fallback99-new:fb99:vlan:activated:yes
+lo:lo:loopback:activated:yes
+lo               UNKNOWN        127.0.0.1/8 
+enp20s0u1        UP             192.168.5.115/22 
+enp0s20f0u1c2    UP             192.168.5.114/22 
+fb99@enp0s20f0u1c2 UP             172.31.99.1/30 
+default via 192.168.4.1 dev enp20s0u1 proto dhcp src 192.168.5.115 metric 80 
+default via 192.168.4.1 dev enp0s20f0u1c2 proto dhcp src 192.168.5.114 metric 103 
+172.31.99.0/30 dev fb99 proto kernel scope link src 172.31.99.1 metric 400 
+192.168.4.0/22 dev enp20s0u1 proto kernel scope link src 192.168.5.115 metric 80 
+	Speed: 1000Mb/s
+	Duplex: Full
+	Supports Wake-on: pg
+	Wake-on: g
+	Link detected: yes
+	Speed: 1000Mb/s
+	Duplex: Unknown! (255)
+	Link detected: yes
+=== reboot issued ===
+reboot_command_sent_at=2026-02-20T17:29:05-05:00
+=== reboot reachability monitor ===
+2026-02-20T17:29:12-05:00 state=down
+2026-02-20T17:29:14-05:00 state=down
+2026-02-20T17:29:16-05:00 state=down
+2026-02-20T17:29:18-05:00 state=down
+2026-02-20T17:29:20-05:00 state=down
+2026-02-20T17:29:22-05:00 state=down
+2026-02-20T17:29:24-05:00 state=down
+2026-02-20T17:29:26-05:00 state=down
+2026-02-20T17:29:28-05:00 state=down
+2026-02-20T17:29:30-05:00 state=down
+2026-02-20T17:29:32-05:00 state=down
+2026-02-20T17:29:34-05:00 state=down
+2026-02-20T17:29:36-05:00 state=down
+2026-02-20T17:29:38-05:00 state=up
+elapsed_sec=26 down_seen=1 up_seen=1
+=== post-reboot failover sanity ===
+Connection 'egpu-primary' successfully deactivated (D-Bus active path: /org/freedesktop/NetworkManager/ActiveConnection/4)
+Wired connection 2:enp0s20f0u1c2:activated
+fallback99-new:fb99:activated
+lo:lo:activated
+default via 192.168.4.1 dev enp0s20f0u1c2 proto dhcp src 192.168.5.114 metric 300 
+172.31.99.0/30 dev fb99 proto kernel scope link src 172.31.99.1 metric 400 
+192.168.4.0/22 dev enp0s20f0u1c2 proto kernel scope link src 192.168.5.114 metric 300 
+8.8.8.8 via 192.168.4.1 dev enp0s20f0u1c2 src 192.168.5.114 uid 1000 
+    cache 
+PING 192.168.5.114 (192.168.5.114) 56(84) bytes of data.
+64 bytes from 192.168.5.114: icmp_seq=1 ttl=64 time=1.97 ms
+64 bytes from 192.168.5.114: icmp_seq=2 ttl=64 time=2.15 ms
+64 bytes from 192.168.5.114: icmp_seq=3 ttl=64 time=2.03 ms
+64 bytes from 192.168.5.114: icmp_seq=4 ttl=64 time=1.79 ms
+64 bytes from 192.168.5.114: icmp_seq=5 ttl=64 time=2.14 ms
+64 bytes from 192.168.5.114: icmp_seq=6 ttl=64 time=2.16 ms
+64 bytes from 192.168.5.114: icmp_seq=7 ttl=64 time=2.03 ms
+64 bytes from 192.168.5.114: icmp_seq=8 ttl=64 time=2.10 ms
+
+--- 192.168.5.114 ping statistics ---
+8 packets transmitted, 8 received, 0% packet loss, time 2805ms
+rtt min/avg/max/mdev = 1.786/2.044/2.161/0.116 ms
+PING 172.31.99.1 (172.31.99.1) 56(84) bytes of data.
+64 bytes from 172.31.99.1: icmp_seq=1 ttl=64 time=1.99 ms
+64 bytes from 172.31.99.1: icmp_seq=2 ttl=64 time=2.01 ms
+64 bytes from 172.31.99.1: icmp_seq=3 ttl=64 time=2.12 ms
+64 bytes from 172.31.99.1: icmp_seq=4 ttl=64 time=2.14 ms
+64 bytes from 172.31.99.1: icmp_seq=5 ttl=64 time=1.53 ms
+64 bytes from 172.31.99.1: icmp_seq=6 ttl=64 time=1.48 ms
+64 bytes from 172.31.99.1: icmp_seq=7 ttl=64 time=1.50 ms
+64 bytes from 172.31.99.1: icmp_seq=8 ttl=64 time=1.46 ms
+
+--- 172.31.99.1 ping statistics ---
+8 packets transmitted, 8 received, 0% packet loss, time 2806ms
+rtt min/avg/max/mdev = 1.462/1.778/2.140/0.289 ms
+Connection successfully activated (D-Bus active path: /org/freedesktop/NetworkManager/ActiveConnection/5)
+egpu-primary:enp20s0u1:activated
+Wired connection 2:enp0s20f0u1c2:activated
+fallback99-new:fb99:activated
+lo:lo:activated
+default via 192.168.4.1 dev enp20s0u1 proto dhcp src 192.168.5.115 metric 80 
+default via 192.168.4.1 dev enp0s20f0u1c2 proto dhcp src 192.168.5.114 metric 300 
+172.31.99.0/30 dev fb99 proto kernel scope link src 172.31.99.1 metric 400 
+192.168.4.0/22 dev enp20s0u1 proto kernel scope link src 192.168.5.115 metric 80 
+192.168.4.0/22 dev enp0s20f0u1c2 proto kernel scope link src 192.168.5.114 metric 300 
+8.8.8.8 via 192.168.4.1 dev enp20s0u1 src 192.168.5.115 uid 1000 
+    cache 

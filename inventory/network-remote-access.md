@@ -32,7 +32,7 @@ Ensure at least one reliable remote-control path remains available while away, e
   - `ssh rb1-admin` works and `sudo -n true` passes.
   - Password-only SSH attempt fails (`Permission denied (publickey,...)`).
   - Root remains key-only reachable as break-glass (`rb1`) due installer file `/etc/ssh/sshd_config.d/01-permitrootlogin.conf`.
-  - Current dual-path setup: preferred route on eGPU NIC `enp20s0u1` (`192.168.5.115`, `egpu-primary`, metric `80`) and stable fallback management on USB NIC `enp0s20f0u1c2` (`192.168.5.114`, `Wired connection 2`, metric `103`), with fallback VLAN on `fb99` (`fallback99-new`).
+  - Current dual-path setup: preferred route on eGPU NIC `enp20s0u1` (`192.168.5.115`, `egpu-primary`, metric `80`) and stable fallback management on USB NIC `enp0s20f0u1c2` (`192.168.5.114`, `Wired connection 2`, metric `300`), with fallback VLAN on `fb99` (`fallback99-new`).
 
 ## WoL / Wake Feasibility Matrix
 

@@ -10,7 +10,7 @@ Shift preferred network routing to eGPU Ethernet (`enp20s0u1`) while keeping USB
 ## Final Network Shape
 
 - Primary route NIC: `enp20s0u1` (`egpu-primary`), IP `192.168.5.115/22`, route metric `80`.
-- Fallback NIC: `enp0s20f0u1c2` (`Wired connection 2`), IP `192.168.5.114/22`, route metric `103`.
+- Fallback NIC: `enp0s20f0u1c2` (`Wired connection 2`), IP `192.168.5.114/22`, route metric `300`.
 - Fallback VLAN: `fb99` (`fallback99-new`) on `enp0s20f0u1c2`, IP `172.31.99.1/30`.
 
 ## Validation Results
