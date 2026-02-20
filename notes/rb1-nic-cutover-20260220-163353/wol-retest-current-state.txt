@@ -1,0 +1,46 @@
+timestamp=2026-02-20T17:13:29-05:00
+active usb config:
+2
+interfaces:
+enp0s20f0u6      UP             a0:ce:c8:04:fe:d7 <BROADCAST,MULTICAST,UP,LOWER_UP> 
+enp20s0u1        DOWN           90:20:3a:1b:e8:d6 <NO-CARRIER,BROADCAST,MULTICAST,UP> 
+enp0s20f0u1c2    UP             6c:6e:07:21:02:3e <BROADCAST,MULTICAST,UP,LOWER_UP> 
+fb99@enp0s20f0u1c2 UP             6c:6e:07:21:02:3e <BROADCAST,MULTICAST,UP,LOWER_UP> 
+driver details:
+=== enp0s20f0u1c2 ===
+driver: cdc_ncm
+version: 6.18.9-200.fc43.x86_64
+firmware-version: CDC NCM (NO ZLP)
+expansion-rom-version: 
+bus-info: usb-0000:00:14.0-1
+supports-statistics: yes
+supports-test: no
+supports-eeprom-access: no
+supports-register-dump: no
+supports-priv-flags: no
+	Speed: 1000Mb/s
+	Duplex: Unknown! (255)
+	Auto-negotiation: off
+	Link detected: yes
+=== enp0s20f0u6 ===
+driver: r8152
+version: v1.12.13
+firmware-version: rtl8153a-3 v2 02/07/20
+expansion-rom-version: 
+bus-info: usb-0000:00:14.0-6
+supports-statistics: yes
+supports-test: no
+supports-eeprom-access: no
+supports-register-dump: no
+supports-priv-flags: no
+	Speed: 1000Mb/s
+	Duplex: Full
+	Auto-negotiation: on
+	Supports Wake-on: pumbg
+	Wake-on: g
+	Link detected: yes
+nmcli active:
+enp0s20f0u6:enp0s20f0u6:802-3-ethernet:activated:no
+Wired connection 2:enp0s20f0u1c2:802-3-ethernet:activated:yes
+fallback99-new:fb99:vlan:activated:yes
+lo:lo:loopback:activated:yes

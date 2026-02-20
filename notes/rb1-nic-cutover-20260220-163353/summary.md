@@ -32,6 +32,10 @@ Host: `rb1-fedora`
 - Explicit set attempt fails:
   - `ethtool -s enp0s20f0u1c2 wol g` -> `Operation not supported`
 - Magic packet path to new MAC is present on-wire (captured from `rb2`).
+- Retest (2026-02-20 17:11 EST):
+  - Forcing USB config `2 -> 1` rebinds adapter to `ax88179_178a` and exposes WoL flags (`Supports Wake-on: pg`); `ethtool -s ... wol g` succeeds.
+  - In that mode, this host loses carrier (`Link status: 0`) and cannot use the adapter for active networking; kernel logged register-read errors (`Failed to read reg index 0x0040: -32`).
+  - After USB reset, adapter returned to config `2` (`cdc_ncm`) with stable networking restored.
 
 ## Other Observations
 

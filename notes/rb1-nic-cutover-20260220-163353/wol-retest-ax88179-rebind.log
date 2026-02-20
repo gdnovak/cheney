@@ -1,0 +1,115 @@
+timestamp=2026-02-20T17:11:57-05:00
+--- before ---
+2
+3
+lo               UNKNOWN        00:00:00:00:00:00 <LOOPBACK,UP,LOWER_UP> 
+enp0s20f0u6      UP             a0:ce:c8:04:fe:d7 <BROADCAST,MULTICAST,UP,LOWER_UP> 
+enp20s0u1        DOWN           90:20:3a:1b:e8:d6 <NO-CARRIER,BROADCAST,MULTICAST,UP> 
+enp0s20f0u1c2    UP             6c:6e:07:21:02:3e <BROADCAST,MULTICAST,UP,LOWER_UP> 
+fb99@enp0s20f0u1c2 UP             6c:6e:07:21:02:3e <BROADCAST,MULTICAST,UP,LOWER_UP> 
+=== enp0s20f0u1c2 ===
+driver: cdc_ncm
+version: 6.18.9-200.fc43.x86_64
+firmware-version: CDC NCM (NO ZLP)
+expansion-rom-version: 
+bus-info: usb-0000:00:14.0-1
+supports-statistics: yes
+supports-test: no
+supports-eeprom-access: no
+supports-register-dump: no
+supports-priv-flags: no
+	Speed: 1000Mb/s
+	Duplex: Unknown! (255)
+	Link detected: yes
+=== enp0s20f0u6 ===
+driver: r8152
+version: v1.12.13
+firmware-version: rtl8153a-3 v2 02/07/20
+expansion-rom-version: 
+bus-info: usb-0000:00:14.0-6
+supports-statistics: yes
+supports-test: no
+supports-eeprom-access: no
+supports-register-dump: no
+supports-priv-flags: no
+	Speed: 1000Mb/s
+	Duplex: Full
+	Supports Wake-on: pumbg
+	Wake-on: g
+	Link detected: yes
+=== enp20s0u1 ===
+driver: ax88179_178a
+version: 6.18.9-200.fc43.x86_64
+firmware-version: 
+expansion-rom-version: 
+bus-info: 8-1:1.0
+supports-statistics: no
+supports-test: no
+supports-eeprom-access: yes
+supports-register-dump: no
+supports-priv-flags: no
+	Speed: Unknown!
+	Duplex: Half
+	Supports Wake-on: pg
+	Wake-on: d
+	Link detected: no
+--- switch usb config to 1 ---
+1
+--- after ---
+1
+lo               UNKNOWN        00:00:00:00:00:00 <LOOPBACK,UP,LOWER_UP> 
+enp0s20f0u6      UP             a0:ce:c8:04:fe:d7 <BROADCAST,MULTICAST,UP,LOWER_UP> 
+enp20s0u1        DOWN           90:20:3a:1b:e8:d6 <NO-CARRIER,BROADCAST,MULTICAST,UP> 
+enp0s20f0u1      DOWN           6c:6e:07:21:02:3e <NO-CARRIER,BROADCAST,MULTICAST,UP> 
+enp0s20f0u1
+enp0s20f0u6
+enp20s0u1
+lo
+=== enp0s20f0u1 ===
+driver: ax88179_178a
+version: 6.18.9-200.fc43.x86_64
+firmware-version: 
+expansion-rom-version: 
+bus-info: 2-1:1.0
+supports-statistics: no
+supports-test: no
+supports-eeprom-access: yes
+supports-register-dump: no
+supports-priv-flags: no
+	Speed: Unknown!
+	Duplex: Half
+	Supports Wake-on: pg
+	Wake-on: d
+	Link detected: no
+=== enp0s20f0u6 ===
+driver: r8152
+version: v1.12.13
+firmware-version: rtl8153a-3 v2 02/07/20
+expansion-rom-version: 
+bus-info: usb-0000:00:14.0-6
+supports-statistics: yes
+supports-test: no
+supports-eeprom-access: no
+supports-register-dump: no
+supports-priv-flags: no
+	Speed: 1000Mb/s
+	Duplex: Full
+	Supports Wake-on: pumbg
+	Wake-on: g
+	Link detected: yes
+=== enp20s0u1 ===
+driver: ax88179_178a
+version: 6.18.9-200.fc43.x86_64
+firmware-version: 
+expansion-rom-version: 
+bus-info: 8-1:1.0
+supports-statistics: no
+supports-test: no
+supports-eeprom-access: yes
+supports-register-dump: no
+supports-priv-flags: no
+	Speed: Unknown!
+	Duplex: Half
+	Supports Wake-on: pg
+	Wake-on: d
+	Link detected: no

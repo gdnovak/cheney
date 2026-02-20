@@ -14,7 +14,7 @@ Ensure at least one reliable remote-control path remains available while away, e
 
 | node_id | primary_remote_method | secondary_remote_method | wake_capability | known_issues | last_tested |
 |---|---|---|---|---|---|
-| rb14-2017 (`rb1-fedora`) | SSH alias `rb1-admin` (`tdj@192.168.5.114`) | SSH alias `rb1` (`root`, break-glass key path) | No hardware WoL support on active NIC (`enp0s20f0u1c2`) | Active adapter uses `cdc_ncm` path; `ethtool -s enp0s20f0u1c2 wol g` is unsupported | 2026-02-20 16:55 EST |
+| rb14-2017 (`rb1-fedora`) | SSH alias `rb1-admin` (`tdj@192.168.5.114`) | SSH alias `rb1` (`root`, break-glass key path) | No hardware WoL support on active NIC (`enp0s20f0u1c2`) | Active adapter uses `cdc_ncm` path; `ethtool -s enp0s20f0u1c2 wol g` is unsupported. Forcing USB config to `ax88179_178a` exposes WoL flags but loses carrier on this host (not production-usable). | 2026-02-20 17:13 EST |
 | rb14-2015 (`rb2-pve`) | SSH alias `rb2` + Proxmox UI `https://192.168.5.108:8006` | VLAN99 fallback endpoint `172.31.99.2` | `Wake-on: g` on `enx00051bde7e6e` | No-battery power risk; no-power AC restore still requires manual button press | 2026-02-16 19:33 EST |
 | mba-2011 (`kabbalah`) | SSH alias `mba` + Proxmox UI `https://192.168.5.66:8006` | utility VM path via `301` | `Wake-on: g` on `nic0` | Aging hardware and slower reboot profile | 2026-02-16 19:33 EST |
 | truenas VM (`100` on `rb2`) | LAN service endpoint `192.168.5.100` | Proxmox console from `rb2` | n/a (VM) | VM guest agent unavailable; manage via LAN and host-level controls | 2026-02-16 19:33 EST |
@@ -38,7 +38,7 @@ Ensure at least one reliable remote-control path remains available while away, e
 
 | node_id | supports_wol | tested_result | blockers | fallback |
 |---|---|---|---|---|
-| rb14-2017 (`rb1-fedora`) | No (on current NIC path) | `nmcli` can set `wake-on-lan=magic`, but active adapter (`enp0s20f0u1c2`, `cdc_ncm`) does not expose WoL in `ethtool`; `ethtool -s ... wol g` returns `Operation not supported`. Magic packet traffic to new MAC was captured on-wire from `rb2`. | Hardware WoL regression versus prior Realtek path | Keep smart plug/manual wake path; if WoL is required, use a WoL-capable NIC/driver path (e.g., prior Realtek adapter) |
+| rb14-2017 (`rb1-fedora`) | No (on current stable NIC path) | `nmcli` can set `wake-on-lan=magic`, but active adapter (`enp0s20f0u1c2`, `cdc_ncm`) does not expose WoL in `ethtool`; `ethtool -s ... wol g` returns `Operation not supported`. Magic packet traffic to new MAC was captured on-wire from `rb2`. Retest forcing USB config to vendor mode (`ax88179_178a`) exposes `Supports Wake-on: pg` and accepts `wol g`, but link/carrier drops (`Link status: 0`) with kernel register-read errors. | Hardware WoL regression versus prior Realtek path under stable mode; vendor-mode WoL not usable due no-link condition | Keep smart plug/manual wake path; if WoL is required, use a WoL-capable NIC/driver path (e.g., prior Realtek adapter) |
 | rb14-2015 (`rb2-pve`) | Yes (limited by no-power behavior) | `ethtool` reports `Wake-on: g`; prior no-power recovery test showed manual power-on required | WoL does not recover node from fully unpowered state | Smart plug cycle + manual power contingency |
 | mba-2011 (`kabbalah`) | Yes | `ethtool` reports `Wake-on: g` | True wake-from-off behavior should be periodically revalidated | Scheduled power window/manual recovery |
 

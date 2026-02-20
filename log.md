@@ -511,3 +511,9 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
 - Status: Updated `/usr/local/sbin/tsdeb-watchdog.sh` in VM `101` to track current node mappings so watchdog checks and WoL sends target the correct endpoints.
 - Evidence: `qm guest exec 101 -- ...` now shows `check_and_wake rb1 192.168.5.114 6c:6e:07:21:02:3e`, `rb2 192.168.5.108 00:05:1b:de:7e:6e`, `mba 192.168.5.66 00:24:32:16:8e:d3`; service logs show all three nodes `up`; timer remains `active/enabled`.
 - Next action: If `rb1` remains on the current adapter, treat WoL for `rb1` as best-effort only due driver-level unsupported state.
+
+## 2026-02-20 17:14 EST (Codex)
+- Area: `rb1` AX88179A WoL retest (post-cutover)
+- Status: Re-tested the new adapter for advertised WoL support by forcing USB config mode and driver binding. In forced vendor mode (`bConfigurationValue=1` -> `ax88179_178a`), WoL flags appear and `ethtool -s ... wol g` succeeds; however, carrier drops (`Link status: 0`) and the interface is not usable for active networking on this host. Stable mode remains USB config `2` with `cdc_ncm` (networking OK, no hardware WoL exposure).
+- Evidence: `notes/rb1-nic-cutover-20260220-163353/wol-retest-ax88179-rebind.log` and `notes/rb1-nic-cutover-20260220-163353/wol-retest-current-state.txt`; kernel lines include `Failed to read reg index 0x0040: -32` in forced vendor mode.
+- Next action: Treat current adapter WoL as non-usable on Linux/Fedora in stable mode; if WoL is mandatory, switch back to a WoL-capable adapter path (or test alternate kernel/driver package out-of-band).
