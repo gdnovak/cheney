@@ -108,12 +108,12 @@ Mandatory gate before phase 3:
   - `rb1` target fallback `172.31.99.1/30`
   - `rb2` active fallback `172.31.99.2/30`
 - `rb2` fallback interface (`vmbr0.99`) is present and routable.
-- `rb1` fallback interface is restored on Fedora (`enp0s20f0u6.99` / connection `fallback99`).
+- `rb1` fallback interface is restored on Fedora (`fb99` on `enp0s20f0u1c2` / connection `fallback99-new`).
 - Current validation: bidirectional fallback ping succeeds; fallback SSH path validates.
 - Reboot-survival validation passed on Fedora side (fallback interface persisted and remained reachable).
 
 2. `DONE` Platform pivot execution.
-- `rb1` is now Fedora baremetal (`rb1-fedora`, `192.168.5.107`).
+- `rb1` is now Fedora baremetal (`rb1-fedora`, `192.168.5.114`).
 - `rb2` is current Proxmox VM/storage anchor (`192.168.5.108`).
 - `truenas` is running on `rb2` and reachable at `192.168.5.100`.
 
@@ -130,7 +130,7 @@ Mandatory gate before phase 3:
 
 ## Current Hardware Context
 
-- **2017 Razer Blade 14**: now `rb1-fedora` baremetal host (`192.168.5.107`) for direct GPU/agent workloads.
+- **2017 Razer Blade 14**: now `rb1-fedora` baremetal host (`192.168.5.114`) for direct GPU/agent workloads.
 - **2015 Razer Blade 14**: primary Proxmox host `rb2-pve` (`192.168.5.108`), no battery installed (power-cable stability risk).
 - **~2011 MacBook Air**: fallback Proxmox node `kabbalah` (`192.168.5.66`) with utility VM role.
 - **Razer Core + GTX 1060**: Thunderbolt-dependent eGPU path relevant to future AI workload flexibility.

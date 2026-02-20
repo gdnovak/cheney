@@ -1,0 +1,2 @@
+2026-02-20T11:40:48-10:00
+Sending magic packet to 192.168.7.255:9 with a0:ce:c8:04:fe:d7

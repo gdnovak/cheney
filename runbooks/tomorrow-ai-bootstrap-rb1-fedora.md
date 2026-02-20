@@ -39,7 +39,7 @@ Out of scope:
 
 ```bash
 ssh rb1-admin 'hostnamectl --static; uname -r; systemctl is-active sshd firewalld chronyd cockpit.socket'
-ssh rb1-admin 'nmcli -g 802-3-ethernet.wake-on-lan connection show enp0s20f0u6; sudo ethtool enp0s20f0u6 | grep -E "Wake-on|Supports Wake-on"'
+ssh rb1-admin 'nmcli -g 802-3-ethernet.wake-on-lan connection show "Wired connection 2"; sudo ethtool enp0s20f0u1c2 | grep -E "Wake-on|Supports Wake-on|Speed|Duplex|Link detected" || true'
 ssh rb1-admin 'nvidia-smi'
 ```
 

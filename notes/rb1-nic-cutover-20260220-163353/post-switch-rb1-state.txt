@@ -1,0 +1,147 @@
+timestamp=2026-02-20T16:54:44-05:00
+rb1-fedora
+6.18.9-200.fc43.x86_64
+lo               UNKNOWN        00:00:00:00:00:00 <LOOPBACK,UP,LOWER_UP> 
+enp0s20f0u6      UP             a0:ce:c8:04:fe:d7 <BROADCAST,MULTICAST,UP,LOWER_UP> 
+enp20s0u1        DOWN           90:20:3a:1b:e8:d6 <NO-CARRIER,BROADCAST,MULTICAST,UP> 
+enp0s20f0u1c2    UP             6c:6e:07:21:02:3e <BROADCAST,MULTICAST,UP,LOWER_UP> 
+fb99@enp0s20f0u1c2 UP             6c:6e:07:21:02:3e <BROADCAST,MULTICAST,UP,LOWER_UP> 
+lo               UNKNOWN        127.0.0.1/8 
+enp0s20f0u1c2    UP             192.168.5.114/22 
+fb99@enp0s20f0u1c2 UP             172.31.99.1/30 
+default via 192.168.4.1 dev enp0s20f0u1c2 proto dhcp src 192.168.5.114 metric 101 
+172.31.99.0/30 dev fb99 proto kernel scope link src 172.31.99.1 metric 400 
+192.168.4.0/22 dev enp0s20f0u1c2 proto kernel scope link src 192.168.5.114 metric 101 
+--- active nm connections ---
+Wired connection 2:19fe2f34-05b2-3b26-bff0-85b1b53358f6:802-3-ethernet:enp0s20f0u1c2:yes:activated
+fallback99-new:75bef667-d780-4f68-83e6-eaa295030ca9:vlan:fb99:yes:activated
+lo:e797b3ef-8be4-453b-8b4f-2b98f960feb7:loopback:lo:yes:activated
+--- all nm connections ---
+Wired connection 2:19fe2f34-05b2-3b26-bff0-85b1b53358f6:802-3-ethernet:enp0s20f0u1c2:yes:activated
+fallback99-new:75bef667-d780-4f68-83e6-eaa295030ca9:vlan:fb99:yes:activated
+lo:e797b3ef-8be4-453b-8b4f-2b98f960feb7:loopback:lo:yes:activated
+enp0s20f0u6:ccc5ebdf-a176-3348-a44b-d02f9041f407:802-3-ethernet::no:
+fallback99:312bc7d9-4427-427f-a540-e4424be780b0:vlan::no:
+Wired connection 1:f1cf61c5-f996-3ae5-b002-4e6c8d0019fe:802-3-ethernet::yes:
+--- new primary profile ---
+connection.id:                          Wired connection 2
+connection.interface-name:              enp0s20f0u1c2
+ipv4.method:                            auto
+ipv4.addresses:                         --
+ipv4.gateway:                           --
+802-3-ethernet.wake-on-lan:             magic
+--- fallback new profile ---
+connection.id:                          fallback99-new
+connection.type:                        vlan
+connection.interface-name:              fb99
+vlan.id:                                99
+vlan.parent:                            enp0s20f0u1c2
+ipv4.method:                            manual
+ipv4.addresses:                         172.31.99.1/30
+--- ethtool new ---
+Settings for enp0s20f0u1c2:
+	Supported ports: [  ]
+	Supported link modes:   Not reported
+	Supported pause frame use: No
+	Supports auto-negotiation: No
+	Supported FEC modes: Not reported
+	Advertised link modes:  Not reported
+	Advertised pause frame use: No
+	Advertised auto-negotiation: No
+	Advertised FEC modes: Not reported
+	Speed: 1000Mb/s
+	Duplex: Unknown! (255)
+	Auto-negotiation: off
+	Port: Twisted Pair
+	PHYAD: 0
+	Transceiver: internal
+	MDI-X: Unknown
+        Current message level: 0x00000007 (7)
+                               drv probe link
+	Link detected: yes
+--- ethtool old ---
+Settings for enp0s20f0u6:
+	Supported ports: [ TP	 MII ]
+	Supported link modes:   10baseT/Half 10baseT/Full
+	                        100baseT/Half 100baseT/Full
+	                        1000baseT/Half 1000baseT/Full
+	Supported pause frame use: No
+	Supports auto-negotiation: Yes
+	Supported FEC modes: Not reported
+	Advertised link modes:  10baseT/Half 10baseT/Full
+	                        100baseT/Half 100baseT/Full
+	                        1000baseT/Full
+	Advertised pause frame use: No
+	Advertised auto-negotiation: Yes
+	Advertised FEC modes: Not reported
+	Link partner advertised link modes:  10baseT/Half 10baseT/Full
+	                                     100baseT/Half 100baseT/Full
+	                                     1000baseT/Full
+	Link partner advertised pause frame use: No
+	Link partner advertised auto-negotiation: Yes
+	Link partner advertised FEC modes: Not reported
+	Speed: 1000Mb/s
+	Duplex: Full
+	Auto-negotiation: on
+	Port: MII
+	PHYAD: 32
+	Transceiver: internal
+	Supports Wake-on: pumbg
+	Wake-on: g
+        Current message level: 0x00007fff (32767)
+                               drv probe link timer ifdown ifup rx_err tx_err tx_queued intr tx_done rx_status pktdata hw wol
+	Link detected: yes
+--- lsusb ---
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Bus 001 Device 002: ID 1532:0224 Razer USA, Ltd Blade (Late 2016)
+Bus 002 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+Bus 002 Device 002: ID 0bda:8153 Realtek Semiconductor Corp. RTL8153 Gigabit Ethernet Adapter
+Bus 002 Device 003: ID 0b95:1790 ASIX Electronics Corp. AX88179 Gigabit Ethernet
+Bus 003 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Bus 004 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+Bus 005 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Bus 006 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+Bus 007 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Bus 007 Device 002: ID 1532:0215 Razer USA, Ltd Core
+Bus 008 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+Bus 008 Device 002: ID 0b95:1790 ASIX Electronics Corp. AX88179 Gigabit Ethernet
+--- lsusb -t ---
+/:  Bus 001.Port 001: Dev 001, Class=root_hub, Driver=xhci_hcd/16p, 480M
+    |__ Port 008: Dev 002, If 0, Class=Human Interface Device, Driver=usbhid, 12M
+    |__ Port 008: Dev 002, If 1, Class=Human Interface Device, Driver=usbhid, 12M
+    |__ Port 008: Dev 002, If 2, Class=Human Interface Device, Driver=usbhid, 12M
+/:  Bus 002.Port 001: Dev 001, Class=root_hub, Driver=xhci_hcd/8p, 5000M
+    |__ Port 001: Dev 003, If 0, Class=Communications, Driver=cdc_ncm, 5000M
+    |__ Port 001: Dev 003, If 1, Class=CDC Data, Driver=cdc_ncm, 5000M
+    |__ Port 006: Dev 002, If 0, Class=Vendor Specific Class, Driver=r8152, 5000M
+/:  Bus 003.Port 001: Dev 001, Class=root_hub, Driver=xhci_hcd/2p, 480M
+/:  Bus 004.Port 001: Dev 001, Class=root_hub, Driver=xhci_hcd/2p, 10000M
+/:  Bus 005.Port 001: Dev 001, Class=root_hub, Driver=xhci_hcd/2p, 480M
+/:  Bus 006.Port 001: Dev 001, Class=root_hub, Driver=xhci_hcd/2p, 10000M
+/:  Bus 007.Port 001: Dev 001, Class=root_hub, Driver=xhci_hcd/2p, 480M
+    |__ Port 002: Dev 002, If 0, Class=Human Interface Device, Driver=usbhid, 12M
+    |__ Port 002: Dev 002, If 1, Class=Vendor Specific Class, Driver=[none], 12M
+/:  Bus 008.Port 001: Dev 001, Class=root_hub, Driver=xhci_hcd/2p, 10000M
+    |__ Port 001: Dev 002, If 0, Class=Vendor Specific Class, Driver=ax88179_178a, 5000M
+--- kernel cutover extract ---
+Feb 17 15:06:40 rb1-fedora kernel: usbcore: registered new device driver r8152-cfgselector
+Feb 17 15:06:41 rb1-fedora kernel: r8152-cfgselector 2-6: reset SuperSpeed USB device number 2 using xhci_hcd
+Feb 17 15:06:41 rb1-fedora kernel: r8152 2-6:1.0 eth0: v1.12.13
+Feb 17 15:06:41 rb1-fedora kernel: usbcore: registered new interface driver r8152
+Feb 17 15:06:41 rb1-fedora kernel: r8152 2-6:1.0 enp0s20f0u6: renamed from eth0
+Feb 17 15:06:44 rb1-fedora kernel: r8152 2-6:1.0 enp0s20f0u6: carrier on
+Feb 20 16:40:35 rb1-fedora kernel: r8152 2-6:1.0 enp0s20f0u6: carrier on
+Feb 20 16:42:30 rb1-fedora kernel: usb 2-1: new SuperSpeed USB device number 3 using xhci_hcd
+Feb 20 16:42:30 rb1-fedora kernel: usb 2-1: New USB device found, idVendor=0b95, idProduct=1790, bcdDevice= 2.00
+Feb 20 16:42:30 rb1-fedora kernel: usb 2-1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+Feb 20 16:42:30 rb1-fedora kernel: usb 2-1: Product: AX88179A
+Feb 20 16:42:30 rb1-fedora kernel: usb 2-1: Manufacturer: ASIX
+Feb 20 16:42:30 rb1-fedora kernel: usb 2-1: SerialNumber: 00A0CEC88FB3E9
+Feb 20 16:42:31 rb1-fedora kernel: cdc_ncm 2-1:2.0: MAC-Address: 6c:6e:07:21:02:3e
+Feb 20 16:42:31 rb1-fedora kernel: cdc_ncm 2-1:2.0: setting rx_max = 16384
+Feb 20 16:42:31 rb1-fedora kernel: cdc_ncm 2-1:2.0: setting tx_max = 16384
+Feb 20 16:42:31 rb1-fedora kernel: cdc_ncm 2-1:2.0 eth0: register 'cdc_ncm' at usb-0000:00:14.0-1, CDC NCM (NO ZLP), 6c:6e:07:21:02:3e
+Feb 20 16:42:31 rb1-fedora kernel: usbcore: registered new interface driver cdc_ncm
+Feb 20 16:42:31 rb1-fedora kernel: cdc_ncm 2-1:2.0 enp0s20f0u1c2: renamed from eth0
+Feb 20 16:53:29 rb1-fedora kernel: cdc_ncm 2-1:2.0 enp0s20f0u1c2: entered promiscuous mode
+Feb 20 16:53:32 rb1-fedora kernel: cdc_ncm 2-1:2.0 enp0s20f0u1c2: left promiscuous mode

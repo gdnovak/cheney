@@ -1,0 +1,2 @@
+rtcwake: wakeup from "mem" using /dev/rtc0 at Fri Feb 20 21:42:34 2026
+rtcwake: write error

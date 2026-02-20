@@ -1,0 +1,54 @@
+timestamp=2026-02-20T11:34:12-10:00
+rb2-pve
+vmbr0            UP             192.168.5.108/22 
+vmbr0.99@vmbr0   UP             172.31.99.2/30 
+PING 192.168.5.107 (192.168.5.107) 56(84) bytes of data.
+64 bytes from 192.168.5.107: icmp_seq=1 ttl=64 time=1.32 ms
+64 bytes from 192.168.5.107: icmp_seq=2 ttl=64 time=0.891 ms
+64 bytes from 192.168.5.107: icmp_seq=3 ttl=64 time=0.891 ms
+64 bytes from 192.168.5.107: icmp_seq=4 ttl=64 time=0.785 ms
+64 bytes from 192.168.5.107: icmp_seq=5 ttl=64 time=0.925 ms
+64 bytes from 192.168.5.107: icmp_seq=6 ttl=64 time=0.459 ms
+64 bytes from 192.168.5.107: icmp_seq=7 ttl=64 time=0.376 ms
+64 bytes from 192.168.5.107: icmp_seq=8 ttl=64 time=0.437 ms
+64 bytes from 192.168.5.107: icmp_seq=9 ttl=64 time=0.456 ms
+64 bytes from 192.168.5.107: icmp_seq=10 ttl=64 time=0.444 ms
+64 bytes from 192.168.5.107: icmp_seq=11 ttl=64 time=0.896 ms
+64 bytes from 192.168.5.107: icmp_seq=12 ttl=64 time=0.845 ms
+64 bytes from 192.168.5.107: icmp_seq=13 ttl=64 time=0.757 ms
+64 bytes from 192.168.5.107: icmp_seq=14 ttl=64 time=0.930 ms
+64 bytes from 192.168.5.107: icmp_seq=15 ttl=64 time=0.897 ms
+64 bytes from 192.168.5.107: icmp_seq=16 ttl=64 time=0.745 ms
+64 bytes from 192.168.5.107: icmp_seq=17 ttl=64 time=0.754 ms
+64 bytes from 192.168.5.107: icmp_seq=18 ttl=64 time=0.747 ms
+64 bytes from 192.168.5.107: icmp_seq=19 ttl=64 time=0.763 ms
+64 bytes from 192.168.5.107: icmp_seq=20 ttl=64 time=0.780 ms
+
+--- 192.168.5.107 ping statistics ---
+20 packets transmitted, 20 received, 0% packet loss, time 9569ms
+rtt min/avg/max/mdev = 0.376/0.754/1.319/0.221 ms
+PING 172.31.99.1 (172.31.99.1) 56(84) bytes of data.
+64 bytes from 172.31.99.1: icmp_seq=1 ttl=64 time=0.800 ms
+64 bytes from 172.31.99.1: icmp_seq=2 ttl=64 time=0.481 ms
+64 bytes from 172.31.99.1: icmp_seq=3 ttl=64 time=0.461 ms
+64 bytes from 172.31.99.1: icmp_seq=4 ttl=64 time=0.474 ms
+64 bytes from 172.31.99.1: icmp_seq=5 ttl=64 time=0.463 ms
+64 bytes from 172.31.99.1: icmp_seq=6 ttl=64 time=0.462 ms
+64 bytes from 172.31.99.1: icmp_seq=7 ttl=64 time=0.767 ms
+64 bytes from 172.31.99.1: icmp_seq=8 ttl=64 time=0.885 ms
+64 bytes from 172.31.99.1: icmp_seq=9 ttl=64 time=0.769 ms
+64 bytes from 172.31.99.1: icmp_seq=10 ttl=64 time=0.702 ms
+64 bytes from 172.31.99.1: icmp_seq=11 ttl=64 time=0.762 ms
+64 bytes from 172.31.99.1: icmp_seq=12 ttl=64 time=0.414 ms
+64 bytes from 172.31.99.1: icmp_seq=13 ttl=64 time=0.790 ms
+64 bytes from 172.31.99.1: icmp_seq=14 ttl=64 time=0.834 ms
+64 bytes from 172.31.99.1: icmp_seq=15 ttl=64 time=0.776 ms
+64 bytes from 172.31.99.1: icmp_seq=16 ttl=64 time=0.760 ms
+64 bytes from 172.31.99.1: icmp_seq=17 ttl=64 time=0.472 ms
+64 bytes from 172.31.99.1: icmp_seq=18 ttl=64 time=0.460 ms
+64 bytes from 172.31.99.1: icmp_seq=19 ttl=64 time=0.452 ms
+64 bytes from 172.31.99.1: icmp_seq=20 ttl=64 time=0.466 ms
+
+--- 172.31.99.1 ping statistics ---
+20 packets transmitted, 20 received, 0% packet loss, time 9574ms
+rtt min/avg/max/mdev = 0.414/0.622/0.885/0.165 ms

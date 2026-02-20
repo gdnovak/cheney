@@ -499,3 +499,15 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
   - Validation run: created snapshots `initial-rb1-assistant-3` and `baseline-2026-02-20`; prune test kept 2 snapshots and removed older test snapshots.
   - Repo docs/scripts updated: `scripts/rb1_truenas_backup.sh`, `runbooks/rb1-manual-truenas-backup.md`, `inventory/network-remote-access.md`.
 - Next action: Keep manual cadence before risky changes; run `prune 2` or `prune 3` after each verified snapshot.
+
+## 2026-02-20 16:56 EST (Codex)
+- Area: `rb1-fedora` management NIC cutover (USB-C chain -> direct USB3 Ethernet) with before/after validation
+- Status: Completed guarded cutover to the new direct USB3 adapter and validated post-cutover primary/fallback networking. Management moved from `192.168.5.107` (`enp0s20f0u6`) to `192.168.5.114` (`enp0s20f0u1c2`); fallback VLAN moved from `enp0s20f0u6.99` (`fallback99`) to `fb99` (`fallback99-new`) at `172.31.99.1/30`.
+- Evidence: Full artifact set under `notes/rb1-nic-cutover-20260220-163353/` including pre/post state captures, pre/post `iperf3` matrix, and WoL packet tests; summary report `notes/rb1-nic-cutover-20260220-163353/summary.md`. Throughput delta is negligible (+1 to +2 Mbps in 1Gb class tests; UDP 500M unchanged, 0% loss). WoL capability regressed on the active adapter: `ethtool -s enp0s20f0u1c2 wol g` => `Operation not supported` (while old Realtek path supported `Wake-on: g`).
+- Next action: If hardware WoL on `rb1` remains required, either (a) revert to a WoL-capable NIC path, or (b) replace the new USB3 adapter with a chipset/driver path that exposes hardware WoL.
+
+## 2026-02-20 16:58 EST (Codex)
+- Area: `tsDeb` watchdog mapping alignment after `rb1` NIC/IP cutover
+- Status: Updated `/usr/local/sbin/tsdeb-watchdog.sh` in VM `101` to track current node mappings so watchdog checks and WoL sends target the correct endpoints.
+- Evidence: `qm guest exec 101 -- ...` now shows `check_and_wake rb1 192.168.5.114 6c:6e:07:21:02:3e`, `rb2 192.168.5.108 00:05:1b:de:7e:6e`, `mba 192.168.5.66 00:24:32:16:8e:d3`; service logs show all three nodes `up`; timer remains `active/enabled`.
+- Next action: If `rb1` remains on the current adapter, treat WoL for `rb1` as best-effort only due driver-level unsupported state.

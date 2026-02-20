@@ -4,7 +4,7 @@ Purpose: provide one deterministic recovery path when `rb1` eGPU/TB behavior bec
 
 ## Preconditions
 
-1. `rb1` management IP remains reachable (`192.168.5.107`) or console access is available.
+1. `rb1` management IP remains reachable (`192.168.5.114`) or console access is available.
 2. `rb2` remains reachable for fallback cross-checks.
 3. Keep changes minimal during incident handling (no concurrent recabling experiments).
 
@@ -17,7 +17,7 @@ Use controlled reboot + structured validation.
 
 ```bash
 ssh rb1-admin 'nvidia-smi --query-gpu=index,pci.bus_id,name --format=csv'
-ssh rb1-admin 'ip -4 -br addr show enp0s20f0u6.99'
+ssh rb1-admin 'ip -4 -br addr show fb99'
 ssh rb2 'ping -c 2 -W 1 172.31.99.1 >/dev/null && echo peer_to_host_fallback=ok'
 ```
 

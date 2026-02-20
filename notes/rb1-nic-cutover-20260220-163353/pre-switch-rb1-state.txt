@@ -1,0 +1,141 @@
+timestamp=2026-02-20T16:34:11-05:00
+rb1-fedora
+6.18.9-200.fc43.x86_64
+lo               UNKNOWN        00:00:00:00:00:00 <LOOPBACK,UP,LOWER_UP> 
+enp0s20f0u6      UP             a0:ce:c8:04:fe:d7 <BROADCAST,MULTICAST,UP,LOWER_UP> 
+enp20s0u1        DOWN           90:20:3a:1b:e8:d6 <NO-CARRIER,BROADCAST,MULTICAST,UP> 
+enp0s20f0u6.99@enp0s20f0u6 UP             a0:ce:c8:04:fe:d7 <BROADCAST,MULTICAST,UP,LOWER_UP> 
+lo               UNKNOWN        127.0.0.1/8 
+enp0s20f0u6      UP             192.168.5.107/22 
+enp0s20f0u6.99@enp0s20f0u6 UP             172.31.99.1/30 
+default via 192.168.4.1 dev enp0s20f0u6 proto dhcp src 192.168.5.107 metric 100 
+172.31.99.0/30 dev enp0s20f0u6.99 proto kernel scope link src 172.31.99.1 metric 400 
+192.168.4.0/22 dev enp0s20f0u6 proto kernel scope link src 192.168.5.107 metric 100 
+--- active nm connections ---
+enp0s20f0u6:ccc5ebdf-a176-3348-a44b-d02f9041f407:802-3-ethernet:enp0s20f0u6:yes:activated
+fallback99:312bc7d9-4427-427f-a540-e4424be780b0:vlan:enp0s20f0u6.99:yes:activated
+lo:e797b3ef-8be4-453b-8b4f-2b98f960feb7:loopback:lo:yes:activated
+--- all nm connections ---
+enp0s20f0u6:ccc5ebdf-a176-3348-a44b-d02f9041f407:802-3-ethernet:enp0s20f0u6:yes:activated
+fallback99:312bc7d9-4427-427f-a540-e4424be780b0:vlan:enp0s20f0u6.99:yes:activated
+lo:e797b3ef-8be4-453b-8b4f-2b98f960feb7:loopback:lo:yes:activated
+Wired connection 1:f1cf61c5-f996-3ae5-b002-4e6c8d0019fe:802-3-ethernet::yes:
+--- primary profile ---
+connection.id:                          enp0s20f0u6
+connection.interface-name:              enp0s20f0u6
+ipv4.method:                            auto
+ipv4.addresses:                         --
+ipv4.gateway:                           --
+802-3-ethernet.wake-on-lan:             magic
+--- fallback99 profile ---
+connection.id:                          fallback99
+connection.type:                        vlan
+connection.interface-name:              enp0s20f0u6.99
+vlan.id:                                99
+vlan.parent:                            enp0s20f0u6
+ipv4.method:                            manual
+ipv4.addresses:                         172.31.99.1/30
+--- ethtool primary ---
+	Speed: 1000Mb/s
+	Duplex: Full
+	Supports Wake-on: pumbg
+	Wake-on: g
+	Link detected: yes
+--- ethtool secondary ---
+	Speed: Unknown!
+	Duplex: Half
+	Supports Wake-on: pg
+	Wake-on: d
+	Link detected: no
+--- lsusb ---
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Bus 001 Device 002: ID 1532:0224 Razer USA, Ltd Blade (Late 2016)
+Bus 002 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+Bus 002 Device 002: ID 0bda:8153 Realtek Semiconductor Corp. RTL8153 Gigabit Ethernet Adapter
+Bus 003 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Bus 004 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+Bus 005 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Bus 006 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+Bus 007 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Bus 007 Device 002: ID 1532:0215 Razer USA, Ltd Core
+Bus 008 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+Bus 008 Device 002: ID 0b95:1790 ASIX Electronics Corp. AX88179 Gigabit Ethernet
+--- lsusb -t ---
+/:  Bus 001.Port 001: Dev 001, Class=root_hub, Driver=xhci_hcd/16p, 480M
+    |__ Port 008: Dev 002, If 0, Class=Human Interface Device, Driver=usbhid, 12M
+    |__ Port 008: Dev 002, If 1, Class=Human Interface Device, Driver=usbhid, 12M
+    |__ Port 008: Dev 002, If 2, Class=Human Interface Device, Driver=usbhid, 12M
+/:  Bus 002.Port 001: Dev 001, Class=root_hub, Driver=xhci_hcd/8p, 5000M
+    |__ Port 006: Dev 002, If 0, Class=Vendor Specific Class, Driver=r8152, 5000M
+/:  Bus 003.Port 001: Dev 001, Class=root_hub, Driver=xhci_hcd/2p, 480M
+/:  Bus 004.Port 001: Dev 001, Class=root_hub, Driver=xhci_hcd/2p, 10000M
+/:  Bus 005.Port 001: Dev 001, Class=root_hub, Driver=xhci_hcd/2p, 480M
+/:  Bus 006.Port 001: Dev 001, Class=root_hub, Driver=xhci_hcd/2p, 10000M
+/:  Bus 007.Port 001: Dev 001, Class=root_hub, Driver=xhci_hcd/2p, 480M
+    |__ Port 002: Dev 002, If 0, Class=Human Interface Device, Driver=usbhid, 12M
+    |__ Port 002: Dev 002, If 1, Class=Vendor Specific Class, Driver=[none], 12M
+/:  Bus 008.Port 001: Dev 001, Class=root_hub, Driver=xhci_hcd/2p, 10000M
+    |__ Port 001: Dev 002, If 0, Class=Vendor Specific Class, Driver=ax88179_178a, 5000M
+--- udev primary ---
+DEVPATH=/devices/pci0000:00/0000:00:14.0/usb2/2-6/2-6:1.0/net/enp0s20f0u6
+INTERFACE=enp0s20f0u6
+ID_NET_DRIVER=r8152
+ID_MODEL=USB_10_100_1000_LAN
+ID_MODEL_ENC=USB\x2010\x2f100\x2f1000\x20LAN
+ID_MODEL_ID=8153
+ID_VENDOR=Realtek
+ID_VENDOR_ENC=Realtek
+ID_VENDOR_ID=0bda
+ID_USB_MODEL=USB_10_100_1000_LAN
+ID_USB_MODEL_ENC=USB\x2010\x2f100\x2f1000\x20LAN
+ID_USB_MODEL_ID=8153
+ID_USB_SERIAL=Realtek_USB_10_100_1000_LAN_000001000000
+ID_USB_SERIAL_SHORT=000001000000
+ID_USB_VENDOR=Realtek
+ID_USB_VENDOR_ENC=Realtek
+ID_USB_VENDOR_ID=0bda
+ID_USB_REVISION=3000
+ID_USB_TYPE=generic
+ID_USB_INTERFACES=:ffff00:020600:0a0000:
+ID_USB_INTERFACE_NUM=00
+ID_USB_DRIVER=r8152
+ID_VENDOR_FROM_DATABASE=Realtek Semiconductor Corp.
+ID_MODEL_FROM_DATABASE=RTL8153 Gigabit Ethernet Adapter
+--- udev secondary ---
+DEVPATH=/devices/pci0000:00/0000:00:1c.0/0000:02:00.0/0000:03:01.0/0000:0d:00.0/0000:0e:04.0/0000:10:00.0/0000:11:02.0/0000:14:00.0/usb8/8-1/8-1:1.0/net/enp20s0u1
+INTERFACE=enp20s0u1
+ID_NET_DRIVER=ax88179_178a
+ID_MODEL=AX88179
+ID_MODEL_ENC=AX88179
+ID_MODEL_ID=1790
+ID_VENDOR=ASIX_Elec._Corp.
+ID_VENDOR_ENC=ASIX\x20Elec.\x20Corp.
+ID_VENDOR_ID=0b95
+ID_USB_MODEL=AX88179
+ID_USB_MODEL_ENC=AX88179
+ID_USB_MODEL_ID=1790
+ID_USB_SERIAL=ASIX_Elec._Corp._AX88179_0090203A1BE8D6
+ID_USB_SERIAL_SHORT=0090203A1BE8D6
+ID_USB_VENDOR=ASIX_Elec._Corp.
+ID_USB_VENDOR_ENC=ASIX\x20Elec.\x20Corp.
+ID_USB_VENDOR_ID=0b95
+ID_USB_REVISION=0100
+ID_USB_TYPE=generic
+ID_USB_INTERFACES=:ffff00:
+ID_USB_INTERFACE_NUM=00
+ID_USB_DRIVER=ax88179_178a
+ID_USB_CLASS_FROM_DATABASE=Vendor Specific Class
+ID_USB_SUBCLASS_FROM_DATABASE=Vendor Specific Subclass
+ID_VENDOR_FROM_DATABASE=ASIX Electronics Corp.
+ID_MODEL_FROM_DATABASE=AX88179 Gigabit Ethernet
+--- kernel link/usb extract ---
+Feb 17 15:06:35 rb1-fedora kernel: usb 8-1: Product: AX88179
+Feb 17 15:06:40 rb1-fedora kernel: usbcore: registered new device driver r8152-cfgselector
+Feb 17 15:06:41 rb1-fedora kernel: r8152-cfgselector 2-6: reset SuperSpeed USB device number 2 using xhci_hcd
+Feb 17 15:06:41 rb1-fedora kernel: r8152 2-6:1.0 eth0: v1.12.13
+Feb 17 15:06:41 rb1-fedora kernel: usbcore: registered new interface driver r8152
+Feb 17 15:06:41 rb1-fedora kernel: r8152 2-6:1.0 enp0s20f0u6: renamed from eth0
+Feb 17 15:06:42 rb1-fedora kernel: ax88179_178a 8-1:1.0 eth0: register 'ax88179_178a' at usb-0000:14:00.0-1, ASIX AX88179 USB 3.0 Gigabit Ethernet, 90:20:3a:1b:e8:d6
+Feb 17 15:06:42 rb1-fedora kernel: usbcore: registered new interface driver ax88179_178a
+Feb 17 15:06:42 rb1-fedora kernel: ax88179_178a 8-1:1.0 enp20s0u1: renamed from eth0
+Feb 17 15:06:44 rb1-fedora kernel: r8152 2-6:1.0 enp0s20f0u6: carrier on
