@@ -187,6 +187,8 @@ Direction now in effect:
 - `runbooks/next-steps-planning-20260216.md`: post-eGPU-acceptance planning tracks and execution order.
 - `runbooks/openclaw-overnight-probe.md`: unattended 30-minute safe-turn probe on `rb1` with start/stop/review commands.
 - `runbooks/openclaw-api-key-smoke-rb1-fedora.md`: attended OpenClaw API-key validation flow on `rb1`.
+- `runbooks/openclaw-tui-live-blurb-rb1.md`: reversible patch workflow for OpenClaw TUI live action/model/tier footer blurb on `rb1`.
+- `runbooks/cognee-memory-pilot-rb1.md`: safe phased pilot for Cognee as memory sidecar (scope+env prep, isolated trial).
 - `runbooks/rb1-egpu-incident-recovery.md`: primary incident-response workflow for `rb1` eGPU/TB faults.
 - `runbooks/memory-workflow-weekly.md`: weekly memory/decision cadence for fast resume and context continuity.
 - `runbooks/rb2-fallback-management-path.md`: direct emergency management path between `rb1` and `rb2`.
@@ -197,6 +199,11 @@ Direction now in effect:
 - `scripts/openclaw_safe_turn_benchmark.sh`: repeatable benchmark harness for safe-turn wrapper performance/backstop metrics.
 - `scripts/openclaw_overnight_probe.sh`: unattended 30-minute safe-turn probe runner with JSONL logging.
 - `scripts/openclaw_overnight_probe_summary.sh`: summary tool for overnight probe metrics and recent failures.
+- `scripts/rb1_openclaw_tui_live_blurb_patch.sh`: applies version-pinned live-blurb patch to OpenClaw TUI bundles on `rb1`.
+- `scripts/rb1_openclaw_tui_live_blurb_smoke.sh`: marker/syntax + OpenClaw status checks after TUI patch.
+- `scripts/rb1_openclaw_tui_live_blurb_restore.sh`: restores pre-patch OpenClaw TUI bundles from backups.
+- `scripts/cognee_memory_scope_build.sh`: builds a safe markdown-only ingest manifest for Cognee pilot.
+- `scripts/cognee_env_probe.sh`: captures rb1 prerequisite/health probe report for Cognee pilot readiness.
 - `subagents/`: environment-specific Codex instruction scopes (includes `cheney-vessel-alpha` for VM contractor install).
 - `configs/`: future host/service config snapshots and templates.
 - `notes/`: ad hoc research and decision notes.
@@ -212,6 +219,7 @@ Direction now in effect:
 - `notes/egpu-readiness-rb1-fedora-20260216.md`: current eGPU readiness findings and deferred phase-5 test gates.
 - `notes/openclaw-cli-feature-findings-20260216.md`: OpenClaw CLI reconnaissance findings and headless caveats.
 - `notes/openclaw-safe-turn-thresholds-20260217.md`: benchmark-derived reliability/latency/cloud-usage targets for safe-turn operations.
+- `notes/cognee-fit-assessment-20260221.md`: fit/risk decision for using Cognee to mitigate compaction-amnesia as a sidecar memory layer.
 - `coordination/`: cross-device task/state/event bus for orchestrator <-> VM subagent workflow.
 - `log.md`: detailed project-local execution history.
 

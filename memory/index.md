@@ -4,7 +4,7 @@ title: Cheney Memory Index
 type: index
 tags: [memory, index, cheney]
 created: 2026-02-16
-updated: 2026-02-16
+updated: 2026-02-21
 scope: cheney
 status: active
 ---
@@ -19,6 +19,7 @@ Purpose: durable, agent-friendly context graph for resumable work.
 - Weekly: [[week-2026-W08-summary]]
 - Decision: [[dec-rag-phase1-lexical-first]]
 - Decision: [[dec-egpu-hotplug-defer-recovery-first]]
+- Decision: [[dec-openclaw-tui-live-blurb-cognee-phase0]]
 
 ## Collections
 

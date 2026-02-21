@@ -581,3 +581,21 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
   - Disabled: `phone-control`, `device-pair`.
   - Remaining enabled plugins: `memory-core`, `talk-voice`.
 - Next action: Keep using `scripts/openclaw_verified_codegen.sh` for any file-writing tasks; periodically audit session claims and review whether to disable `talk-voice` for tighter minimal surface.
+
+## 2026-02-21 16:21 EST (Codex)
+- Area: OpenClaw TUI live-status blurb + Cognee phase-0 pilot scaffold (`rb1-fedora`)
+- Status: Implemented reversible host patch workflow to add live footer action/model/tier blurb in OpenClaw TUI, applied patch on `rb1`, and passed syntax/health smoke checks. Added Cognee phase-0 prep artifacts (safe ingest scope manifest + rb1 env probe) without changing active OpenClaw routing.
+- Evidence:
+  - New TUI tooling: `scripts/openclaw_tui_live_blurb_transform.mjs`, `scripts/rb1_openclaw_tui_live_blurb_patch.sh`, `scripts/rb1_openclaw_tui_live_blurb_smoke.sh`, `scripts/rb1_openclaw_tui_live_blurb_restore.sh`, runbook `runbooks/openclaw-tui-live-blurb-rb1.md`.
+  - Host patch applied with backups:
+    - `/usr/local/lib/node_modules/openclaw/dist/tui-DW-D2_SI.js` (`3a0119... -> d8c1be...`)
+    - `/usr/local/lib/node_modules/openclaw/dist/tui-CRTpgJsf.js` (`5bd88b... -> ec832e...`)
+    - backups: `*.cheney-live-blurb-v1.bak`
+  - Marker check on rb1: both files include `CHENEY_TUI_LIVE_BLURB_V1`, `inferFooterTier`, and ``action ${activityStatus}``.
+  - Smoke checks passed: `scripts/rb1_openclaw_tui_live_blurb_smoke.sh rb1-admin` (`openclaw --version`, `openclaw status --json`, `openclaw health --json` all pass).
+  - Additional agent sanity passed: `openclaw agent --local --agent main --message "Respond with exactly: TUI_PATCH_AGENT_OK"` returned `TUIPATCH_AGENT_OK`.
+  - Cognee prep artifacts:
+    - `scripts/cognee_memory_scope_build.sh` generated `notes/cognee/cognee-scope-manifest.txt` (`88` markdown files).
+    - `scripts/cognee_env_probe.sh rb1-admin` generated `notes/cognee/cognee-env-probe-20260221-162022.md`.
+    - fit/pilot docs added: `notes/cognee-fit-assessment-20260221.md`, `runbooks/cognee-memory-pilot-rb1.md`.
+- Next action: User can run an attended visual TUI check for live footer behavior; if approved, execute Cognee phase-1 isolated pilot from `runbooks/cognee-memory-pilot-rb1.md` with no router changes.
