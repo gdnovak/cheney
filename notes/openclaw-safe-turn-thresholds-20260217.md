@@ -55,3 +55,26 @@ Note: first healthy call after run start can be a cold-start outlier (`~35s` in 
 
 - Re-run benchmark on real prompt sets after material config changes.
 - Recalculate thresholds monthly or when model/provider mix changes.
+
+## Router v2 Trial Thresholds (2026-02-21)
+
+Applied via `scripts/openclaw_agent_safe_turn.sh` for profile `basic-local-v2`:
+
+1. Tier policy:
+- `basic` / `coding_basic` start at `local`
+- `normal` start at `cloud_low`
+- `high_risk` start at `cloud_high`
+- Cloud tier defaults use `openai-codex/gpt-5.3-codex` for both low/high, with thinking levels:
+  - low/normal: `medium`
+  - high/high_risk: `high`
+
+2. Escalation latency guards:
+- local -> low when attempt latency `> 10000ms`
+- low -> high when attempt latency `> 20000ms`
+
+3. Failure-class escalation:
+- escalate on transport/sanity/rc failures (`fetch failed`, empty response, non-zero rc, provider transport errors)
+
+4. Telemetry source of truth:
+- per-turn decisions JSONL: `notes/openclaw-artifacts/openclaw-router-decisions.jsonl`
+- summary script: `scripts/openclaw_router_live_summary.sh`

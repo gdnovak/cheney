@@ -92,3 +92,24 @@ Escalate from local to Codex when any of the following occur:
 - Real-prompt benchmark run completed (`notes/openclaw-safe-turn-benchmark-20260217-035520.md`).
 - Threshold policy recorded: `notes/openclaw-safe-turn-thresholds-20260217.md`.
 - Current open item: monitor rolling metrics and tune only on threshold breach.
+
+## Live Trial Update (2026-02-21)
+
+- Router wrapper upgraded for tiered policy trial (`basic-local-v2`) in `scripts/openclaw_agent_safe_turn.sh`.
+- Added task class routing controls:
+  - `basic`/`coding_basic` -> local first
+  - `normal` -> cloud low first
+  - `high_risk` -> cloud high first
+- Cloud tier model/thinking defaults:
+  - low (`normal`): `openai-codex/gpt-5.3-codex` with `thinking=medium`
+  - high (`high_risk`): `openai-codex/gpt-5.3-codex` with `thinking=high`
+- Added escalation guardrails:
+  - local latency breach: `> 10000ms`
+  - low latency breach: `> 20000ms`
+  - transport/sanity/rc failures escalate to next tier (`local -> low -> high`)
+- Added unified router telemetry JSONL:
+  - `notes/openclaw-artifacts/openclaw-router-decisions.jsonl`
+- Added live summary tool:
+  - `scripts/openclaw_router_live_summary.sh`
+- Added operator runbook:
+  - `runbooks/openclaw-router-live-trial-v2.md`

@@ -531,3 +531,53 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
 - Evidence: `notes/rb1-nic-cutover-20260220-163353/reboot-validation-20260220-172904.log` and summary `notes/rb1-nic-cutover-20260220-163353/reboot-validation-summary-20260220.md`; `rb2` pings post-boot were `0%` loss to `192.168.5.115`, `192.168.5.114`, and `172.31.99.1`.
 - Evidence: Post-reboot failover sanity also passed: disabling `egpu-primary` moved default route to `192.168.5.114` with `0%` loss to fallback IP/VLAN; restoring `egpu-primary` returned default route to `192.168.5.115`.
 - Next action: Keep this topology and periodically re-check eGPU link stability; if TB/eGPU path destabilizes, fallback route remains immediate recovery path.
+
+## 2026-02-20 20:20 EST (Codex)
+- Area: Ollama overnight reliability/efficiency soak setup (`rb1-fedora`)
+- Status: Added local-only soak runner + summary tooling and launched unattended soak on `rb1` at 30-minute intervals to run lightweight prompts against `qwen2.5:7b` and `qwen2.5-coder:7b` with thermal guard.
+- Evidence: New scripts `scripts/ollama_overnight_soak.sh` and `scripts/ollama_overnight_soak_summary.sh`; detached process on `rb1` `pid=24701`; launch output `notes/ollama-artifacts/ollama-overnight-launch-20260220-202015.out`; active JSONL pointer `notes/ollama-artifacts/ollama-overnight-soak.latest_jsonl` => `/home/tdj/cheney/notes/ollama-artifacts/ollama-overnight-soak-20260220-202015.jsonl`; initial cycle produced 4/4 successful rows with max observed GPU temp `63C`.
+- Next action: Let soak run overnight unmanaged, then execute `scripts/ollama_overnight_soak_summary.sh` in the morning and decide routing/threshold adjustments from results.
+
+## 2026-02-21 12:38 EST (Codex)
+- Area: Ollama overnight soak stop + results summary (`rb1-fedora`)
+- Status: Stopped the unattended overnight Ollama soak and generated a human-readable summary report.
+- Evidence: Run JSONL `notes/ollama-artifacts/ollama-overnight-soak-20260220-202015.jsonl` with `count=132`, `success=132`, `failure=0`, `avg_elapsed_ms=3286`, `p95_elapsed_ms=6341`, `max_gpu_temp_c=63`, window `2026-02-21T01:20:17Z -> 2026-02-21T17:27:48Z`; summary file `notes/ollama-overnight-soak-summary-20260221-123829.md`.
+- Note: Process required force stop (`SIGKILL`) after `SIGTERM` did not terminate promptly; likely script-stop handling edge during sleep/trap cycle.
+- Next action: Decide whether to patch stop behavior for graceful termination and whether to convert this soak into a reusable manual check profile.
+
+## 2026-02-21 15:02 EST (Codex)
+- Area: OpenClaw router trial v2 implementation (`rb1-fedora` live-test profile)
+- Status: Implemented `basic-local-v2` routing in `scripts/openclaw_agent_safe_turn.sh` with tier policy (`local -> low -> high`), task classes (`basic`, `coding_basic`, `normal`, `high_risk`), force-tier overrides, latency escalation guards (`local>10000ms`, `low>20000ms`), and unified router telemetry logging.
+- Evidence: Added `scripts/openclaw_router_live_summary.sh` and `runbooks/openclaw-router-live-trial-v2.md`; updated policy docs (`notes/efficient-routing-plan.md`, `notes/openclaw-safe-turn-thresholds-20260217.md`). Validation runs:
+  - `basic`: target `local`, escalated `local -> low` on `local_latency_threshold`, final `openai-codex/gpt-5.3-codex-spark`, `rc=0`.
+  - `normal`: target `low`, final `openai-codex/gpt-5.3-codex-spark`, `rc=0`.
+  - `high_risk`: target `high`, final `openai-codex/gpt-5.3-codex`, `rc=0`.
+  - force-tier check (`--force-tier high`) correctly pinned to high tier.
+- Next action: Use normal live prompts and monitor `notes/openclaw-artifacts/openclaw-router-decisions.jsonl`; summarize periodically with `scripts/openclaw_router_live_summary.sh` and tune thresholds only on sustained breach.
+
+## 2026-02-21 15:12 EST (Codex)
+- Area: OpenClaw router tier semantics fix (`normal`/`high` cloud behavior)
+- Status: Updated routing wrapper and docs so both cloud tiers use `openai-codex/gpt-5.3-codex`, with tiered thinking defaults: `normal/low=medium`, `high/high_risk=high` (local remains `off`). Removed Spark from automatic high-tier resolution candidates for this profile.
+- Evidence:
+  - Script changes: `scripts/openclaw_agent_safe_turn.sh` (`--thinking` now acts as optional override; per-tier thinking defaults; low-tier default model set to `openai-codex/gpt-5.3-codex`; attempt telemetry now records `thinking`).
+  - Doc sync: `runbooks/openclaw-router-live-trial-v2.md`, `notes/efficient-routing-plan.md`, `notes/openclaw-safe-turn-thresholds-20260217.md`.
+  - Validation run artifacts: `notes/openclaw-artifacts/openclaw-safe-turn-20260221-151138.json` (`taskClass=normal`, `chosenTier=low`, `final.model=gpt-5.3-codex`, `final.thinking=medium`) and `notes/openclaw-artifacts/openclaw-safe-turn-20260221-151201.json` (`taskClass=high_risk`, `chosenTier=high`, `final.model=gpt-5.3-codex`, `final.thinking=high`).
+- Next action: Continue live usage and monitor `notes/openclaw-artifacts/openclaw-router-decisions.jsonl` for latency/escalation drift before any further routing-policy changes.
+
+## 2026-02-21 15:54 EST (Codex)
+- Area: OpenClaw truth-guard hardening + fake-output forensics (`rb1-fedora`)
+- Status: Implemented verified write and anti-fake guardrails, validated on `rb1`, and reduced dangerous plugin surface by disabling unused high-risk plugins.
+- Changes:
+  - Added `scripts/openclaw_verified_codegen.sh` (structured output contract, allowlisted writes, static safety scan, optional Codex safety gate, SHA-256 write verification, fake-claim detection, incident/event logs, automatic correction feedback to agent session).
+  - Added `scripts/openclaw_fake_output_audit.sh` (session-history forensic scanner for side-effect claims; optional append to incident log).
+  - Added runbook `runbooks/openclaw-verified-write-and-anti-fake.md`.
+  - Added memory checkpoint note `memory/projects/proj-openclaw-truth-guard.md` and linked it in `memory/index.md`.
+- RB1 validation evidence:
+  - Verified write run: `notes/openclaw-artifacts/openclaw-verified-codegen-20260221-154818.json` (`writeVerified=true`, `codexAllow=true`, target `/home/tdj/feb21-testMenu.py`).
+  - On-host checks: `/home/tdj/feb21-testMenu.py` exists; `sha256` matches wrapper record; `python3 -m py_compile` passed.
+  - Historical fake-claim backfill: `scripts/openclaw_fake_output_audit.sh --session-file /home/tdj/.openclaw/agents/main/sessions/5d8fdc27-8366-4624-b85c-c39bc1cd09ad.jsonl` appended incidents to `notes/openclaw-artifacts/openclaw-fake-output-incidents.jsonl`.
+  - Negative test (forced fake claim): `notes/openclaw-artifacts/openclaw-verified-codegen-20260221-155326.json` (`fakeDetected=true`, `correctionSent=true`), confirming detection now scans all attempts and final output.
+- Plugin risk reduction on rb1:
+  - Disabled: `phone-control`, `device-pair`.
+  - Remaining enabled plugins: `memory-core`, `talk-voice`.
+- Next action: Keep using `scripts/openclaw_verified_codegen.sh` for any file-writing tasks; periodically audit session claims and review whether to disable `talk-voice` for tighter minimal surface.

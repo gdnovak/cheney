@@ -38,3 +38,8 @@ Purpose: durable, agent-friendly context graph for resumable work.
 ## Workflow
 
 - Weekly operations runbook: `runbooks/memory-workflow-weekly.md`
+
+## Active Projects
+
+- [[proj-rb1-fedora-env-baseline]]
+- [[proj-openclaw-truth-guard]]
