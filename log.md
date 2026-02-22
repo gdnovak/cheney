@@ -1114,3 +1114,14 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
   - launcher help path verified (`scripts/glados-ui --help`).
 - Next action:
   - pull latest on `rb1` and run installer as `rb1-admin`, then confirm `glados` starts REPL from any directory.
+
+## 2026-02-22 15:17 EST (Codex)
+- Area: launcher symlink fix
+- Issue:
+  - `glados` symlink under `~/.local/bin` initially failed to locate repo script because launcher root path was derived from symlink directory.
+- Fix:
+  - `scripts/glados-ui` now resolves `BASH_SOURCE[0]` through `readlink -f` before computing `ROOT_DIR`.
+- Validation:
+  - direct launch and symlink launch both return REPL help successfully.
+- Next action:
+  - push fix and re-verify `glados --help` on `rb1-admin`.
