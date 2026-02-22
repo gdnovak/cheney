@@ -1170,3 +1170,114 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
   - script syntax validated and executed on host (throughput skipped when speedtest tools absent; ping succeeded).
 - Next action:
   - commit/push wrapper fix and logs; pull latest on rb1.
+
+## 2026-02-22 16:53 EST (Codex)
+- Area: OpenClaw router REPL warm-state automation + 14B-first routing alignment (`rb1`)
+- Status:
+  - Implemented warm-state management in `scripts/openclaw_router_repl.sh`:
+    - startup warm-state display (`cold|warming|warmed|unknown`)
+    - startup auto-warm (`--warmup auto|off`)
+    - background keepalive loop (`--keepwarm on|off`, `--keepwarm-interval-sec`)
+    - warm commands (`/warm-status`, `/warm-now`, `/keepwarm on|off`)
+    - host-aware warm checks/warm calls over SSH (with `ssh -n` so stdin is not consumed)
+  - Added warm policy flags (`--warm-scope`, `--warm-timeout-sec`, `--warm-model-14b`, `--warm-model-7b`, `--warm-keepalive`) and included warm settings in REPL JSONL settings payload.
+  - Added dual-warm compatibility path for constrained VRAM (when scope is `both`, `7b` warm requests are forced CPU via `num_gpu=0`).
+  - Updated safe-turn default local lane to 14B:
+    - `scripts/openclaw_agent_safe_turn.sh`: `LOCAL_GENERAL_MODEL=ollama/qwen2.5:14b`.
+  - Per latest operator direction, default REPL warm scope is now `14b` (dual warm remains available with `--warm-scope both`).
+- Evidence:
+  - Script updates:
+    - `scripts/openclaw_router_repl.sh`
+    - `scripts/openclaw_agent_safe_turn.sh`
+  - Cold-start warm test (dual scope) artifact:
+    - `notes/openclaw-artifacts/router-repl-20260222-164723.jsonl`
+    - output showed: `14b cold->warming->warmed`, then `7b cold->warming->warmed (placement=cpu)`.
+  - 14B-only default warm test artifact:
+    - `notes/openclaw-artifacts/router-repl-20260222-165332.jsonl`
+    - output showed warm target only `qwen2.5:14b`, `qwen2.5:7b` remained cold.
+  - Post-test runtime checks on `rb1`:
+    - `curl 127.0.0.1:11434/api/ps` after 14B-only startup => only `qwen2.5:14b` loaded.
+    - bounded safe-turn local check returned `provider=ollama`, `model=qwen2.5:14b`, `backstopUsed=0`, response `ROUTER_LOCAL_14B_OK`.
+- Notes:
+  - During active generation, GPU utilization can be imbalanced even with spread enabled; observed sample showed one GPU saturated while the other held memory with low compute at that moment.
+- Next action:
+  - If desired, tune keepwarm interval/TTL target to balance responsiveness vs idle power draw while staying 14B-only by default.
+
+## 2026-02-22 17:06 EST (Codex)
+- Area: 14B prewarm validation follow-up + benchmark blocker isolation
+- Status:
+  - Confirmed direction is applied in code/config path:
+    - local tier default remains `ollama/qwen2.5:14b` (`scripts/openclaw_agent_safe_turn.sh`)
+    - REPL warm default remains `--warm-scope 14b` (`scripts/openclaw_router_repl.sh`)
+  - Investigated inconsistent benchmark output (unexpected codex on forced-local run).
+  - Root cause isolated: stale lock file in OpenClaw session path caused lane errors and fallback behavior during probes.
+    - stale lock: `/home/tdj/.openclaw/agents/main/sessions/lean-probe-204438.jsonl.lock`
+    - lock PID in error logs was not alive.
+  - Cleared stale lock and re-ran local probe:
+    - forced-local run returned `provider=ollama`, `model=qwen2.5:14b`, `backstopUsed=0`, `durationMs=26423`, response `ROUTE_LOCK_FIX_TEST`.
+- Evidence:
+  - Problematic run logs:
+    - `notes/openclaw-artifacts/openclaw-safe-turn-20260222-165743.log` (lane lock errors)
+    - `notes/openclaw-artifacts/openclaw-safe-turn-20260222-165827.log` (unknown agent probe/cleanup timing)
+  - Post-fix good run:
+    - `notes/openclaw-artifacts/openclaw-safe-turn-20260222-170138.json`
+- Next action:
+  - Run a clean, isolated cold-vs-prewarmed 14B benchmark using the now-unlocked main session (or dedicated benchmark agent if created), then decide whether to keep 14B warm-only or retool warm policy to 7B.
+
+## 2026-02-22 17:14 EST (Codex)
+- Area: rb1 process stop + script sync to latest warm/routing behavior
+- Status:
+  - Synced updated scripts to rb1 clone:
+    - `/home/tdj/cheney/scripts/openclaw_router_repl.sh`
+    - `/home/tdj/cheney/scripts/openclaw_agent_safe_turn.sh`
+  - Verified rb1 checksums match local for both files after copy.
+  - Cleared active turn/runtime workload:
+    - no running `openclaw_router_repl.sh`/`openclaw_agent_safe_turn.sh`/`openclaw agent` processes left.
+    - stopped loaded Ollama models (`qwen2.5:14b`, `qwen2.5:7b`) and confirmed `api/ps` empty.
+  - Verified shortcut path (`glados`) now resolves to updated defaults on rb1.
+- Evidence:
+  - remote script settings check:
+    - `LOCAL_GENERAL_MODEL="ollama/qwen2.5:14b"`
+    - `WARM_SCOPE="14b"`
+  - `glados` smoke output (`/status` then `/exit`) shows:
+    - `warm_scope=14b`
+    - `warm_targets=qwen2.5:14b`
+  - artifact from smoke:
+    - `notes/openclaw-artifacts/router-repl-20260222-171419.jsonl`
+- Notes:
+  - An earlier SSH transport error occurred during a combined kill command; rerun checks confirmed host health and successful completion of all requested actions.
+- Next action:
+  - User can start fresh test from rb1 via `glados` (defaults now 14b-local + 14b warm scope).
+
+## 2026-02-22 17:24 EST (Codex)
+- Area: 7B-only rollback + runtime reset + dual-GPU utilization probe (`rb1`)
+- Status:
+  - Applied requested rollback away from 14B:
+    - `scripts/openclaw_agent_safe_turn.sh`
+      - `LOCAL_GENERAL_MODEL` set to `ollama/qwen2.5:7b`
+      - default `CLOUD_LOW_MODEL` now follows local 7B
+      - added guard to remap low/local away from `ollama/qwen2.5:14b` if encountered
+    - `scripts/openclaw_router_repl.sh`
+      - default `WARM_SCOPE` set to `7b`
+      - 14B warm scopes (`both`, `14b`) remapped to `7b` for this profile
+      - warm tracking reduced to active 7B lane; status now reports `warm_14b_excluded=true`
+  - Synced updated scripts to rb1 and verified via `glados` smoke (`warm_scope=7b`, startup warm line visible).
+  - Reset runtime state as requested:
+    - killed active OpenClaw turn/repl processes
+    - stopped loaded Ollama models (`qwen2.5:14b`, `qwen2.5:7b`)
+  - Corrected OpenClaw default model on rb1 to align with policy:
+    - `openclaw models set ollama/qwen2.5:7b`
+- Dual-GPU probe findings (7B, `OLLAMA_SCHED_SPREAD=1`):
+  - Single request window: both GPUs active over the sample (`gpu0_active_samples=12/20`, `gpu1_active_samples=13/20`).
+  - Dual concurrent request window: both GPUs active more consistently (`gpu0_active_samples=16/20`, `gpu1_active_samples=18/20`).
+  - Max instantaneous utilization remained asymmetric (`gpu1` often peaks higher), but both GPUs are participating over time.
+- Evidence:
+  - Probe dirs on rb1:
+    - `/tmp/ollama_gpu_probe_single_172205`
+    - `/tmp/ollama_gpu_probe_dual_172227`
+  - 7B-only glados startup artifact:
+    - `notes/openclaw-artifacts/router-repl-20260222-172434.jsonl`
+  - Forced low-tier 7B confirmation:
+    - `notes/openclaw-artifacts/openclaw-safe-turn-20260222-172312.json`
+- Next action:
+  - User-attended run in rb1 terminal with `glados` to validate perceived responsiveness on 7B-only path.

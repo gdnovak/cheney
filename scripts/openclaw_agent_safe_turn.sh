@@ -485,7 +485,13 @@ resolve_models() {
   fi
 
   if [[ -z "$CLOUD_LOW_MODEL" ]]; then
-    CLOUD_LOW_MODEL="ollama/qwen2.5:14b"
+    CLOUD_LOW_MODEL="$LOCAL_GENERAL_MODEL"
+  fi
+
+  # 14B is intentionally excluded for this hardware profile.
+  if [[ "$CLOUD_LOW_MODEL" == "ollama/qwen2.5:14b" ]]; then
+    append_alias_note "low_model_14b_disabled"
+    CLOUD_LOW_MODEL="$LOCAL_GENERAL_MODEL"
   fi
 
   # Resolve high tier first.
@@ -517,6 +523,12 @@ resolve_models() {
       LOCAL_GENERAL_MODEL="$ORIG_MODEL"
       append_alias_note "local_general_resolved:${LOCAL_GENERAL_MODEL}"
     fi
+  fi
+
+  # Keep local general lane pinned away from 14B for this profile.
+  if [[ "$LOCAL_GENERAL_MODEL" == "ollama/qwen2.5:14b" ]]; then
+    append_alias_note "local_general_14b_disabled"
+    LOCAL_GENERAL_MODEL="ollama/qwen2.5:7b"
   fi
 
   # Resolve local code.
