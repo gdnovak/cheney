@@ -17,16 +17,16 @@ Options:
   --agent <id>                  Agent id (default: main)
   --thinking <level>            Thinking override for all tiers (default policy: local=off, low=medium, high=high)
 
-  --route-profile <name>        Route profile label for telemetry (default: basic-local-v2)
+  --route-profile <name>        Route profile label for telemetry (default: basic-local-v3)
   --task-class <type>           auto|basic|coding_basic|normal|high_risk (default: auto)
   --force-tier <tier>           local|low|high (start tier override)
 
-  --cloud-low-model <id>        Cloud low tier model (default: auto-resolve)
+  --cloud-low-model <id>        Tier-2 model after local (default: ollama/qwen2.5:14b)
   --cloud-high-model <id>       Cloud high tier model (default: openai-codex/gpt-5.3-codex)
   --fallback-model <id>         Backward-compatible alias for --cloud-high-model
 
-  --max-local-elapsed-ms <ms>   Escalate local attempt above this latency (default: 10000)
-  --max-low-elapsed-ms <ms>     Escalate low attempt above this latency (default: 20000)
+  --max-local-elapsed-ms <ms>   Escalate local attempt above this latency (default: 30000)
+  --max-low-elapsed-ms <ms>     Escalate low attempt above this latency (default: 120000)
 
   --router-log <path>           Unified router decisions JSONL (default: notes/openclaw-artifacts/openclaw-router-decisions.jsonl)
   --no-backstop                 Disable escalation and run single-tier attempt only
@@ -47,7 +47,7 @@ AGENT_ID="main"
 THINKING_OVERRIDE=""
 MESSAGE=""
 
-ROUTE_PROFILE="basic-local-v2"
+ROUTE_PROFILE="basic-local-v3"
 TASK_CLASS="auto"
 FORCE_TIER=""
 
@@ -55,8 +55,8 @@ FALLBACK_MODEL="openai-codex/gpt-5.3-codex"
 CLOUD_LOW_MODEL=""
 CLOUD_HIGH_MODEL=""
 
-MAX_LOCAL_ELAPSED_MS=10000
-MAX_LOW_ELAPSED_MS=20000
+MAX_LOCAL_ELAPSED_MS=30000
+MAX_LOW_ELAPSED_MS=120000
 
 ENABLE_BACKSTOP=1
 ENABLE_PRECHECK=1
@@ -268,6 +268,20 @@ transport_or_sanity_reason() {
 
   text_lc="$(printf '%s' "$text" | tr '[:upper:]' '[:lower:]')"
 
+  # Guard against compaction-amnesia loops:
+  # compact -> forget -> try to recover -> compact again.
+  if [[ "$text_lc" == *"too much context"* || "$text_lc" == *"context window"* || "$text_lc" == *"compacting"* || "$text_lc" == *"compact"* ]]; then
+    if [[ "$text_lc" == *"forget"* || "$text_lc" == *"don't remember"* || "$text_lc" == *"do not remember"* || "$text_lc" == *"can't remember"* || "$text_lc" == *"cannot remember"* || "$text_lc" == *"lost context"* ]]; then
+      printf '%s' "context_compaction_loop"
+      return 0
+    fi
+  fi
+
+  if [[ "$text_lc" == *"i don't have"* && "$text_lc" == *"earlier"* ]] || [[ "$text_lc" == *"i do not have"* && "$text_lc" == *"previous"* ]]; then
+    printf '%s' "context_missing_reference"
+    return 0
+  fi
+
   if [[ "$text_lc" == "fetch failed" ]]; then
     printf '%s' "transport_fetch_failed"
     return 0
@@ -304,6 +318,17 @@ classify_task() {
   msg_lc="$(printf '%s' "$MESSAGE" | tr '[:upper:]' '[:lower:]')"
   msg_len="${#MESSAGE}"
 
+  # Ambiguous reference-to-prior-context actions are risky if done locally;
+  # start higher to avoid compact/forget loops.
+  if [[ "$msg_lc" =~ earlier|previous|as[[:space:]]before|above|that[[:space:]]script|same[[:space:]]script|from[[:space:]]before|continue[[:space:]]from ]]; then
+    if [[ "$msg_lc" =~ save|write|move|copy|rename|edit|modify|create|delete|remove ]]; then
+      printf '%s' "high_risk"
+      return 0
+    fi
+    printf '%s' "normal"
+    return 0
+  fi
+
   if [[ "$msg_lc" =~ migration|security|auth|credential|backup|restore|network[[:space:]]cutover|incident|rollback|compliance|production|prod ]]; then
     printf '%s' "high_risk"
     return 0
@@ -329,13 +354,13 @@ target_tier_for_class() {
       printf '%s' "local"
       ;;
     normal)
-      printf '%s' "low"
+      printf '%s' "local"
       ;;
     high_risk)
-      printf '%s' "high"
+      printf '%s' "low"
       ;;
     *)
-      printf '%s' "low"
+      printf '%s' "local"
       ;;
   esac
 }
@@ -460,7 +485,7 @@ resolve_models() {
   fi
 
   if [[ -z "$CLOUD_LOW_MODEL" ]]; then
-    CLOUD_LOW_MODEL="openai-codex/gpt-5.3-codex"
+    CLOUD_LOW_MODEL="ollama/qwen2.5:14b"
   fi
 
   # Resolve high tier first.
@@ -478,11 +503,11 @@ resolve_models() {
     done
   fi
 
-  # Resolve low tier; if missing, collapse low->high.
+  # Resolve low tier; prefer local collapse to stay local-first.
   if ! model_in_catalog "$CLOUD_LOW_MODEL"; then
     append_alias_note "low_model_missing:${CLOUD_LOW_MODEL}"
-    CLOUD_LOW_MODEL="$CLOUD_HIGH_MODEL"
-    append_alias_note "low_model_collapsed_to_high"
+    CLOUD_LOW_MODEL="$LOCAL_GENERAL_MODEL"
+    append_alias_note "low_model_collapsed_to_local_general"
   fi
 
   # Resolve local general.

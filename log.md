@@ -599,3 +599,240 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
     - `scripts/cognee_env_probe.sh rb1-admin` generated `notes/cognee/cognee-env-probe-20260221-162022.md`.
     - fit/pilot docs added: `notes/cognee-fit-assessment-20260221.md`, `runbooks/cognee-memory-pilot-rb1.md`.
 - Next action: User can run an attended visual TUI check for live footer behavior; if approved, execute Cognee phase-1 isolated pilot from `runbooks/cognee-memory-pilot-rb1.md` with no router changes.
+
+## 2026-02-21 19:19 EST (Codex)
+- Area: Cognee phase-1 native-host validation + backup precheck (`rb1-fedora`)
+- Status: Pivoted from container-only pilot to host-native Python 3.12 execution on `rb1` to test whether containerization caused `cognify` failures. Verified it does not: the same `sqlite3 OperationalError: database is locked` occurs during `cognee-cli cognify` on native path with default settings.
+- Evidence:
+  - Native runtime bootstrap on `rb1` using `uv` + Python `3.12.12`, environment under `/home/tdj/cognee-native`.
+  - Failing native run artifacts: `notes/cognee/pilot-phase1-native-20260221-185316-rerun/pilot-run.log` (lock errors during `extract_graph_from_data`).
+  - Backup precheck failure to TrueNAS destination: `/home/tdj/bin/rb1_truenas_backup.sh create ...` failed with `Input/output error`; direct remote write tests to `/mnt/oyPool/rb1AssistantBackups` also fail; TrueNAS reports `pool I/O is currently suspended` for `oyPool/rb1AssistantBackups`.
+- Mitigation in progress:
+  - Updated native runner `/home/tdj/cognee-native/run_phase1_native.sh` to reset Cognee storage each run and use `--chunks-per-batch 1` for `cognify` to reduce sqlite write contention.
+  - Active run: `notes/cognee/pilot-phase1-native-20260221-190536-batch1` (still in `cognify` at log time, with `lock_count=0`, `success_count=40`, no search artifacts yet).
+- Next action: Keep monitoring `batch1` run to completion; if stable, persist this as interim pilot profile. Separately, recover TrueNAS pool writeability before requiring new snapshots there.
+
+## 2026-02-21 19:22 EST (Codex)
+- Area: TrueNAS `oyPool` suspension root-cause evidence (`rb2-pve` VM100)
+- Status: Identified likely root cause as USB passthrough storage disconnect/reset, not RAM allocation and not immediate media-failure signature.
+- Evidence:
+  - `zpool status -xv` inside TrueNAS: `oyPool state: SUSPENDED`, action points to I/O failures; single vdev shows `READ=3 WRITE=4.20K` errors.
+  - TrueNAS guest kernel timeline (`2026-02-20 16:44:31 PST`): `usb 8-2: USB disconnect`, `sd ... DID_NO_CONNECT`, multiple `I/O error, dev sdb ... WRITE`, then `WARNING: Pool 'oyPool' has encountered an uncorrectable I/O failure and has been suspended`.
+  - Same device re-attaches at `2026-02-20 16:44:32 PST` as ASMedia bridge `idVendor=174c,idProduct=55aa` and disk node changes (`sdb` -> `sdd`).
+  - Proxmox host logs around same window show USB reset/cache-sync failure events on the 5TB device path (`sdb`), consistent with link instability.
+  - SMART health on affected disk (`/dev/sdd`, Toshiba HDWE150) reports `PASSED` with `Reallocated=0`, `Pending=0`, `Offline_Uncorrectable=0`, `CRC=0`; this supports transient transport/passthrough fault as primary suspect.
+- Additional context:
+  - VM100 config uses USB passthrough (`usb0: 1058:2647`, `usb1: 174c:55aa`) for data disks.
+  - New backup writes to `/mnt/oyPool/rb1AssistantBackups` remain blocked while pool is suspended.
+- Next action: Recover pool (`zpool clear oyPool` + write validation + scrub) after confirming USB path stability; medium-term harden by reducing USB passthrough fragility.
+
+## 2026-02-21 19:26 EST (Codex)
+- Area: TrueNAS `oyPool` non-destructive recovery + backup path restore (`rb2` VM100)
+- Status: Executed guarded recovery without deleting pool data; `oyPool` restored from `SUSPENDED` to `ONLINE` and backup writes resumed.
+- Actions taken:
+  - Ran `zpool clear oyPool` in VM100.
+  - Verified post-clear pool health (`READ/WRITE/CKSUM` all `0`, `errors: No known data errors`).
+  - Wrote a marker file (kept in place, not deleted):
+    - `/mnt/oyPool/rb1AssistantBackups/.cheney-recovery-write-test-20260221-162404`
+  - Started scrub: `zpool scrub oyPool`.
+  - Re-tested from `rb1` via backup script: successful snapshot `post-clear-20260221-192451`.
+- Evidence summary:
+  - Pre-state: `oyPool state: SUSPENDED` with message `pool I/O is currently suspended`.
+  - Post-clear: `all pools are healthy`; `oyPool state: ONLINE`; temporary resilver completed with `0 errors`.
+  - Scrub state at `2026-02-21 16:25:01 PST`: in progress (`72.1G / 416G scanned`, `0B repaired`, no known data errors).
+  - Backup verification: `/home/tdj/bin/rb1_truenas_backup.sh create post-clear-20260221-192451` returned `rc=0`.
+- Root-cause assessment (most likely):
+  - USB passthrough link reset/disconnect on VM100 data disk path (`ASMedia 174c:55aa`) during writes caused transient transport I/O failures (`DID_NO_CONNECT`) and forced ZFS pool suspension.
+  - SMART on affected disk currently `PASSED` with no pending/reallocated/uncorrectable sectors, so immediate media failure is less likely than USB transport instability.
+- Next action:
+  - Let scrub finish and re-check `zpool status -xv`.
+  - If clean, keep current data; then plan USB-path hardening (power/cable/bridge/controller stability) to avoid future suspend events.
+
+## 2026-02-21 19:34 EST (Codex)
+- Area: Cognee phase-1 compatibility/ROI reassessment (`rb1-fedora`, non-interrupt monitoring)
+- Status: Kept active native run untouched. Low-batch mitigation (`--chunks-per-batch 1`) eliminated sqlite lock errors in this run, but `cognify` is still very slow and has not reached search artifact generation.
+- Evidence:
+  - Active chain remained running during checks: launcher `218554` -> runner `218573` -> `cognee-cli cognify` `223036`.
+  - Current run (`notes/cognee/pilot-phase1-native-20260221-190536-batch1`) shows `pipeline_starts=60`, `lock_errors=0`, `search_files=0`; run log mtime stalled at `19:29:19` while internal Cognee log continues.
+  - Internal Cognee log (`/home/tdj/cognee-native/.venv/lib/python3.12/site-packages/logs/2026-02-21_19-11-11.log`) shows repeated JSON/schema retry cycles against local `qwen2.5:7b`, including validation retries and very large responses (`total_tokens` up to `6725` in one call).
+  - Ollama service logs show long `/v1/chat/completions` latencies during this phase (roughly `28s` to `3m29s` per call).
+  - Storage artifacts exist (`.cognee_data` populated, sqlite + WAL present), but completion gate remains blocked at `cognify`.
+- Interim reassessment:
+  - Compatibility: partial/fragile (works in native mode with reduced lock contention, but extraction path remains brittle and slow on current local model/profile).
+  - Worth right now: limited for always-on assistant memory; still potentially useful as a controlled offline/batch enrichment job if we add strict bounds.
+- Next action: continue passive monitoring to run completion/failure, then decide keep/tune/disable based on (1) completion success, (2) search artifact quality, and (3) wall-clock cost per batch.
+
+## 2026-02-21 19:45 EST (Codex)
+- Area: Ollama GPU scheduling follow-up (`rb1-fedora`)
+- Status: Confirmed current Ollama placement is single-GPU (internal GTX 1060 active, eGPU idle) while Cognify run remains active. User chose to defer dual-GPU change for later to avoid interruption.
+- Planned deferred action: set `OLLAMA_SCHED_SPREAD=1` in the Ollama service environment and restart `ollama` after active Cognee run is complete.
+
+## 2026-02-21 19:53 EST (Codex)
+- Area: Cognee phase-1 native run health check (`rb1-fedora`)
+- Status: Active `cognify` run has exited (no `cognee-cli` process remains).
+- Failure evidence:
+  - Run artifact: `notes/cognee/pilot-phase1-native-20260221-190536-batch1/pilot-run.log` ended with:
+    - `RuntimeError: generator didn't stop after athrow()`
+    - preceding asyncgen shutdown errors in `TextDocument.read` / `contextlib.__aexit__`
+  - Internal log mtime stopped at `19:50:01 EST`:
+    - `/home/tdj/cognee-native/.venv/lib/python3.12/site-packages/logs/2026-02-21_19-11-11.log`
+  - No post-cognify search outputs were produced in the run dir (`search-*.json` absent).
+- Notable: this run still had `lock_errors=0`, so sqlite lock mitigation helped, but run completion failed due to async generator shutdown/runtime error.
+- Next action: decide whether to re-run with stricter batch/timeout guardrails and checkpointed partial-output handling, or pause Cognee pending upstream/version workaround.
+
+## 2026-02-21 20:06 EST (Codex)
+- Area: Pre-fastfail backup + Ollama dual-GPU + Qwen14B model-first smoke (`rb1-fedora`)
+- Status: Completed requested pre-change backup and model-first validation; Cognee re-run intentionally paused pending user go-ahead.
+- Backup checkpoint:
+  - Snapshot label: `pre-fastfail-qwen14b-20260221-200028`
+  - Backup log: `/home/tdj/backup-logs/rb1_truenas_backup_2026-02-21_20-00-28.log`
+  - Verified in snapshot list on TrueNAS.
+- Ollama changes:
+  - Set systemd override `/etc/systemd/system/ollama.service.d/10-sched-spread.conf` with `Environment=OLLAMA_SCHED_SPREAD=1`.
+  - Restarted `ollama`; service active with env confirmed.
+  - Pulled model `qwen2.5:14b` (`9.0 GB`, id `7cdf5a0187d5`).
+  - Runner logs confirm dual-GPU split for `qwen2.5:14b`:
+    - `CUDA0 model buffer ~4065 MiB`, `CUDA1 model buffer ~4083 MiB`
+    - layers split `26/23` across internal/eGPU.
+- Model-first smoke artifacts:
+  - Directory: `notes/ollama-q14b-smoke-20260221-200432`
+  - `test1` (strict summary/description JSON): `FAIL` (`description` returned empty), `5.01s`, usage `87`.
+  - `test2` (basic nodes/edges JSON shape): `PASS`, `36.36s`, usage `378`.
+  - `test3` (exact token control): `PASS` (`ZX-4172`), `0.76s`, usage `51`.
+  - `test4` (Cognee-like strict KG keys + non-empty strings): `PASS`, `42.05s`, usage `439`.
+- Interpretation:
+  - 14B is materially better for structured output than 7B, but still non-deterministic under strict field constraints (at least one empty-field miss observed).
+  - Dual-GPU spread is working and ready for a fast-fail Cognee trial.
+- Next action: on user confirmation, launch `cognify` fast-fail run with `LLM_MODEL=qwen2.5:14b` and minimal guards.
+
+## 2026-02-21 20:17 EST (Codex)
+- Area: Fast-fail `qwen2.5:14b` run status + OpenClaw/Cognee integration probe + 14B model scan
+- Status: Fast-fail rerun is active on `rb1` and reached `cognify` (`extract_graph_from_data` stage) with `qwen2.5:14b`. In parallel, completed quick doc scrape and compatibility probe for routing Cognee through OpenClaw with Codex fallback.
+- Evidence:
+  - Active processes: launcher `run-fastfail.sh` pid `248728`; worker `/home/tdj/cognee-native/.venv/bin/cognee-cli cognify --datasets cheney_fastfail_q14b_20260221-201105 --chunker TextChunker --chunk-size 700`.
+  - Run artifact path: `/home/tdj/cheney/notes/cognee/pilot-fastfail-q14b-20260221-201105/pilot-run.log` (latest stage enters `extract_graph_from_data` at `20:17 EST`).
+  - OpenClaw probe on `rb1`:
+    - `POST /v1/chat/completions` returned `405 Method Not Allowed`.
+    - gateway config currently has no `gateway.http.endpoints.chatCompletions.enabled` block; OpenAI-compatible endpoint is therefore not usable yet for Cognee passthrough.
+  - Doc scan shortlist (official sources):
+    - `Qwen/Qwen3-14B` model card + Qwen3 blog indicate stronger general/coding/reasoning position than Qwen2.5 14B for many evals.
+    - `deepseek-r1:14b` remains the strongest 14B-class reasoning-specialized candidate but with heavier response style/token cost.
+    - `Phi-4-Reasoning` (14B) is viable for concise math/reasoning tasks; context/latency tradeoffs differ from Qwen family.
+- Interim assessment:
+  - Best near-term upgrade candidate in your range: `qwen3:14b` as new local default; keep `deepseek-r1:14b` as escalated local reasoning lane.
+  - Cognee->OpenClaw->Codex fallback is feasible once OpenClaw OpenAI-compatible HTTP endpoints are explicitly enabled.
+- Next action: let current fast-fail run finish, then A/B `qwen2.5:14b` vs `qwen3:14b` on the same Cognee scope before changing router defaults.
+
+## 2026-02-21 20:34 EST (Codex)
+- Area: 7B misroute fix + OpenClaw fallback path activation + 14B preflight (`rb1-fedora`)
+- Status: Stopped the degraded fast-fail run, corrected model-routing so Cognee uses 14B, enabled OpenClaw OpenAI-compatible endpoints, and validated a minimal Cognee-through-OpenClaw run with Codex fallback configured (not forced). Paused before full rerun so user can test TUI independently.
+- What changed:
+  - Stopped active processes:
+    - `/home/tdj/cheney/notes/cognee/pilot-fastfail-q14b-20260221-201105/run-fastfail.sh`
+    - `cognee-cli cognify --datasets cheney_fastfail_q14b_20260221-201105 ...`
+  - Root cause for 7B usage identified: runtime config still pinned `LLM_MODEL="qwen2.5:7b"` in `/home/tdj/cognee-native/.env`.
+  - Updated `/home/tdj/cognee-native/.env`:
+    - `LLM_MODEL="qwen2.5:14b"` (backup created with timestamp suffix).
+  - Updated `/home/tdj/.openclaw/openclaw.json` (backup created with timestamp suffix):
+    - `agents.defaults.model.primary` -> `ollama/qwen2.5:14b`
+    - preserved fallback: `openai-codex/gpt-5.3-codex`
+    - added `models.providers.ollama.models` entry for `qwen2.5:14b`
+    - enabled `gateway.http.endpoints.chatCompletions.enabled=true`
+    - enabled `gateway.http.endpoints.responses.enabled=true`
+    - removed invalid key `gateway.http.port` after schema check.
+  - Restarted active gateway process manually as `tdj` (systemd user bus unavailable from this root shell context) and re-probed endpoints.
+- Evidence:
+  - OpenClaw API probe on `rb1` now succeeds:
+    - `POST /v1/chat/completions` -> `200` with `CHAT_OK`
+    - `POST /v1/responses` -> `200` with `OPENCLAW_RESP_OK`
+  - Minimal Cognee probe completed successfully through OpenClaw path:
+    - dataset: `cheney_oc_probe_20260221_203257`
+    - log: `/home/tdj/cognee-native/.venv/lib/python3.12/site-packages/logs/2026-02-21_20-33-28.log`
+    - log entries show model calls as `qwen2.5:14b` (no 7B on this run).
+  - Ollama active models after probe:
+    - `qwen2.5:14b` (loaded, GPU)
+    - `nomic-embed-text:latest` (embedding lane)
+- Next action: wait for user TUI validation; after approval, launch full Cognee run with OpenClaw primary `qwen2.5:14b` + Codex fallback.
+
+## 2026-02-21 20:45 EST (Codex)
+- Area: OpenClaw TUI latency triage (`rb1-fedora`)
+- Status: Diagnosed slow/aborted `hello glados` turns as model+context overhead in the long-lived `main` session with `qwen2.5:14b`; implemented a responsive interactive profile while preserving heavy-model fallback lanes.
+- Findings:
+  - `main` session showed repeated long waits and aborts (`This operation was aborted`, `fetch failed`) before eventual response, with `qwen2.5:14b` and large prompt context.
+  - OpenClaw enforces a minimum context of `16000` for configured 14B/Codex path; lowering to `8192` hard-fails both lanes.
+- Changes applied:
+  - Kept gateway/fallback pipeline intact.
+  - Set `agents.defaults.contextTokens=16000` (minimum valid floor for current route set).
+  - Kept `hooks.internal.entries.boot-md.enabled=false` and `hooks.internal.entries.bootstrap-extra-files.enabled=false` for leaner bootstrap during TUI validation.
+  - Switched interactive primary model to `ollama/qwen2.5:7b` with fallbacks:
+    - `ollama/qwen2.5:14b`
+    - `openai-codex/gpt-5.3-codex`
+  - Updated active `main` session model snapshot in `/home/tdj/.openclaw/agents/main/sessions/sessions.json` to `qwen2.5:7b`.
+  - Terminated stuck `openclaw`/`openclaw-tui` client processes; left `openclaw-gateway` running.
+- Validation:
+  - Probe command:
+    - `openclaw agent --agent main --message "hello glados" --json`
+  - Result: success in ~`3.5s` wall time (`durationMs ~1312`, model `qwen2.5:7b`, prompt tokens `7071`).
+- Next action: user retry TUI interaction; if stable, keep this profile for interactive work and use 14B lane for heavier tasks/cognee runs.
+
+## 2026-02-21 21:07 EST (Codex)
+- Area: OpenClaw simpler-stack router switch (`rb1-fedora`) with automatic fallback
+- Request intent: keep same router behavior but remove need for manual escalation when local Ollama cannot handle a turn.
+- Changes made:
+  - Updated `scripts/openclaw_agent_safe_turn.sh` defaults to `basic-local-v3` profile.
+  - Set default tier chain/model intent to local-first: `ollama/qwen2.5:7b` -> `ollama/qwen2.5:14b` -> `openai-codex/gpt-5.3-codex`.
+  - Changed automatic task targeting so `normal` starts at `local` and `high_risk` starts at `low` (14B), with `high` (Codex) reserved for fallback/forced tier.
+  - Relaxed latency thresholds to reduce unnecessary cloud escalation:
+    - local threshold `30000ms` (was `10000ms`)
+    - low threshold `120000ms` (was `40000ms`)
+  - Added policy snapshot runbook: `runbooks/openclaw-router-live-trial-v3.md`.
+  - Updated `README.md` notes to reflect the new local-first chain and runbook pointer.
+- Validation evidence (live on `rb1-admin`):
+  - Default normal turn: stayed local (`qwen2.5:7b`), `backstopUsed=0`, `attemptChain=["local"]`, output `ROUTER_SIMPLE_OK`, `durationMs=27080`.
+  - Forced low tier: used local 14B (`qwen2.5:14b`), `attemptChain=["low"]`, output `ROUTER_LOW_OK`, `durationMs=95000`.
+  - Forced high tier: used Codex (`gpt-5.3-codex`), `attemptChain=["high"]`, output `ROUTER_HIGH_OK`, `durationMs=1496`.
+  - Controlled outage test (Ollama stopped): auto-escalated without manual intervention, `attemptChain=["local","low","high"]`, final provider `openai-codex`, output `ROUTER_OUTAGE_OK`.
+  - Post-test health: `systemctl is-active ollama` returned `active`; default model restored to `ollama/qwen2.5:7b`.
+- Next action: if desired, tune local/low latency thresholds further for responsiveness vs cloud spend tradeoff and run a short real-prompt benchmark profile under `v3`.
+
+## 2026-02-21 21:12 EST (Codex)
+- Area: Cognify readiness gate check (`rb1-fedora`)
+- Goal: determine whether stack is ready to start Cognify now after router simplification.
+- Preflight status:
+  - `ollama` active with required models present (`qwen2.5:14b`, `nomic-embed-text:latest`).
+  - OpenClaw router config remains local-first (`7b -> 14b -> Codex`) and healthy.
+  - Cognee runtime present at `/home/tdj/cognee-native/.venv` with `cognee-cli` available.
+  - LLM/embedding HTTP probes to Ollama passed (`/v1/chat/completions` and `/v1/embeddings` status `200`).
+- Blocking finding from live smoke:
+  - One-item smoke run (`dataset=readiness_smoke_20260221_211130`) failed during `cognee-cli add` before `cognify`.
+  - Fresh log `/home/tdj/cognee-native/.venv/lib/python3.12/site-packages/logs/2026-02-21_21-11-32.log` shows sqlite write failure:
+    - `attempt to write a readonly database`
+  - Current data dirs are root-owned from prior privileged runs (`/home/tdj/cognee-native/.cognee_system` and `/home/tdj/cognee-native/.cognee_data`), causing non-root write failure for `tdj`.
+- Readiness decision:
+  - `NOT READY` to start Cognify until ownership/permissions are corrected.
+- Next action:
+  - Fix ownership back to `tdj:tdj` for Cognee state dirs, then rerun the same one-item smoke (`add -> cognify -> search`) as gate before full job.
+
+## 2026-02-21 21:13 EST (Codex)
+- Area: Cognify blocker remediation + readiness gate rerun (`rb1-fedora`)
+- Action taken:
+  - Corrected ownership for Cognee state dirs on `rb1`:
+    - `sudo chown -R tdj:tdj /home/tdj/cognee-native/.cognee_system /home/tdj/cognee-native/.cognee_data`
+- Verification before rerun:
+  - `.cognee_system` and `.cognee_data` now `tdj:tdj` (was `root:root`).
+- Gate rerun (one-item end-to-end smoke):
+  - Dataset: `readiness_smoke_20260221_211258`
+  - Steps:
+    1) `cognee-cli add --dataset-name readiness_smoke_20260221_211258 "rb1 cognify readiness smoke: local-first router with automatic fallback."`
+    2) `cognee-cli cognify --datasets readiness_smoke_20260221_211258 --chunker TextChunker --chunk-size 256 --chunks-per-batch 1`
+    3) `cognee-cli search --query-type CHUNKS --datasets readiness_smoke_20260221_211258 --top-k 1 --output-format simple "what is this smoke dataset about?"`
+  - Outcome:
+    - `add`: success
+    - `cognify`: `Success: Cognification completed successfully!`
+    - `search`: returned 1 chunk with expected smoke text
+- Readiness decision:
+  - `READY` to start Cognify jobs under current user context.
+- Residual caveat:
+  - Historical logs still contain earlier lock/runtime failures from prior runs; this gate confirms current write-path and minimal pipeline are now healthy.
+- Next action:
+  - proceed with intended Cognify workload, starting with bounded batch settings (`--chunks-per-batch 1`) then scale up if stable.

@@ -31,8 +31,8 @@ Execution checklists:
 
 - `DONE` Implemented phase-1 efficient routing stack on `rb1-fedora` (`tdj`):
   - Ollama installed as system service and enabled.
-  - Local models pulled: `qwen2.5:7b`, `qwen2.5-coder:7b`.
-  - OpenClaw routing set to local-first (`ollama/qwen2.5:7b`) with Codex fallback (`openai-codex/gpt-5.3-codex`).
+  - Local models pulled: `qwen2.5:7b`, `qwen2.5-coder:7b`, `qwen2.5:14b`.
+  - OpenClaw routing set to local-first (`ollama/qwen2.5:7b` -> `ollama/qwen2.5:14b`) with Codex fallback (`openai-codex/gpt-5.3-codex`).
 - `DONE` Added reusable routing validation harness: `scripts/openclaw_routing_validation.sh`.
 - `DONE` Added operational safe-turn wrapper: `scripts/openclaw_agent_safe_turn.sh`.
 - `DONE` Added benchmark runner: `scripts/openclaw_safe_turn_benchmark.sh`.
@@ -187,6 +187,7 @@ Direction now in effect:
 - `runbooks/next-steps-planning-20260216.md`: post-eGPU-acceptance planning tracks and execution order.
 - `runbooks/openclaw-overnight-probe.md`: unattended 30-minute safe-turn probe on `rb1` with start/stop/review commands.
 - `runbooks/openclaw-api-key-smoke-rb1-fedora.md`: attended OpenClaw API-key validation flow on `rb1`.
+- `runbooks/openclaw-router-live-trial-v3.md`: current local-first router policy snapshot (`7b -> 14b -> Codex`) with no manual escalation requirement.
 - `runbooks/openclaw-tui-live-blurb-rb1.md`: reversible patch workflow for OpenClaw TUI live action/model/tier footer blurb on `rb1`.
 - `runbooks/cognee-memory-pilot-rb1.md`: safe phased pilot for Cognee as memory sidecar (scope+env prep, isolated trial).
 - `runbooks/rb1-egpu-incident-recovery.md`: primary incident-response workflow for `rb1` eGPU/TB faults.
