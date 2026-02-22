@@ -552,9 +552,15 @@ set_model() {
 run_attempt() {
   local out_json="$1"
   local thinking="$2"
+  local tier="$3"
+  local route_model="$4"
   local local_flag=""
 
+  # Enforce on-host execution for local-model tiers so gateway-side routing
+  # cannot silently jump to a cloud provider while the wrapper believes it's low.
   if [[ "$MODE" == "local" ]]; then
+    local_flag="--local"
+  elif [[ "$tier" != "high" && "$route_model" == ollama/* ]]; then
     local_flag="--local"
   fi
 
@@ -719,7 +725,7 @@ while :; do
     ATTEMPT_RC=90
     record_attempt "$CURRENT_TIER" "$ATTEMPT_MODEL" "$ATTEMPT_THINKING" "$ATTEMPT_RC" "$ATTEMPT_REASON" 1 "$ATTEMPT_OUT"
   else
-    if run_attempt "$ATTEMPT_OUT" "$ATTEMPT_THINKING"; then
+    if run_attempt "$ATTEMPT_OUT" "$ATTEMPT_THINKING" "$CURRENT_TIER" "$ATTEMPT_MODEL"; then
       ATTEMPT_RC=0
     else
       ATTEMPT_RC=$?

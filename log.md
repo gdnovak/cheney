@@ -1125,3 +1125,48 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
   - direct launch and symlink launch both return REPL help successfully.
 - Next action:
   - push fix and re-verify `glados --help` on `rb1-admin`.
+
+## 2026-02-22 15:34 EST (Codex)
+- Area: live unattended monitoring of first semi-real OpenClaw task (speed-test script request)
+- Prompt observed (router REPL):
+  - "Can you please write a short script for internet speed testing? you may save it in the home directory"
+- Evidence captured:
+  - Turn record: `notes/openclaw-artifacts/router-repl-20260222-151845.jsonl`
+  - Safe-turn log/json: `notes/openclaw-artifacts/openclaw-safe-turn-20260222-152052.log` / `.json`
+  - Generated file: `/home/tdj/speed_test.sh` (mtime `2026-02-22 15:31:15 EST`)
+- Performance summary:
+  - Start (`Host=` line): `15:20:52 EST`
+  - Escalation event: `15:21:49 EST` (`local -> low`, reason `local_latency_threshold`)
+  - Completion/cleanup: `15:31:58 EST`
+  - Wall-clock to completion: ~11m06s
+  - Attempt 1 (local `qwen2.5:7b`): `47.5s`, `outputTokens=210`, ended non-final due latency threshold.
+  - Attempt 2 (tier=low but final provider/model reported as `openai-codex/gpt-5.3-codex`): `3.9s`, final success, file creation confirmed.
+- Operational behavior during monitor window:
+  - `ollama runner` stayed heavily loaded (`qwen2.5:14b`, ~`51%/49% CPU/GPU` split) for multiple minutes.
+  - No active `openclaw_agent_safe_turn.sh` after completion; REPL stayed open (`openclaw_router_repl.sh`).
+- Notes:
+  - There is a tier/provenance oddity: attempt chain is `local->low`, but final low-tier provider/model logged as codex. Keep this as a follow-up consistency check.
+- Next action:
+  - On user return, deliver concise performance summary + recommend whether to adjust low-tier routing/thresholds for practical responsiveness.
+
+## 2026-02-22 16:21 EST (Codex)
+- Area: routing consistency fix + generated script QA
+- Routing issue reproduced:
+  - wrapper recorded `tier=low` while final provider/model was codex for some gateway-mode turns.
+- Fix applied:
+  - `scripts/openclaw_agent_safe_turn.sh`
+    - updated `run_attempt()` to force `openclaw agent --local` for non-high tiers when selected route model is `ollama/*`.
+    - preserves gateway path for high tier.
+  - intent: prevent gateway-side router/model override from making low-tier attempts appear as codex.
+- Validation (rb1):
+  - forced local→low→high scenario (`--max-local-elapsed-ms 1`) produced:
+    - local: `ollama/qwen2.5:7b` (`local_latency_threshold`)
+    - low: `ollama/qwen2.5:14b` (`low_latency_threshold`)
+    - high: `openai-codex/gpt-5.3-codex`
+  - confirms low tier now reports/uses local ollama model consistently.
+- Generated script QA (`/home/tdj/speed_test.sh` on rb1):
+  - previous version relied on fragile HTML line scraping from fast.com.
+  - replaced with robust CLI-first probe (`speedtest`/`speedtest-cli` when available) plus ping latency fallback.
+  - script syntax validated and executed on host (throughput skipped when speedtest tools absent; ping succeeded).
+- Next action:
+  - commit/push wrapper fix and logs; pull latest on rb1.
