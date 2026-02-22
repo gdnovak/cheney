@@ -113,6 +113,7 @@ fi
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 WRAPPER="${ROOT_DIR}/scripts/openclaw_agent_safe_turn.sh"
+INPUT_HELPER="${ROOT_DIR}/scripts/openclaw_router_repl_input.py"
 if [[ ! -x "$WRAPPER" ]]; then
   echo "Wrapper not found/executable: $WRAPPER" >&2
   exit 1
@@ -126,6 +127,9 @@ if [[ -z "$JSONL_LOG" ]]; then
 fi
 mkdir -p "$(dirname "$JSONL_LOG")"
 touch "$JSONL_LOG"
+
+HISTORY_FILE="${ARTIFACTS_DIR}/router-repl.history"
+USE_TOOLKIT_INPUT=0
 
 print_status() {
   cat <<EOF
@@ -151,6 +155,47 @@ commands:
   /force <local|low|high|off>  set force tier
   /exit                        quit
 EOF
+}
+
+__router_repl_insert_literal_newline_token() {
+  local left right
+  left="${READLINE_LINE:0:READLINE_POINT}"
+  right="${READLINE_LINE:READLINE_POINT}"
+  READLINE_LINE="${left}\\n${right}"
+  READLINE_POINT=$((READLINE_POINT + 2))
+}
+
+configure_readline_input() {
+  if [[ ! -t 0 || ! -t 1 ]]; then
+    return
+  fi
+  if [[ -x "$INPUT_HELPER" ]] && python3 -c 'import prompt_toolkit' >/dev/null 2>&1; then
+    USE_TOOLKIT_INPUT=1
+    return
+  fi
+  if ! builtin bind -V >/dev/null 2>&1; then
+    return
+  fi
+
+  # Fallback mode when prompt_toolkit is unavailable.
+  # Ctrl+J inserts a visible "\n" token so multiline intent is preserved.
+  set -o emacs
+  bind '"\C-m":accept-line'
+  bind -x '"\C-j":__router_repl_insert_literal_newline_token'
+}
+
+read_repl_input() {
+  if [[ "$USE_TOOLKIT_INPUT" -eq 1 ]]; then
+    line="$(PROMPT_TOOLKIT_NO_CPR=1 "$INPUT_HELPER" --prompt "router> " --history-file "$HISTORY_FILE")"
+    return $?
+  fi
+  if [[ -t 0 && -t 1 ]]; then
+    IFS= read -e -r -p 'router> ' line
+    line="${line//\\n/$'\n'}"
+  else
+    printf 'router> '
+    IFS= read -r line
+  fi
 }
 
 append_turn_log() {
@@ -188,54 +233,55 @@ echo "openclaw router repl"
 print_status
 echo "type /help for commands"
 
+configure_readline_input
+
 while true; do
-  printf 'router> '
-  IFS= read -r line || break
-  line="${line#"${line%%[![:space:]]*}"}"
-  line="${line%"${line##*[![:space:]]}"}"
+  read_repl_input || break
 
-  [[ -n "$line" ]] || continue
+  [[ "$line" =~ [^[:space:]] ]] || continue
 
-  if [[ "$line" == "/exit" ]]; then
-    break
-  fi
-  if [[ "$line" == "/help" ]]; then
-    print_help
-    continue
-  fi
-  if [[ "$line" == "/status" ]]; then
-    print_status
-    continue
-  fi
-  if [[ "$line" == /task\ * ]]; then
-    next="${line#"/task "}"
-    if [[ "$next" == "auto" || "$next" == "basic" || "$next" == "coding_basic" || "$next" == "normal" || "$next" == "high_risk" ]]; then
-      TASK_CLASS="$next"
-      echo "task_class=${TASK_CLASS}"
-    else
-      echo "invalid task class: ${next}"
+  if [[ "$line" != *$'\n'* ]]; then
+    if [[ "$line" == "/exit" ]]; then
+      break
     fi
-    continue
-  fi
-  if [[ "$line" == /thinking\ * ]]; then
-    next="${line#"/thinking "}"
-    if [[ "$next" == "off" || "$next" == "minimal" || "$next" == "low" || "$next" == "medium" || "$next" == "high" ]]; then
-      THINKING="$next"
-      echo "thinking=${THINKING}"
-    else
-      echo "invalid thinking level: ${next}"
+    if [[ "$line" == "/help" ]]; then
+      print_help
+      continue
     fi
-    continue
-  fi
-  if [[ "$line" == /force\ * ]]; then
-    next="${line#"/force "}"
-    if [[ "$next" == "off" || "$next" == "local" || "$next" == "low" || "$next" == "high" ]]; then
-      FORCE_TIER="$next"
-      echo "force_tier=${FORCE_TIER}"
-    else
-      echo "invalid force tier: ${next}"
+    if [[ "$line" == "/status" ]]; then
+      print_status
+      continue
     fi
-    continue
+    if [[ "$line" == /task\ * ]]; then
+      next="${line#"/task "}"
+      if [[ "$next" == "auto" || "$next" == "basic" || "$next" == "coding_basic" || "$next" == "normal" || "$next" == "high_risk" ]]; then
+        TASK_CLASS="$next"
+        echo "task_class=${TASK_CLASS}"
+      else
+        echo "invalid task class: ${next}"
+      fi
+      continue
+    fi
+    if [[ "$line" == /thinking\ * ]]; then
+      next="${line#"/thinking "}"
+      if [[ "$next" == "off" || "$next" == "minimal" || "$next" == "low" || "$next" == "medium" || "$next" == "high" ]]; then
+        THINKING="$next"
+        echo "thinking=${THINKING}"
+      else
+        echo "invalid thinking level: ${next}"
+      fi
+      continue
+    fi
+    if [[ "$line" == /force\ * ]]; then
+      next="${line#"/force "}"
+      if [[ "$next" == "off" || "$next" == "local" || "$next" == "low" || "$next" == "high" ]]; then
+        FORCE_TIER="$next"
+        echo "force_tier=${FORCE_TIER}"
+      else
+        echo "invalid force tier: ${next}"
+      fi
+      continue
+    fi
   fi
 
   tmp_json="$(mktemp)"
@@ -280,4 +326,3 @@ while true; do
 done
 
 echo "bye"
-

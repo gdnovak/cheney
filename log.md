@@ -1037,3 +1037,24 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
     - response: `PONG_rollback_baseline`
 - Next action:
   - implement OpenClaw-TUI-mirrored input behavior from this baseline version.
+
+## 2026-02-22 14:35 EST (Codex)
+- Area: router REPL OpenClaw-TUI input mirroring from v1 baseline
+- Changes implemented:
+  - Added `scripts/openclaw_router_repl_input.py` (prompt-toolkit input helper) to provide editor-style input semantics.
+  - Updated `scripts/openclaw_router_repl.sh` to prefer helper mode on TTY when `prompt_toolkit` is present:
+    - Enter submits message
+    - Ctrl+J inserts newline
+    - multiline prompt continuation shown as `... `
+  - Preserved non-TTY behavior and command handling (`/help`, `/status`, `/task`, `/thinking`, `/force`, `/exit`).
+  - Added fallback path when `prompt_toolkit` is unavailable (readline mode with visible `\\n` token insertion via Ctrl+J).
+- Validation/evidence summary:
+  - `bash -n scripts/openclaw_router_repl.sh` passes.
+  - `python3 -m py_compile scripts/openclaw_router_repl_input.py` passes.
+  - PTY probe confirms helper captures Ctrl+J as real newline (`0a` byte) and Enter as submit.
+  - REPL command smoke in PTY confirms `/status` and `/exit` are parsed locally (no wrapper turn required).
+- Notes:
+  - prompt-toolkit prompt drawing was redirected to stderr so captured message payload stays clean on stdout.
+  - For this host session, installed `prompt_toolkit` user package for attended validation.
+- Next action:
+  - sync this commit to `rb1` and verify behavior in your normal terminal once you reconnect.
