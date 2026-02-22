@@ -1058,3 +1058,15 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
   - For this host session, installed `prompt_toolkit` user package for attended validation.
 - Next action:
   - sync this commit to `rb1` and verify behavior in your normal terminal once you reconnect.
+
+## 2026-02-22 14:51 EST (Codex)
+- Area: rb1 router REPL deployment verification + keybind parity tweak
+- Findings:
+  - `rb1` (`/home/tdj/cheney`) was behind at `a112b9f`; `git pull` had been blocked by an untracked local `scripts/openclaw_router_repl.sh`.
+  - Preserved pre-pull local copy at `notes/local-overrides/openclaw_router_repl.sh.prepull-<timestamp>`, then fast-forwarded to `58e39fd`.
+  - Installed `prompt_toolkit` for `tdj` on `rb1` so TUI-style input path is active.
+  - Verified interactive smoke over `rb1-admin`: `/status` handled locally; `hello` answered by `qwen2.5:7b` (`provider=ollama`, `backstop=0`).
+- Code tweak:
+  - `scripts/openclaw_router_repl_input.py` now accepts OpenClaw-style newline keying with `Alt+Enter` (in addition to `Ctrl+J`), while Enter/CR submit.
+- Next action:
+  - commit/push newline keybind tweak and pull to rb1.

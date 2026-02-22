@@ -44,6 +44,14 @@ def main() -> int:
     def _submit(event) -> None:
         event.current_buffer.validate_and_handle()
 
+    @kb.add("c-m")
+    def _submit_cr(event) -> None:
+        event.current_buffer.validate_and_handle()
+
+    @kb.add("escape", "enter")
+    def _insert_newline_alt_enter(event) -> None:
+        event.current_buffer.insert_text("\n")
+
     @kb.add("c-j")
     def _insert_newline(event) -> None:
         event.current_buffer.insert_text("\n")
