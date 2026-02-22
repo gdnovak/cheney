@@ -130,6 +130,17 @@ touch "$JSONL_LOG"
 
 HISTORY_FILE="${ARTIFACTS_DIR}/router-repl.history"
 USE_TOOLKIT_INPUT=0
+COLOR_ENABLED=0
+CLR_RESET=""
+CLR_ASSIST=""
+CLR_DIAG=""
+
+if [[ -t 1 && -z "${NO_COLOR:-}" ]]; then
+  COLOR_ENABLED=1
+  CLR_RESET=$'\033[0m'
+  CLR_ASSIST=$'\033[97m'
+  CLR_DIAG=$'\033[90m'
+fi
 
 print_status() {
   cat <<EOF
@@ -155,6 +166,34 @@ commands:
   /force <local|low|high|off>  set force tier
   /exit                        quit
 EOF
+}
+
+print_assistant_reply() {
+  local model="$1"
+  local text="$2"
+  if [[ "$COLOR_ENABLED" -eq 1 ]]; then
+    printf '%s[%s] %s%s\n' "$CLR_ASSIST" "$model" "$text" "$CLR_RESET"
+  else
+    printf '[%s] %s\n' "$model" "$text"
+  fi
+}
+
+print_diag_line() {
+  local line="$1"
+  if [[ "$COLOR_ENABLED" -eq 1 ]]; then
+    printf '%s%s%s\n' "$CLR_DIAG" "$line" "$CLR_RESET"
+  else
+    printf '%s\n' "$line"
+  fi
+}
+
+print_diag_block() {
+  local file="$1"
+  local line=""
+  [[ -s "$file" ]] || return 0
+  while IFS= read -r line || [[ -n "$line" ]]; do
+    print_diag_line "[diag] ${line}"
+  done <"$file"
 }
 
 __router_repl_insert_literal_newline_token() {
@@ -285,6 +324,7 @@ while true; do
   fi
 
   tmp_json="$(mktemp)"
+  tmp_diag="$(mktemp)"
   cmd=(
     "$WRAPPER"
     --host "$HOST_ALIAS"
@@ -300,7 +340,7 @@ while true; do
     cmd+=(--force-tier "$FORCE_TIER")
   fi
 
-  if "${cmd[@]}" >"$tmp_json"; then
+  if "${cmd[@]}" >"$tmp_json" 2>"$tmp_diag"; then
     text="$(jq -r '.final.text // ""' "$tmp_json")"
     provider="$(jq -r '.final.provider // "unknown"' "$tmp_json")"
     model="$(jq -r '.final.model // "unknown"' "$tmp_json")"
@@ -308,21 +348,30 @@ while true; do
     backstop="$(jq -r '.backstopUsed // 0' "$tmp_json")"
     rc="$(jq -r '.final.rc // -1' "$tmp_json")"
     chain="$(jq -c '.attemptChain // []' "$tmp_json")"
+    chosen_tier="$(jq -r '.chosenTier // "unknown"' "$tmp_json")"
+    target_tier="$(jq -r '.targetTier // "unknown"' "$tmp_json")"
+    attempt_summary="$(jq -r '[.attempts[]? | "\(.tier):\(.model):\(.durationMs)ms"] | join(",")' "$tmp_json")"
+    if [[ -z "$attempt_summary" || "$attempt_summary" == "null" ]]; then
+      attempt_summary="none"
+    fi
 
-    printf '%s\n' "$text"
+    print_assistant_reply "$model" "$text"
+    print_diag_block "$tmp_diag"
     if [[ "$SHOW_META" -eq 1 ]]; then
-      printf '[meta] provider=%s model=%s rc=%s elapsed_ms=%s backstop=%s chain=%s\n' \
-        "$provider" "$model" "$rc" "$elapsed_ms" "$backstop" "$chain"
+      print_diag_line "[meta] provider=${provider} model=${model} rc=${rc} elapsed_ms=${elapsed_ms} backstop=${backstop} tier=${chosen_tier}/${target_tier} chain=${chain} attempts=${attempt_summary}"
     fi
     append_turn_log "$line" "$tmp_json"
   else
     rc="$?"
-    echo "[error] wrapper failed rc=${rc}"
+    print_diag_block "$tmp_diag"
+    print_diag_line "[error] wrapper failed rc=${rc}"
     if [[ -s "$tmp_json" ]]; then
-      cat "$tmp_json"
+      while IFS= read -r jline || [[ -n "$jline" ]]; do
+        print_diag_line "$jline"
+      done <"$tmp_json"
     fi
   fi
-  rm -f "$tmp_json"
+  rm -f "$tmp_json" "$tmp_diag"
 done
 
 echo "bye"

@@ -1070,3 +1070,22 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
   - `scripts/openclaw_router_repl_input.py` now accepts OpenClaw-style newline keying with `Alt+Enter` (in addition to `Ctrl+J`), while Enter/CR submit.
 - Next action:
   - commit/push newline keybind tweak and pull to rb1.
+
+## 2026-02-22 15:01 EST (Codex)
+- Area: router REPL output clarity (model provenance + diagnostics styling)
+- User-reported issues:
+  - qwen capability appeared inconsistent between sessions.
+  - diagnostic text visually blended with assistant output.
+- Evidence summary:
+  - Parsed `notes/openclaw-artifacts/router-repl-*.jsonl` on rb1 and confirmed mixed behavior across runs:
+    - some turns stayed local (`chosenTier=local`, `final.model=qwen2.5:7b`)
+    - other turns escalated (`chosenTier=high`, `final.model=gpt-5.3-codex`) after latency thresholds.
+  - This mismatch was hard to see in terminal because output lacked model prefix and wrapper diagnostics interleaved in default color.
+- Changes made:
+  - `scripts/openclaw_router_repl.sh`
+    - assistant reply now prefixed with `[model]`.
+    - wrapper stderr diagnostics are captured and printed as `[diag] ...` lines (separate block).
+    - `[meta]` line now includes tier summary and compact attempt timing chain.
+    - diagnostics/meta use dim gray ANSI style on TTY (`NO_COLOR` respected); assistant output remains bright/default.
+- Next action:
+  - push and pull on rb1, then user-validate visual separation and model provenance in attended session.
