@@ -10,7 +10,7 @@ Ensure at least one reliable remote-control path remains available while away, e
 - Current node Ethernet may traverse docks/eGPU enclosures and should be treated as potential failure points.
 - `rb1` management is intentionally on a dedicated USB Ethernet NIC, not on the Razer Core network path.
 
-## Current Methods (Verified 2026-02-20 17:26 EST)
+## Current Methods (Verified 2026-02-22 18:48 EST)
 
 | node_id | primary_remote_method | secondary_remote_method | wake_capability | known_issues | last_tested |
 |---|---|---|---|---|---|
@@ -18,6 +18,7 @@ Ensure at least one reliable remote-control path remains available while away, e
 | rb14-2015 (`rb2-pve`) | SSH alias `rb2` + Proxmox UI `https://192.168.5.108:8006` | VLAN99 fallback endpoint `172.31.99.2` | `Wake-on: g` on `enx00051bde7e6e` | No-battery power risk; no-power AC restore still requires manual button press | 2026-02-16 19:33 EST |
 | mba-2011 (`kabbalah`) | SSH alias `mba` + Proxmox UI `https://192.168.5.66:8006` | utility VM path via `301` | `Wake-on: g` on `nic0` | Aging hardware and slower reboot profile | 2026-02-16 19:33 EST |
 | truenas VM (`100` on `rb2`) | LAN service endpoint `192.168.5.100` | Proxmox console from `rb2` | n/a (VM) | VM guest agent unavailable; manage via LAN and host-level controls | 2026-02-16 19:33 EST |
+| fedora workstation (`fedora`) | SSH endpoint `tdj@192.168.5.81` on LAN | off-LAN SSH via Tailscale subnet route (`tsDeb` primary `192.168.5.102`, backup node `lchl-tsnode-mba` `192.168.5.113`) | NetworkManager WoL policy set to `magic` on `enp4s0`; `/sys/.../power/wakeup=enabled` | Depends on client Tailscale being connected when away; local host tailscaled intentionally disabled | 2026-02-22 18:48 EST |
 
 ## `rb1-fedora` Access Baseline (Applied 2026-02-16)
 
@@ -73,6 +74,15 @@ Ensure at least one reliable remote-control path remains available while away, e
 Runbook:
 
 - `runbooks/tailscale-node-staging-rb2-mba.md`
+
+## Away Access Posture (`fedora`, `192.168.5.81`)
+
+- Current chosen posture: keep host SSH/firewall default and rely on Tailscale subnet-route access when off-LAN.
+- Travel scripted firewall/scheduler experiment was retired on 2026-02-22:
+  - no active `cheney-travel-ssh-*` systemd user timers/services
+  - no custom SSH rich-rules left in firewalld
+- Validation outcome:
+  - MBP off-LAN (iPhone hotspot) + Tailscale ON successfully reached `ssh tdj@192.168.5.81` on 2026-02-22 18:48 EST.
 
 ## Watcher Status
 
