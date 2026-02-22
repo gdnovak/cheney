@@ -1089,3 +1089,28 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
     - diagnostics/meta use dim gray ANSI style on TTY (`NO_COLOR` respected); assistant output remains bright/default.
 - Next action:
   - push and pull on rb1, then user-validate visual separation and model provenance in attended session.
+
+## 2026-02-22 15:03 EST (Codex)
+- Area: router REPL clarity patch deployed
+- Commit/push:
+  - `0ed27d0` (`Clarify REPL model provenance and style diagnostics`)
+- Sync:
+  - pulled on rb1 (`rb1-admin`) to `0ed27d0`.
+- Verification:
+  - forced high-tier smoke shows explicit codex provenance:
+    - output prefix: `[gpt-5.3-codex] ...`
+    - diagnostics: `[diag] ...`
+    - meta shows tier/attempt chain (`chain=["high"]`).
+- Note:
+  - this removes ambiguity between local qwen turns and codex escalations.
+
+## 2026-02-22 15:16 EST (Codex)
+- Area: rb1-admin UI shortcut
+- Added launcher scripts:
+  - `scripts/glados-ui`: runs router REPL with attended defaults (`--mode gateway --host local --agent main`).
+  - `scripts/install_glados_shortcut.sh`: installs `~/.local/bin/glados` and `~/.local/bin/glados-ui` symlinks.
+- Validation:
+  - both scripts pass `bash -n`.
+  - launcher help path verified (`scripts/glados-ui --help`).
+- Next action:
+  - pull latest on `rb1` and run installer as `rb1-admin`, then confirm `glados` starts REPL from any directory.

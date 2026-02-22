@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+REPL="${ROOT_DIR}/scripts/openclaw_router_repl.sh"
+
+if [[ ! -x "$REPL" ]]; then
+  echo "router repl script not found or not executable: $REPL" >&2
+  exit 1
+fi
+
+exec "$REPL" \
+  --mode gateway \
+  --host local \
+  --agent main \
+  "$@"
