@@ -836,3 +836,204 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
   - Historical logs still contain earlier lock/runtime failures from prior runs; this gate confirms current write-path and minimal pipeline are now healthy.
 - Next action:
   - proceed with intended Cognify workload, starting with bounded batch settings (`--chunks-per-batch 1`) then scale up if stable.
+
+## 2026-02-21 21:33 EST (Codex)
+- Area: Cognify overnight continuity handoff (`rb1-fedora`)
+- Commit/push checkpoint completed before run:
+  - commit `a112b9f` pushed to `origin/main` (`Switch safe-turn to local-first v3 and unblock cognify readiness`).
+- Run status:
+  - Active dataset run: `cheney_scope_20260221-211845`
+  - Active command: `timeout 1800 ./.venv/bin/cognee-cli cognify --datasets cheney_scope_20260221-211845 --chunker TextChunker --chunk-size 700 --chunks-per-batch 1`
+  - Observed behavior: slow but progressing; repeated long Ollama chat-completion calls (roughly ~1m to ~3m), logs and GPU utilization continue advancing.
+- Continuity action (no-loss handoff):
+  - Added detached continuation watcher script on `rb1`:
+    - `/home/tdj/cheney/notes/cognee/cognify-attempt-20260221-211845/overnight-continuation.sh`
+  - Started detached watcher PID:
+    - `287697`
+  - Watcher behavior:
+    1) wait for existing dataset run to end,
+    2) if existing run already succeeded, skip re-cognify and run search verification,
+    3) otherwise launch same dataset `cognify` without timeout,
+    4) run post-search check and log outputs.
+  - Watcher logs/artifacts:
+    - wait log: `/home/tdj/cheney/notes/cognee/cognify-attempt-20260221-211845/overnight-continuation.log`
+    - launch out: `/home/tdj/cheney/notes/cognee/cognify-attempt-20260221-211845/overnight-continuation.launch.out`
+    - pid file: `/home/tdj/cheney/notes/cognee/cognify-attempt-20260221-211845/overnight-continuation.pid`
+    - continuation cognify/search logs will write to `cognify-continuation.log` and `search-continuation.log` in the same attempt dir.
+- Next action:
+  - Leave overnight; in next session check continuation logs + final dataset search output to confirm completion quality.
+
+## 2026-02-21 21:56 EST (Codex)
+- Area: Cognify overnight run bedtime checkpoint (`rb1-fedora`)
+- Dataset: `cheney_scope_20260221-211845`
+- Outcome:
+  - Primary bounded run (`timeout 1800`) ended around `21:49 EST`.
+  - Detached continuation watcher took over and ran a no-timeout continuation.
+  - Continuation log reports success:
+    - `Success: Cognification completed successfully!`
+    - `[COGNIFY-CONT] end 2026-02-21 21:49:36 EST rc=0`
+  - No active `cognee-cli cognify`/`search` processes remain.
+- Verification evidence:
+  - Runtime log closed cleanly (`/home/tdj/cognee-native/.venv/lib/python3.12/site-packages/logs/2026-02-21_21-49-29.log`).
+  - Manual post-run retrieval check passed:
+    - `cognee-cli search --query-type CHUNKS --datasets cheney_scope_20260221-211845 --top-k 3 ...`
+    - returned 3 relevant chunks from indexed Cheney docs.
+- Notes:
+  - `search-continuation.log` was not produced by the watcher path; manual search validation was executed instead to confirm retrieval readiness.
+- Next action:
+  - Morning: run quality pass (spot-check retrieved chunk relevance and summarize any hallucination/coverage gaps before expanding scope).
+
+## 2026-02-21 22:15 EST (Codex)
+- Area: RB1 overnight diagnostics launch (local model + Codex stack viability)
+- Scope implemented:
+  - Added runner: `scripts/rb1_overnight_diagnostics.sh`
+  - Added report generator: `scripts/rb1_overnight_diagnostics_report.sh`
+  - Diagnostics lanes now include:
+    1) host/network/GPU health sampling
+    2) OpenClaw local assistant probe (`task-class basic`)
+    3) raw Ollama local model probe (`qwen2.5:7b`)
+    4) forced Codex high-tier probe (`--force-tier high`)
+- Validation before launch:
+  - Two bounded smoke runs on `rb1` passed (`overnight-diagnostics-smoke*`) with 100% success on assistant + codex + raw lanes.
+- Active overnight run:
+  - Run dir: `/home/tdj/cheney/notes/diagnostics/overnight-diagnostics-20260221-221321`
+  - PID: `310392`
+  - Launch out: `notes/diagnostics/overnight-diagnostics-launch-20260221-221321.out`
+  - Settings: duration `8h`, health every `300s`, assistant every `1800s`, forced-codex every `5400s`, temp guard `82C`.
+  - Early status: first cycle completed successfully on all lanes (`assistant_local`, `local_raw`, `codex_forced_high`).
+- First report artifact created (interim):
+  - `/home/tdj/cheney/notes/overnight-diagnostics-report-20260221-221442.md`
+- Morning command:
+  - `ssh rb1-admin 'cd /home/tdj/cheney && scripts/rb1_overnight_diagnostics_report.sh'`
+- Next action:
+  - Morning: stop/confirm completion, generate final report, then decide whether current local+codex stack is stable enough for assistant duty.
+
+## 2026-02-22 08:32 EST (Codex)
+- Area: overnight diagnostics final readout (`rb1-fedora`)
+- Run analyzed:
+  - `/home/tdj/cheney/notes/diagnostics/overnight-diagnostics-20260221-221321`
+  - Start: `2026-02-21 22:13:21 EST`
+  - End: `2026-02-22 06:13:25 EST` (`rc=0`)
+- Final report artifact:
+  - `/home/tdj/cheney/notes/overnight-diagnostics-report-20260222-133004.md`
+- Key outcomes:
+  - Verdict: `FUNCTIONAL_CANDIDATE`
+  - Assistant lane (OpenClaw local path): `16/16` success, `0` failures, `avg=32580ms`, `p95=34579ms`, `backstop_count=0`.
+  - Forced Codex lane: `6/6` success, `0` failures, `avg=12771ms`, `p95=13219ms`.
+  - Raw Ollama lane: `16/16` success, `0` failures, `avg=9532ms`, `p95=9775ms`.
+  - Health/network: `96` samples, `0` gateway/internet/DNS failures, `max_gpu_temp_c=59`, no NIC RX/TX errors.
+- Caveat found:
+  - `kernel_error_events` in report (`109`) overstates actual unique kernel error lines during the run window due per-sample counting overlap at timestamp boundaries.
+  - Direct journal query over run window shows `19` lines, all same type:
+    - `pcieport 0000:0e:01.0: AER: Error of this Agent is reported first`
+- Readiness interpretation:
+  - Stack is stable enough for assistant candidacy from a reliability perspective.
+  - Remaining tradeoff is local response latency (~30-35s via safe-turn local lane).
+- Next action:
+  - Decide whether to tune local path latency thresholds/model mix for responsiveness and patch kernel-error aggregation to de-duplicate boundary overlap.
+
+## 2026-02-22 13:36 EST (Codex)
+- Area: rb1 toolchain baseline
+- Action:
+  - Installed `ripgrep` on `rb1-fedora` via `sudo dnf install -y ripgrep`.
+- Verification:
+  - `rg --version` => `ripgrep 14.1.1`
+- Reason:
+  - Enables fast repo/log search for ongoing diagnostics and assistant quality analysis.
+- Next action:
+  - Use `rg` in follow-up natural-prompt overnight evaluation scripts.
+
+## 2026-02-22 13:41 EST (Codex)
+- Area: router-backed interactive CLI (`rb1` + repo)
+- Change:
+  - Added `scripts/openclaw_router_repl.sh` to provide an interactive REPL that always routes through `scripts/openclaw_agent_safe_turn.sh`.
+  - This avoids direct `openclaw tui` routing bypass and preserves local-first/fallback policy.
+- Features:
+  - REPL commands: `/help`, `/status`, `/task`, `/thinking`, `/force`, `/exit`
+  - Per-turn metadata display (provider/model/latency/backstop/attempt chain)
+  - JSONL turn log output under `notes/openclaw-artifacts/router-repl-*.jsonl`
+- Verification:
+  - Smoke run on `rb1` via piped input succeeded:
+    - prompt: `ping from router repl`
+    - response: `PONG`
+    - meta: provider `ollama`, model `qwen2.5:7b`, chain `["local"]`
+- Next action:
+  - Use this REPL as the default terminal interface when you want policy-consistent assistant interaction.
+
+## 2026-02-22 13:56 EST (Codex)
+- Area: router REPL UX improvements (`scripts/openclaw_router_repl.sh`)
+- Changes implemented:
+  - Added visual separation between assistant output and diagnostics.
+    - Assistant output remains plain/bright.
+    - Diagnostics/meta/error use separate styling channels (dim/error coloring when TTY supports ANSI).
+    - Wrapper stderr is now captured and emitted in a dedicated diagnostics block, avoiding interleaving.
+  - Added multiline compose mode:
+    - `/multi` enters compose mode
+    - `/end` submits composed multiline prompt
+    - `/cancel` aborts compose
+    - line editing uses readline when attached to a TTY
+  - Added REPL toggles:
+    - `--hide-meta` / `--show-meta`
+    - `--hide-diag` / `--show-diag`
+    - `--no-color`
+- Verification on `rb1`:
+  - Single-turn smoke (`ping from styled repl`) returned `PONG` with separated meta + diagnostics block.
+  - Multiline smoke (`/multi` + `Write exactly MULTI_OK`) returned `MULTI_OK` and cleanly exited.
+- Next action:
+  - use this REPL as default attended CLI; optionally trim diagnostics verbosity further if desired.
+
+## 2026-02-22 14:03 EST (Codex)
+- Area: router REPL input/output UX follow-up (`scripts/openclaw_router_repl.sh`)
+- Requested behavior implemented:
+  - Assistant output now starts with model identifier prefix: `[modelname] ...`.
+  - Default input mode is multiline-capable without command mode switching:
+    - Enter sends message
+    - Ctrl+J inserts newline
+  - Existing diagnostics separation retained (dedicated diagnostics block; no stderr interleave).
+- Additional fixes:
+  - Hardened input read return handling for interrupt/EOF paths under `set -e`.
+- Validation:
+  - `rb1` smoke test succeeded with prefix output:
+    - `router> [qwen2.5:7b] PONG_model_prefix_test`
+  - Script syntax checks pass locally and on `rb1`.
+- Note:
+  - Ctrl+J/newline behavior depends on terminal key mapping (the script differentiates CR vs LF in TTY raw mode).
+- Next action:
+  - if any terminal sends Enter as LF instead of CR, apply a per-terminal fallback binding strategy.
+
+## 2026-02-22 14:12 EST (Codex)
+- Area: router REPL input model revision (`scripts/openclaw_router_repl.sh`)
+- Why:
+  - Prior raw-input mode still produced poor wrapped-line editing behavior and diagnostics/readability issues in interactive use.
+- Changes:
+  - Replaced raw keystroke loop with readline-backed input path (interactive Bash re-exec on TTY).
+  - Added readline keybinding intent:
+    - Enter => send
+    - Ctrl+J => insert newline (`bind "\C-j":"\C-q\C-j"`)
+  - Kept diagnostics separation and model-prefix output:
+    - assistant line now begins with `[model]`
+    - diagnostics remain in dim block (when color enabled)
+- Validation:
+  - `rb1` smoke pass:
+    - prompt: `ping model prefix retest`
+    - output: `[gpt-5.3-codex] PONG_model_prefix_retest`
+    - meta: provider `openai-codex`, `backstop=1`, chain `local->low->high`
+- Note:
+  - True Ctrl+J newline behavior is terminal-dependent and should be verified in attended TTY use.
+  - If key mapping still misbehaves in your terminal, next step is to mirror OpenClaw TUI’s exact input widget behavior.
+
+## 2026-02-22 14:24 EST (Codex)
+- Area: router REPL rollback + baseline preservation
+- Action requested:
+  - rolled `scripts/openclaw_router_repl.sh` back to the first/original version.
+  - saved that exact content as baseline at:
+    - `scripts/baselines/openclaw_router_repl.v1.sh`
+- Verification:
+  - local syntax checks pass for both files.
+  - exact match confirmed:
+    - `cmp scripts/openclaw_router_repl.sh scripts/baselines/openclaw_router_repl.v1.sh` => match
+  - synced rollback to `rb1` and smoke-tested:
+    - prompt: `ping rollback baseline`
+    - response: `PONG_rollback_baseline`
+- Next action:
+  - implement OpenClaw-TUI-mirrored input behavior from this baseline version.
