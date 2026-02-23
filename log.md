@@ -1552,3 +1552,99 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
     - `log.md`
 - Next action:
   - Optional: add host-side one-liner wrappers on `rb1`/`mba` for local self-check of WoL config before travel windows.
+
+## 2026-02-22 20:22 EST (Codex)
+- Area: smart-switch uplink cable swap validation (before/after)
+- Status:
+  - Captured pre-swap snapshot: `notes/network-uplink-swap/20260222-201007-before-uplink-cable-swap.txt`.
+  - Captured post-swap snapshot: `notes/network-uplink-swap/20260222-202149-after-uplink-cable-swap.txt`.
+  - IP/routing continuity check passed; no topology/IP drift detected after replacing the uplink cable.
+    - local host remained `192.168.5.81/22`, default gateway `192.168.4.1`.
+    - `rb1` remained `192.168.5.114/22`.
+    - `rb2` remained `192.168.5.108/22`.
+    - `mba` remained `192.168.5.66/22`.
+  - Connectivity checks remained healthy post-swap:
+    - gateway ping up, internet ping up (`1.1.1.1`, `8.8.8.8`), DNS resolution OK.
+    - LAN targets (`192.168.5.114`, `192.168.5.108`, `192.168.5.66`, `192.168.5.100`) all up.
+  - Expected minor variance only: DNS answer for `github.com` changed (`140.82.112.4` -> `140.82.113.3`), which is normal CDN rotation and not a local network regression.
+- Next action:
+  - None required; cable replacement validated as no-impact for addressing/connectivity.
+
+## 2026-02-22 20:27 EST (Codex)
+- Area: post-settings WoL interference check (`fedora` target)
+- Status:
+  - User requested verification after changing desktop remote-desktop settings.
+  - Confirmed local WoL intent/config still intact:
+    - `enp4s0` up on `192.168.5.81/22`
+    - NM WoL policy: `magic`
+    - `/sys/class/net/enp4s0/device/power/wakeup`: `enabled`
+  - Confirmed sender readiness on `rb2`:
+    - `enx00051bde7e6e` still `Wake-on: g`
+  - Ran non-disruptive pickup test:
+    - started packet capture on `mba` (`vmbr0`), sent WoL from `rb2` to `fedora` MAC `3c:cd:36:67:e2:45`
+    - capture shows UDP/9 broadcast from `192.168.5.108` to `255.255.255.255`
+    - payload includes repeated `3c:cd:36:67:e2:45` magic pattern
+  - Evidence artifact:
+    - `notes/wol-artifacts/rb2-wol-fedora-post-remote-desktop-setting-20260222-202637.log`
+- Conclusion:
+  - No observed interference from the remote-desktop settings change; WoL packet path/pickup remains healthy.
+- Next action:
+  - None required unless you want a full suspend-to-wake confirmation pass again.
+
+## 2026-02-22 22:38 EST (Codex)
+- Area: TrueNAS 1TB add attempt + fallback to oyPool backup path
+- Status:
+  - User authorized non-perfect path to attempt 1TB pool bring-up.
+  - Brought VM100 up with explicit USB mappings and temporarily added third passthrough (`usb2: host=4-2.2.2,usb3=1`).
+  - 1TB candidate disk repeatedly failed low-sector reads (`sector 0` / `Input/output error` / unrecovered read errors) on both host and guest probes.
+  - `rb1Backups` pool could be created on the device but accumulated immediate read errors and unstable create behavior; disk judged non-functional for reliable use.
+  - Per user conditional instruction, abandoned bad-disk path and reverted VM100 to stable mapping (`usb0` easystore + `usb1` oyPool bridge only; removed `usb2`).
+  - Post-revert validation: TrueNAS reachable, QGA up, `zpool status -xv` healthy for `boot-pool`, `oyPool`, and `veyDisk`.
+- Data movement attempt:
+  - Copied existing `oyPool/rb1AssistantBackups` content to `rb1Backups/backups/rb1AssistantBackups` during test path (file/dir counts matched), but this target is on the bad disk and not used after fallback.
+- Executed backup action (fallback plan):
+  - Ran regular rb1 backup to oyPool via `/home/tdj/bin/rb1_truenas_backup.sh create overwrite-20260222-223637`.
+  - Pruned to latest only: `/home/tdj/bin/rb1_truenas_backup.sh prune 1`.
+  - Verification: only snapshot remaining is `overwrite-20260222-223637` under `/mnt/oyPool/rb1AssistantBackups/snapshots`; measured size ~23M.
+- User-facing state:
+  - Bad disk is safe to eject after usb2 removal (not mounted/held by host; VM no longer mapped to it).
+- Next action:
+  - If a healthy replacement 1TB disk is attached later, recreate `rb1Backups` cleanly and migrate from oyPool in one pass.
+
+## 2026-02-22 22:52 EST (Codex)
+- Area: rb1 assistant stack teardown + reboot clean-slate validation
+- Scope requested:
+  1. Checksum backup.
+  2. If backup good, remove assistant stack except Codex (if present).
+  3. Reboot and verify clean state.
+- Backup integrity evidence:
+  - Target snapshot: `/mnt/oyPool/rb1AssistantBackups/snapshots/overwrite-20260222-223637`.
+  - Generated per-file manifest (`934` files):
+    - `/mnt/oyPool/rb1AssistantBackups/snapshots/overwrite-20260222-223637/meta/file_sha256_manifest-20260222-194925.txt`
+    - `/mnt/oyPool/rb1AssistantBackups/snapshots/overwrite-20260222-223637/meta/file_sha256_manifest-20260222-194925.txt.sha256`
+  - Manifest self-check passed: `sha256sum -c ... : OK`.
+- Teardown performed on `rb1-fedora`:
+  - Stopped/disabled `ollama.service`.
+  - Stopped/disabled user `openclaw` gateway unit(s) and removed user unit file.
+  - Removed global npm assistant packages (root + `tdj`): `openclaw`, `clawhub`, `mcporter`, `@steipete/oracle`.
+  - Removed assistant state dirs:
+    - `/home/tdj/.openclaw`
+    - `/home/tdj/.config/openclaw`
+    - `/home/tdj/cognee-native`
+    - `/home/tdj/cognee-pilot`
+    - related caches under `/home/tdj/.cache/*`
+  - Removed Ollama runtime artifacts (`/usr/share/ollama`, binary/service files).
+  - Cleaned stale OpenClaw completion line from `/home/tdj/.bashrc`.
+  - Preserved Codex artifacts (`/home/tdj/.codex`).
+- Reboot and post-boot validation:
+  - Reboot issued; host returned (`rb1-fedora`) in ~12s.
+  - Post-boot checks show:
+    - no `ollama`/`openclaw`/`cognee` services,
+    - no assistant processes,
+    - npm global list empty,
+    - assistant data dirs removed,
+    - `.codex` still present.
+- Additional operator note:
+  - Bad disk is safe to eject (`usb2` removed from VM100; host shows no holders/mounts on the failed device path).
+- Next action:
+  - Ready for new assistant strategy bootstrap from clean baseline.
