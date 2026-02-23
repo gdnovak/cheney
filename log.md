@@ -1534,3 +1534,21 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
     - `runbooks/wol-from-rb2-validation.md`
 - Next action:
   - Commit and push WoL/SSH validation updates.
+
+## 2026-02-22 19:56 EST (Codex)
+- Area: WoL+SSH validation batch committed and pushed
+- Status:
+  - Committed validation batch on `main`:
+    - commit `9743978`
+    - message: `docs: validate rb2 WoL+SSH baseline across core hosts`
+  - Pushed to origin:
+    - `d31452e..9743978  main -> main`
+  - Scope included:
+    - `scripts/rb2_send_wol.sh`
+    - `runbooks/wol-from-rb2-validation.md`
+    - `inventory/network-remote-access.md`
+    - `notes/wol-artifacts/rb2-wol-wake-test-fedora-20260222.log`
+    - `notes/wol-artifacts/rb2-wol-multi-target-emission-20260222-195432.log`
+    - `log.md`
+- Next action:
+  - Optional: add host-side one-liner wrappers on `rb1`/`mba` for local self-check of WoL config before travel windows.
