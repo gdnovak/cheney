@@ -1,0 +1,29 @@
+start 2026-02-22_14:49:54
+pre-drop ping=up t=14:49:54 i=1
+pre-drop ping=up t=14:49:55 i=2
+pre-drop ping=up t=14:49:56 i=3
+pre-drop ping=up t=14:49:57 i=4
+pre-drop ping=up t=14:49:58 i=5
+pre-drop ping=up t=14:49:59 i=6
+pre-drop ping=up t=14:50:00 i=7
+pre-drop ping=down t=14:50:02 i=8 fail_streak=1
+pre-drop ping=down t=14:50:04 i=9 fail_streak=2
+detected_suspend_like_drop t=14:50:04
+Sending magic packet to 255.255.255.255:9 with 3c:cd:36:67:e2:45
+wol_sent t=14:50:06 n=1
+Sending magic packet to 255.255.255.255:9 with 3c:cd:36:67:e2:45
+wol_sent t=14:50:07 n=2
+Sending magic packet to 255.255.255.255:9 with 3c:cd:36:67:e2:45
+wol_sent t=14:50:08 n=3
+post-wol ping=down t=14:50:10 j=1
+post-wol ping=down t=14:50:12 j=2
+post-wol ping=down t=14:50:14 j=3
+post-wol ping=down t=14:50:16 j=4
+post-wol ping=down t=14:50:18 j=5
+post-wol ping=down t=14:50:20 j=6
+post-wol ping=down t=14:50:22 j=7
+post-wol ping=down t=14:50:24 j=8
+post-wol ping=down t=14:50:26 j=9
+post-wol ping=down t=14:50:28 j=10
+post-wol ping=up t=14:50:30 j=11
+done 2026-02-22_14:50:30

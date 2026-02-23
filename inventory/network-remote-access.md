@@ -10,15 +10,15 @@ Ensure at least one reliable remote-control path remains available while away, e
 - Current node Ethernet may traverse docks/eGPU enclosures and should be treated as potential failure points.
 - `rb1` management is intentionally on a dedicated USB Ethernet NIC, not on the Razer Core network path.
 
-## Current Methods (Verified 2026-02-22 18:48 EST)
+## Current Methods (Verified 2026-02-22 19:54 EST)
 
 | node_id | primary_remote_method | secondary_remote_method | wake_capability | known_issues | last_tested |
 |---|---|---|---|---|---|
-| rb14-2017 (`rb1-fedora`) | SSH alias `rb1-admin` (`tdj@192.168.5.114`, stable fallback mgmt) | direct primary-route path `tdj@192.168.5.115` (`egpu-primary`) | Hardware WoL available on eGPU NIC (`enp20s0u1`: `Supports Wake-on: pg`, `Wake-on: g`) | Primary route depends on eGPU/TB path stability; USB fallback NIC remains no-hardware-WoL | 2026-02-20 17:26 EST |
-| rb14-2015 (`rb2-pve`) | SSH alias `rb2` + Proxmox UI `https://192.168.5.108:8006` | VLAN99 fallback endpoint `172.31.99.2` | `Wake-on: g` on `enx00051bde7e6e` | No-battery power risk; no-power AC restore still requires manual button press | 2026-02-16 19:33 EST |
-| mba-2011 (`kabbalah`) | SSH alias `mba` + Proxmox UI `https://192.168.5.66:8006` | utility VM path via `301` | `Wake-on: g` on `nic0` | Aging hardware and slower reboot profile | 2026-02-16 19:33 EST |
+| rb14-2017 (`rb1-fedora`) | SSH alias `rb1-admin` (`tdj@192.168.5.114`, stable fallback mgmt) | direct primary-route path `tdj@192.168.5.115` (`egpu-primary`) | Hardware WoL available on eGPU NIC (`enp20s0u1`: `Supports Wake-on: pg`, `Wake-on: g`) | Primary route depends on eGPU/TB path stability; USB fallback NIC remains no-hardware-WoL | 2026-02-22 19:54 EST |
+| rb14-2015 (`rb2-pve`) | SSH alias `rb2` + Proxmox UI `https://192.168.5.108:8006` | VLAN99 fallback endpoint `172.31.99.2` | `Wake-on: g` on `enx00051bde7e6e` | No-battery power risk; no-power AC restore still requires manual button press | 2026-02-22 19:54 EST |
+| mba-2011 (`kabbalah`) | SSH alias `mba` + Proxmox UI `https://192.168.5.66:8006` | utility VM path via `301` | `Wake-on: g` on `nic0` | Aging hardware and slower reboot profile | 2026-02-22 19:54 EST |
 | truenas VM (`100` on `rb2`) | LAN service endpoint `192.168.5.100` | Proxmox console from `rb2` | n/a (VM) | VM guest agent unavailable; manage via LAN and host-level controls | 2026-02-16 19:33 EST |
-| fedora workstation (`fedora`) | SSH endpoint `tdj@192.168.5.81` on LAN | off-LAN SSH via Tailscale subnet route (`tsDeb` primary `192.168.5.102`, backup node `lchl-tsnode-mba` `192.168.5.113`) | NetworkManager WoL policy set to `magic` on `enp4s0`; `/sys/.../power/wakeup=enabled` | Depends on client Tailscale being connected when away; local host tailscaled intentionally disabled | 2026-02-22 18:48 EST |
+| fedora workstation (`fedora`) | SSH endpoint `tdj@192.168.5.81` on LAN | off-LAN SSH via Tailscale subnet route (`tsDeb` primary `192.168.5.102`, backup node `lchl-tsnode-mba` `192.168.5.113`) | WoL validated from `rb2` to `enp4s0` MAC `3c:cd:36:67:e2:45` (suspend-to-wake test passed); NetworkManager policy `magic`; `/sys/.../power/wakeup=enabled` | Depends on client Tailscale being connected when away; local host tailscaled intentionally disabled | 2026-02-22 19:50 EST |
 
 ## `rb1-fedora` Access Baseline (Applied 2026-02-16)
 
@@ -40,8 +40,16 @@ Ensure at least one reliable remote-control path remains available while away, e
 | node_id | supports_wol | tested_result | blockers | fallback |
 |---|---|---|---|---|
 | rb14-2017 (`rb1-fedora`) | Yes (via eGPU NIC path) | `enp20s0u1` now runs as preferred route (`egpu-primary`, metric `80`) with `Supports Wake-on: pg` and `Wake-on: g`. Magic packet traffic to eGPU MAC was captured on-wire from `rb2`. USB fallback NIC (`enp0s20f0u1c2`, `cdc_ncm`) still does not expose hardware WoL. | WoL depends on eGPU Ethernet cable/link being present | Keep USB fallback route for continuity; keep smart plug/manual wake as tertiary path |
-| rb14-2015 (`rb2-pve`) | Yes (limited by no-power behavior) | `ethtool` reports `Wake-on: g`; prior no-power recovery test showed manual power-on required | WoL does not recover node from fully unpowered state | Smart plug cycle + manual power contingency |
-| mba-2011 (`kabbalah`) | Yes | `ethtool` reports `Wake-on: g` | True wake-from-off behavior should be periodically revalidated | Scheduled power window/manual recovery |
+| rb14-2015 (`rb2-pve`) | Yes (limited by no-power behavior) | `ethtool` reports `Wake-on: g` on `enx00051bde7e6e`. Sender-host packet emission validated on-wire from `rb2` to broadcast `255.255.255.255:9`, including payload MAC `00:05:1b:de:7e:6e`. Prior no-power recovery test showed manual power-on required from fully unpowered state. | WoL does not recover node from fully unpowered state | Smart plug cycle + manual power contingency |
+| mba-2011 (`kabbalah`) | Yes | `ethtool` reports `Wake-on: g` on `nic0`. `rb2` packet emission validation includes payload MAC `00:24:32:16:8e:d3` on broadcast `255.255.255.255:9`. | True wake-from-off behavior should be periodically revalidated | Scheduled power window/manual recovery |
+
+### `rb2` WoL Sender Notes (2026-02-22)
+
+- `rb2` sender utility present: `/usr/bin/wakeonlan`.
+- On current `192.168.4.0/22` LAN, use broadcast `255.255.255.255` (or directed broadcast `192.168.7.255`), not `192.168.5.255`.
+- Reproducible sender script: `scripts/rb2_send_wol.sh`.
+- Validation runbook: `runbooks/wol-from-rb2-validation.md`.
+- Multi-target packet emission artifact: `notes/wol-artifacts/rb2-wol-multi-target-emission-20260222-195432.log`.
 
 ## Fallback Management Path Status
 

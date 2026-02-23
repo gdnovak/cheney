@@ -1,0 +1,44 @@
+# rb2 WoL multi-target emission validation
+# generated_at 2026-02-22 19:54:32 EST
+# sender=rb2 iface=enx00051bde7e6e broadcast=255.255.255.255
+# targets: rb1=90:20:3a:1b:e8:d6 rb2=00:05:1b:de:7e:6e mba=00:24:32:16:8e:d3
+Sending magic packet to 255.255.255.255:9 with 90:20:3a:1b:e8:d6
+Sending magic packet to 255.255.255.255:9 with 00:05:1b:de:7e:6e
+Sending magic packet to 255.255.255.255:9 with 00:24:32:16:8e:d3
+---capture---
+tcpdump: verbose output suppressed, use -v[v]... for full protocol decode
+listening on enx00051bde7e6e, link-type EN10MB (Ethernet), snapshot length 262144 bytes
+14:54:34.336941 IP 192.168.5.108.36361 > 255.255.255.255.9: UDP, length 102
+	0x0000:  ffff ffff ffff 0005 1bde 7e6e 0800 4500  ..........~n..E.
+	0x0010:  0082 7cba 4000 4011 f79c c0a8 056c ffff  ..|.@.@......l..
+	0x0020:  ffff 8e09 0009 006e c693 ffff ffff ffff  .......n........
+	0x0030:  9020 3a1b e8d6 9020 3a1b e8d6 9020 3a1b  ..:.....:.....:.
+	0x0040:  e8d6 9020 3a1b e8d6 9020 3a1b e8d6 9020  ....:.....:.....
+	0x0050:  3a1b e8d6 9020 3a1b e8d6 9020 3a1b e8d6  :.....:.....:...
+	0x0060:  9020 3a1b e8d6 9020 3a1b e8d6 9020 3a1b  ..:.....:.....:.
+	0x0070:  e8d6 9020 3a1b e8d6 9020 3a1b e8d6 9020  ....:.....:.....
+	0x0080:  3a1b e8d6 9020 3a1b e8d6 9020 3a1b e8d6  :.....:.....:...
+14:54:34.351633 IP 192.168.5.108.35237 > 255.255.255.255.9: UDP, length 102
+	0x0000:  ffff ffff ffff 0005 1bde 7e6e 0800 4500  ..........~n..E.
+	0x0010:  0082 7cc1 4000 4011 f795 c0a8 056c ffff  ..|.@.@......l..
+	0x0020:  ffff 89a5 0009 006e c693 ffff ffff ffff  .......n........
+	0x0030:  0005 1bde 7e6e 0005 1bde 7e6e 0005 1bde  ....~n....~n....
+	0x0040:  7e6e 0005 1bde 7e6e 0005 1bde 7e6e 0005  ~n....~n....~n..
+	0x0050:  1bde 7e6e 0005 1bde 7e6e 0005 1bde 7e6e  ..~n....~n....~n
+	0x0060:  0005 1bde 7e6e 0005 1bde 7e6e 0005 1bde  ....~n....~n....
+	0x0070:  7e6e 0005 1bde 7e6e 0005 1bde 7e6e 0005  ~n....~n....~n..
+	0x0080:  1bde 7e6e 0005 1bde 7e6e 0005 1bde 7e6e  ..~n....~n....~n
+14:54:34.366062 IP 192.168.5.108.56085 > 255.255.255.255.9: UDP, length 102
+	0x0000:  ffff ffff ffff 0005 1bde 7e6e 0800 4500  ..........~n..E.
+	0x0010:  0082 7cca 4000 4011 f78c c0a8 056c ffff  ..|.@.@......l..
+	0x0020:  ffff db15 0009 006e c693 ffff ffff ffff  .......n........
+	0x0030:  0024 3216 8ed3 0024 3216 8ed3 0024 3216  .$2....$2....$2.
+	0x0040:  8ed3 0024 3216 8ed3 0024 3216 8ed3 0024  ...$2....$2....$
+	0x0050:  3216 8ed3 0024 3216 8ed3 0024 3216 8ed3  2....$2....$2...
+	0x0060:  0024 3216 8ed3 0024 3216 8ed3 0024 3216  .$2....$2....$2.
+	0x0070:  8ed3 0024 3216 8ed3 0024 3216 8ed3 0024  ...$2....$2....$
+	0x0080:  3216 8ed3 0024 3216 8ed3 0024 3216 8ed3  2....$2....$2...
+
+3 packets captured
+3 packets received by filter
+0 packets dropped by kernel

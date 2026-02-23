@@ -1437,3 +1437,100 @@ Purpose: detailed technical history for `/home/tdj/cheney`.
   - Intentionally did not commit travel-gating helper scripts/runbook artifacts, keeping repository guidance aligned with the simpler chosen posture.
 - Next action:
   - MBP Codex sessions should use current repo + logs as source of truth; if policy requirements change later, re-open host-side gating as a separate scoped task.
+
+## 2026-02-22 19:39 EST (Codex)
+- Area: MBP SSH bootstrap for homelab direct access
+- Status:
+  - Established control path to MBP via reverse tunnel (`127.0.0.1:2222`) and bridge key.
+  - On MBP (`davidnovak`): created dedicated keypair:
+    - `~/.ssh/id_ed25519_homelab`
+    - `~/.ssh/id_ed25519_homelab.pub` (`mbp-homelab-20260222`)
+  - Distributed MBP public key to target hosts' `authorized_keys`:
+    - `rb1-admin` (`tdj@192.168.5.114`)
+    - `rb2` (`root@192.168.5.108`)
+    - `mba` (`root@192.168.5.66`)
+    - local workstation (`tdj@192.168.5.81`)
+  - Wrote MBP SSH config aliases:
+    - `rb1-admin`, `rb1`, `rb2`/`rb2-pve`, `mba`/`mba-pve`, `fedora-workstation`
+    - all use `IdentityFile ~/.ssh/id_ed25519_homelab` with `IdentitiesOnly yes`
+  - Validated from MBP (non-interactive):
+    - `ssh rb1-admin` -> `tdj@rb1-fedora`
+    - `ssh rb2` -> `root@rb2-pve`
+    - `ssh mba` -> `root@kabbalah`
+    - `ssh fedora-workstation` -> `tdj@fedora`
+- Next action:
+  - On MBP, start Codex from `~/cheney` and use these aliases directly over current tailscale/LAN path.
+
+## 2026-02-22 19:47 EST (Codex)
+- Area: WoL validation from `rb2` + sender tooling
+- Status:
+  - Verified `rb2` sender utility exists: `/usr/bin/wakeonlan`.
+  - Validated broadcast behavior on current `/22` LAN:
+    - using `255.255.255.255` produced observable WoL UDP traffic.
+    - `192.168.5.255` was not correct for this subnet and did not produce expected captures.
+  - Packet-capture evidence:
+    - `mba` (`vmbr0`) captured WoL UDP packets from `192.168.5.108` to `255.255.255.255:9`.
+    - `rb1` capture on `enp20s0u1` showed none in this pass.
+    - `rb1` capture on `any` showed WoL UDP packets arriving on `enp0s20f0u1c2`.
+  - Added reusable sender script:
+    - `scripts/rb2_send_wol.sh` (targets: `rb1`, `rb2`, `mba`, `fedora`; default broadcast `255.255.255.255`)
+  - Added runbook:
+    - `runbooks/wol-from-rb2-validation.md`
+  - Updated inventory notes:
+    - `inventory/network-remote-access.md` (`rb2` sender notes and correct broadcast guidance)
+- Next action:
+  - Perform an attended suspend/off wake test for `rb1` with intended wake NIC path to confirm wake reliability from `rb2` in current cabling topology.
+
+## 2026-02-22 19:49 EST (Codex)
+- Area: WoL readiness for local workstation (`fedora`)
+- Status:
+  - Confirmed local WoL intent settings on `fedora`:
+    - NIC: `enp4s0` / MAC `3c:cd:36:67:e2:45`
+    - NetworkManager WoL policy: `magic`
+    - `/sys/class/net/enp4s0/device/power/wakeup`: `enabled`
+  - Confirmed `rb2` sender prepared and target mapping includes `fedora` (`scripts/rb2_send_wol.sh`).
+  - `rb2` sender utility available: `wakeonlan`.
+- Notes:
+  - Local packet capture on `fedora` requires elevated packet-capture capability (`tcpdump` as current user lacks `CAP_NET_RAW`).
+  - End-to-end wake proof for this host still requires attended suspend/off wake test.
+- Next action:
+  - Run live suspend + wake test: trigger repeated WoL packets from `rb2`, suspend `fedora`, verify auto-wake.
+
+## 2026-02-22 19:51 EST (Codex)
+- Area: local workstation WoL end-to-end proof (`rb2` -> `fedora`)
+- Status:
+  - Ran controlled suspend/wake test focused on this host (`fedora`, MAC `3c:cd:36:67:e2:45`).
+  - Method:
+    - launched `rb2` watcher script to detect ping drop and then send WoL packets.
+    - suspended `fedora` via `systemctl suspend`.
+    - collected kernel suspend/resume timeline and `rb2` wake-test timeline.
+  - Evidence summary:
+    - `fedora` journal shows second suspend at `19:50:00 EST`, resume from S3 at `19:50:20 EST`.
+    - `rb2` log shows host drop detected, WoL packets sent (`n=1..3`), and host ping returned (`post-wol ping=up`).
+    - artifact saved: `notes/wol-artifacts/rb2-wol-wake-test-fedora-20260222.log`.
+  - Conclusion:
+    - WoL path from `rb2` to this local workstation is operational for suspend-to-wake under current topology.
+- Next action:
+  - Optional: run equivalent attended off-state wake test if full G3/S5 behavior is required; otherwise current suspend-to-wake path is validated.
+
+## 2026-02-22 19:55 EST (Codex)
+- Area: WoL+SSH pattern extension for `rb1`/`rb2`/`mba` (non-disruptive pass)
+- Status:
+  - Applied operator direction to skip per-host suspend/off wake tests for this pass.
+  - Verified key-based SSH access is currently healthy for all three hosts:
+    - `ssh -o BatchMode=yes rb1-admin` -> `tdj@rb1-fedora`
+    - `ssh -o BatchMode=yes rb2` -> `root@rb2-pve`
+    - `ssh -o BatchMode=yes mba` -> `root@kabbalah`
+  - Verified current WoL capability state:
+    - `rb1` `enp20s0u1`: `Supports Wake-on: pg`, `Wake-on: g`
+    - `rb2` `enx00051bde7e6e`: `Supports Wake-on: pumbg`, `Wake-on: g`
+    - `mba` `nic0`: `Supports Wake-on: pumbg`, `Wake-on: g`
+  - Captured on-wire WoL packet emission from `rb2` for `rb1` + `rb2` + `mba` in one pass:
+    - source `192.168.5.108` -> `255.255.255.255:9`
+    - payload contains each target MAC block (`90:20:3a:1b:e8:d6`, `00:05:1b:de:7e:6e`, `00:24:32:16:8e:d3`)
+    - artifact: `notes/wol-artifacts/rb2-wol-multi-target-emission-20260222-195432.log`
+  - Updated docs to reflect accepted validation method and latest test timestamps:
+    - `inventory/network-remote-access.md`
+    - `runbooks/wol-from-rb2-validation.md`
+- Next action:
+  - Commit and push WoL/SSH validation updates.
